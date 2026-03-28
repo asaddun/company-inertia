@@ -1,0 +1,61 @@
+import { Link } from "@inertiajs/react";
+import { Colors } from "../../Themes/Colors";
+import { motion } from "framer-motion";
+
+function AutosHero({ isHome }) {
+    const titleSize = isHome ? "text-3xl md:text-4xl" : "text-4xl md:text-5xl";
+    return (
+        <motion.section
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
+            className="max-w-7xl mb-40 mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center"
+            id="auto"
+        >
+            <div className="relative">
+                <div className="absolute -inset-3 bg-blue-100 rounded-2xl blur-2xl opacity-60"></div>
+                <img
+                    src="https://dummyimage.com/600x450/e5e7eb/000000&text=Automotive+Workshop"
+                    alt="Bengkel Automotive"
+                    className="relative rounded-2xl shadow-lg"
+                />
+            </div>
+
+            <div>
+                <span className="inline-block mb-4 text-sm font-semibold text-blue-600 bg-blue-100 px-4 py-1 rounded-full">
+                    Workshop
+                </span>
+
+                <h1
+                    className={`${titleSize} font-bold text-gray-900 leading-tight`}
+                >
+                    Dabellyou Autos
+                </h1>
+
+                <p className="mt-6 text-lg text-gray-600 max-w-xl">
+                    Stands not just as a garage, but as a symbol of automotive
+                    lifestyle and forward-thinking vision. Born from a small
+                    garage and a big idea, Dabellyou Autos was founded on a deep
+                    passion for machines, design, and performance.
+                </p>
+
+                {isHome && (
+                    <Link href="/autos">
+                        <button
+                            style={{
+                                backgroundColor: Colors.primary,
+                                color: "white",
+                            }}
+                            className="mt-4 inline-flex items-center justify-center px-6 py-3 text-lg rounded-lg font-semibold cursor-pointer"
+                        >
+                            Learn More
+                        </button>
+                    </Link>
+                )}
+            </div>
+        </motion.section>
+    );
+}
+
+export default AutosHero;
