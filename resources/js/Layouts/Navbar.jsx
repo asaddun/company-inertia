@@ -85,7 +85,7 @@ function Navbar({ onHamburgerClick, isMobile, isAuthenticated }) {
                                 objectFit: "contain",
                             }}
                         /> */}
-                        Dabellyou
+                        Company
                     </Link>
                 )}
             </div>

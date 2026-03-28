@@ -37,7 +37,7 @@ function DrawerNavbar({ open, onClose, isAuthenticated }) {
                             objectFit: "contain",
                         }}
                     /> */}
-                    Dabellyou
+                    Company
                 </Link>
             }
             placement="left"

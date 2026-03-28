@@ -94,7 +94,7 @@ function DrawerOffice({ open, onClose, user }) {
                                 objectFit: "contain",
                             }}
                         /> */}
-                        Dabellyou
+                        Company
                     </Link>
                 }
                 size="60%"
