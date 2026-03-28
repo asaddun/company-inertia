@@ -1,25 +1,26 @@
 import { useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+// import { Link, useLocation } from "react-router-dom";
 import { Layout, Menu, ConfigProvider } from "antd";
 import { officeItems } from "../Configs/OfficeItems";
-import { Colors } from "../Theme/Colors";
+import { Colors } from "../Themes/Colors";
 import "../../css/SidebarStyle.css";
 import { filterMenuByRole } from "../Configs/FilterRole";
-import { useAuth } from "../contexts/AuthContext";
+import { Link } from "@inertiajs/react";
+// import { useAuth } from "../contexts/AuthContext";
 
 const { Sider } = Layout;
 
-function Sidebar({ isMobile }) {
+function Sidebar({ isMobile, user, location }) {
     const [openKeys, setOpenKeys] = useState([]);
-    const location = useLocation();
-    const { user } = useAuth();
+    // const location = useLocation();
+    // const { user } = useAuth();
 
-    useEffect(() => {
-        const segments = location.pathname.split("/").filter(Boolean);
-        if (segments.length >= 2) {
-            setOpenKeys([segments[1]]);
-        }
-    }, []);
+    // useEffect(() => {
+    //     const segments = location.pathname.split("/").filter(Boolean);
+    //     if (segments.length >= 2) {
+    //         setOpenKeys([segments[1]]);
+    //     }
+    // }, []);
 
     const onOpenChange = (keys) => {
         setOpenKeys(keys.slice(-1));
@@ -38,7 +39,7 @@ function Sidebar({ isMobile }) {
                 key: item.path || item.key,
                 icon: item.icon,
                 label: item.path ? (
-                    <Link to={item.path}>{item.label}</Link>
+                    <Link href={item.path}>{item.label}</Link>
                 ) : (
                     item.label
                 ),
@@ -76,7 +77,7 @@ function Sidebar({ isMobile }) {
                 <Menu
                     theme="dark"
                     mode="inline"
-                    selectedKeys={[location.pathname]}
+                    // selectedKeys={[location.pathname]}
                     openKeys={openKeys}
                     onOpenChange={onOpenChange}
                     onClick={onMenuClick}
