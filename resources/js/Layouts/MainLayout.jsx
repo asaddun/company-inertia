@@ -9,6 +9,7 @@ import { Colors } from "../Themes/Colors";
 import ScrollToTop from "../Configs/ScrollToTop";
 import Footer from "./Footer";
 import { usePage } from "@inertiajs/react";
+import AppContext from "../Context/AppContext";
 
 const { Content } = Layout;
 const { useBreakpoint } = Grid;
@@ -91,8 +92,9 @@ export default function MainLayout({ children }) {
                 }}
             >
                 <ScrollToTop />
-                {/* <Outlet context={{ isMobile }} /> */}
-                {children}
+                <AppContext.Provider value={{ isMobile }}>
+                    {children}
+                </AppContext.Provider>
             </Content>
             {!isOffice && !isLogin && <Footer />}
         </Layout>

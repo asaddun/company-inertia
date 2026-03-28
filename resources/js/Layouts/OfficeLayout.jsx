@@ -1,16 +1,15 @@
 import { Layout } from "antd";
 import Sidebar from "./Sidebar";
+import { useApp } from "../Context/AppContext";
 const { Content } = Layout;
 
-export default function OfficeLayout() {
-    const { isMobile } = useOutletContext();
+export default function OfficeLayout({ children }) {
+    const { isMobile } = useApp();
     return (
         <Layout>
             {/* SIDEBAR DESKTOP */}
             <Sidebar isMobile={isMobile} />
-            <Content style={{ padding: 16 }}>
-                <Outlet />
-            </Content>
+            <Content style={{ padding: 16 }}>{children}</Content>
         </Layout>
     );
 }
