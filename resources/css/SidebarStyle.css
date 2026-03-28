@@ -1,0 +1,21 @@
+/* --- KONDISI 1 & 3: TITLE TIDAK AKTIF --- */
+/* (Saat terbuka atau saat child tidak terpilih) */
+.ant-menu-dark .ant-menu-submenu > .ant-menu-submenu-title {
+  background-color: transparent !important;
+  color: #ffffff !important;
+}
+
+/* --- KONDISI 2: TITLE AKTIF --- */
+/* Syarat: Harus Terpilih (.ant-menu-submenu-selected) 
+   DAN sedang tertutup (:not(.ant-menu-submenu-open)) */
+.ant-menu-dark
+  .ant-menu-submenu.ant-menu-submenu-selected:not(.ant-menu-submenu-open)
+  > .ant-menu-submenu-title {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+}
+
+.ant-menu-dark .ant-menu-submenu > .ant-menu-submenu-title:hover {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+}
