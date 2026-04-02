@@ -28,4 +28,5 @@ createInertiaApp({
         createRoot(el).render(<App {...props} />);
     },
     title: (title) => (title ? `${title} | Company` : "Company"),
+    progress: false,
 });

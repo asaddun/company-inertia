@@ -8,7 +8,7 @@ import { SyncLoader } from "react-spinners";
 import { Colors } from "../Themes/Colors";
 import ScrollToTop from "../Configs/ScrollToTop";
 import Footer from "./Footer";
-import { usePage } from "@inertiajs/react";
+import { router, usePage } from "@inertiajs/react";
 import AppContext from "../Context/AppContext";
 
 const { Content } = Layout;
@@ -25,12 +25,19 @@ export default function MainLayout({ children }) {
     const [navbarOpen, setNavbarOpen] = useState(false);
     const [officeOpen, setOfficeOpen] = useState(false);
 
-    // useEffect(() => {
-    //     const lastMatch = matches[matches.length - 1];
-    //     const pageTitle = lastMatch?.handle?.title;
+    useEffect(() => {
+        // Event ketika mulai pindah halaman
+        const unregisterStart = router.on("start", () => setLoading(true));
 
-    //     document.title = pageTitle ? `${pageTitle} | ${APP_NAME}` : APP_NAME;
-    // }, [matches]);
+        // Event ketika selesai (baik sukses maupun error)
+        const unregisterFinish = router.on("finish", () => setLoading(false));
+
+        // Cleanup function untuk menghapus listener saat komponen unmount
+        return () => {
+            unregisterStart();
+            unregisterFinish();
+        };
+    }, []);
 
     const handleHamburgerClick = () => {
         if (isOffice) {
@@ -46,9 +53,9 @@ export default function MainLayout({ children }) {
     };
 
     // Auto close drawer saat pindah halaman
-    // useEffect(() => {
-    //     closeDrawers();
-    // }, [location.pathname]);
+    useEffect(() => {
+        closeDrawers();
+    }, [url]);
 
     // Auto close drawer saat layar membesar
     useEffect(() => {
@@ -60,7 +67,7 @@ export default function MainLayout({ children }) {
     return (
         <Layout style={{ minHeight: "100vh" }}>
             {loading && (
-                <div className="fixed inset-0 bg-black/30 flex items-center justify-center z-50">
+                <div className="fixed inset-0 bg-black/30 flex items-center justify-center z-9999">
                     <SyncLoader color={Colors.primary} />
                 </div>
             )}
