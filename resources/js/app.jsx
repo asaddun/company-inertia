@@ -5,10 +5,14 @@ import MainLayout from "./Layouts/MainLayout";
 import OfficeLayout from "./Layouts/OfficeLayout";
 
 createInertiaApp({
-    resolve: (name) => {
-        const pages = import.meta.glob("./Pages/**/*.jsx", { eager: true });
-        const page = pages[`./Pages/${name}.jsx`];
+    resolve: async (name) => {
+        const pages = import.meta.glob("./Pages/**/*.jsx");
+        const importPage = pages[`./Pages/${name}.jsx`];
 
+        // 1. Jalankan fungsinya untuk mendapatkan modul (Promise)
+        const page = await importPage();
+
+        // 2. Sekarang page.default sudah bisa diakses karena sudah di-await
         if (name.startsWith("Office/")) {
             page.default.layout =
                 page.default.layout ||
