@@ -1,37 +1,34 @@
-// import { Link, useNavigate } from "react-router-dom";
 import { Layout, Menu, Button, Dropdown, ConfigProvider, Space } from "antd";
 import { MenuOutlined, LogoutOutlined, LoginOutlined } from "@ant-design/icons";
-// import { useAuth } from "../contexts/AuthContext.jsx";
 import { Colors } from "../Themes/Colors";
 import { menuItems } from "../Configs/MenuItems.js";
 import { useState } from "react";
-import { Link } from "@inertiajs/react";
-// import { useLoading } from "../contexts/LoadingContext.jsx";
+import { Link, router, usePage } from "@inertiajs/react";
 // import { Logos } from "../assets/index.js";
 
 const { Header } = Layout;
 
-function Navbar({ onHamburgerClick, isMobile, isAuthenticated }) {
-    // const navigate = useNavigate();
-    // const { isAuthenticated, logout, user } = useAuth();
-    // const { loading, setLoading } = useLoading();
+function Navbar({ onHamburgerClick, isMobile }) {
     const [loading, setLoading] = useState(false);
+    const { auth } = usePage().props;
 
     const handleLogout = async () => {
-        navigate("/", { replace: true });
-        setLoading(true);
-
-        try {
-            await logout();
-        } catch (err) {
-            console.log("Logout gagal", err);
-        } finally {
-            setLoading(false);
-        }
+        router.post("/logout", {
+            onStart: () => {
+                // Bisa tambahkan loading state di sini jika perlu
+                setLoading(true);
+            },
+            onError: (errors) => {
+                console.error("Logout Failed:", errors);
+            },
+            onFinish: () => {
+                setLoading(false);
+            },
+        });
     };
 
     const items = menuItems
-        .filter((item) => !item.auth || isAuthenticated)
+        .filter((item) => !item.auth || auth.user)
         .map((item) => ({
             key: item.key,
             label: <Link href={item.path}>{item.label}</Link>,
@@ -121,7 +118,7 @@ function Navbar({ onHamburgerClick, isMobile, isAuthenticated }) {
 
             {/* RIGHT */}
             <div style={{ marginLeft: "auto" }}>
-                {isAuthenticated ? (
+                {auth.user ? (
                     <Dropdown
                         menu={{
                             items: profileItems,
@@ -135,7 +132,7 @@ function Navbar({ onHamburgerClick, isMobile, isAuthenticated }) {
                         placement="bottomRight"
                     >
                         <Space style={{ cursor: "pointer" }}>
-                            <Button loading={loading}>{user?.name}</Button>
+                            <Button loading={loading}>{auth.user?.name}</Button>
                         </Space>
                     </Dropdown>
                 ) : (

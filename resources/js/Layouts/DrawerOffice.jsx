@@ -6,13 +6,12 @@ import { officeItems } from "../Configs/OfficeItems.jsx";
 // import { Logos } from "../assets/index.js";
 import "../../css/SidebarStyle.css";
 import { filterMenuByRole } from "../Configs/FilterRole.js";
-import { Link } from "@inertiajs/react";
+import { Link, usePage } from "@inertiajs/react";
 // import { useAuth } from "../contexts/AuthContext.jsx";
 
 function DrawerOffice({ open, onClose, user }) {
     const [openKeys, setOpenKeys] = useState([]);
-    // const location = useLocation();
-    // const { user } = useAuth();
+    const { auth } = usePage().props;
 
     // useEffect(() => {
     //     const segments = location.pathname.split("/").filter(Boolean);
@@ -53,7 +52,7 @@ function DrawerOffice({ open, onClose, user }) {
         });
     }
 
-    const filteredItems = filterMenuByRole(officeItems, user?.role ?? 0);
+    const filteredItems = filterMenuByRole(officeItems, auth.user?.level ?? 0);
     const items = buildMenuItems(filteredItems);
 
     return (

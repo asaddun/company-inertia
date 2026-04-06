@@ -5,15 +5,13 @@ import { officeItems } from "../Configs/OfficeItems";
 import { Colors } from "../Themes/Colors";
 import "../../css/SidebarStyle.css";
 import { filterMenuByRole } from "../Configs/FilterRole";
-import { Link } from "@inertiajs/react";
-// import { useAuth } from "../contexts/AuthContext";
+import { Link, usePage } from "@inertiajs/react";
 
 const { Sider } = Layout;
 
 function Sidebar({ isMobile, user, location }) {
     const [openKeys, setOpenKeys] = useState([]);
-    // const location = useLocation();
-    // const { user } = useAuth();
+    const { auth } = usePage().props;
 
     // useEffect(() => {
     //     const segments = location.pathname.split("/").filter(Boolean);
@@ -54,7 +52,7 @@ function Sidebar({ isMobile, user, location }) {
         });
     }
 
-    const filteredItems = filterMenuByRole(officeItems, user?.role ?? 0);
+    const filteredItems = filterMenuByRole(officeItems, auth.user?.level ?? 0);
     const items = buildMenuItems(filteredItems);
 
     return (

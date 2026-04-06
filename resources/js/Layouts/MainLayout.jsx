@@ -13,7 +13,6 @@ import AppContext from "../Context/AppContext";
 
 const { Content } = Layout;
 const { useBreakpoint } = Grid;
-const APP_NAME = "Company";
 
 export default function MainLayout({ children }) {
     const screens = useBreakpoint();

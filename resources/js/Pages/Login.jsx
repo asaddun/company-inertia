@@ -1,36 +1,31 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Form, Input, Button, Typography } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
-// import { useAuth } from "../contexts/AuthContext";
-// import { useNavigate } from "react-router-dom";
 import { Colors } from "../Themes/Colors";
-// import { useLoading } from "../contexts/LoadingContext";
+import { router, usePage } from "@inertiajs/react";
 // import { Logos } from "../assets";
 
 const { Title } = Typography;
 
-function Login({ login, user }) {
-    // const { login, user } = useAuth();
-    // const navigate = useNavigate();
-    // const { loading, setLoading } = useLoading();
+function Login() {
     const [loading, setLoading] = useState(false);
-
-    // useEffect(() => {
-    //     if (user) navigate("/office");
-    // }, [user]);
+    const { auth, errors } = usePage().props;
 
     const onFinish = async (values) => {
         if (loading) return;
-        setLoading(true);
-        console.log(values);
 
-        try {
-            await login(values);
-        } catch (err) {
-            console.log("Login gagal", err);
-        } finally {
-            setLoading(false);
-        }
+        router.post("/login", values, {
+            onStart: () => {
+                // Bisa tambahkan loading state di sini jika perlu
+                setLoading(true);
+            },
+            onError: (errors) => {
+                console.error("Login Failed:", errors);
+            },
+            onFinish: () => {
+                setLoading(false);
+            },
+        });
     };
 
     return (
@@ -68,6 +63,8 @@ function Login({ login, user }) {
                             message: "Please input your username",
                         },
                     ]}
+                    validateStatus={errors.username ? "error" : ""}
+                    help={errors.username}
                 >
                     <Input
                         prefix={<UserOutlined />}

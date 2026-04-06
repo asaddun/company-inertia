@@ -1,16 +1,16 @@
-export const filterMenuByRole = (menus, userRole) => {
-  return menus
-    .filter((menu) => {
-      if (!menu.minRole) return true;
-      return userRole >= menu.minRole;
-    })
-    .map((menu) => {
-      if (menu.children) {
-        return {
-          ...menu,
-          children: filterMenuByRole(menu.children, userRole),
-        };
-      }
-      return menu;
-    });
+export const filterMenuByRole = (menus, userLevel) => {
+    return menus
+        .filter((menu) => {
+            if (!menu.minLevel) return true;
+            return userLevel >= menu.minLevel;
+        })
+        .map((menu) => {
+            if (menu.children) {
+                return {
+                    ...menu,
+                    children: filterMenuByRole(menu.children, userLevel),
+                };
+            }
+            return menu;
+        });
 };
