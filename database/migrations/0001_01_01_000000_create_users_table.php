@@ -18,11 +18,11 @@ return new class extends Migration
             $table->string('email')->unique()->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->integer('identity_number')->unique()->nullable();
             $table->integer('phone')->nullable();
             $table->integer('bank_account_number')->nullable();
-            // 1 = visitor, 2 = employee, 3 = management
+            // See App\Enums\UserLevel
             $table->unsignedTinyInteger('level')->default(1);
-            $table->decimal('wage_per_component', 4, 2)->default(0);
             $table->rememberToken();
             $table->softDeletes();
             $table->timestamps();
