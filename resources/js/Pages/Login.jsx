@@ -63,8 +63,6 @@ function Login() {
                             message: "Please input your username",
                         },
                     ]}
-                    validateStatus={errors.username ? "error" : ""}
-                    help={errors.username}
                 >
                     <Input
                         prefix={<UserOutlined />}
@@ -81,6 +79,8 @@ function Login() {
                             message: "Please input your password",
                         },
                     ]}
+                    validateStatus={errors.login ? "error" : ""}
+                    help={errors.login}
                 >
                     <Input.Password
                         prefix={<LockOutlined />}

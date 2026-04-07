@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Auth\LoginRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
@@ -17,12 +18,9 @@ class AuthController extends Controller
         return Inertia::render('Login');
     }
 
-    public function store(Request $request)
+    public function store(LoginRequest $request)
     {
-        $credentials = $request->validate([
-            'username' => ['required'],
-            'password' => ['required'],
-        ]);
+        $credentials = $request->validated();
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
@@ -31,7 +29,7 @@ class AuthController extends Controller
         }
 
         return back()->withErrors([
-            'username' => 'Invalid Username or Password.',
+            'login' => 'Invalid Username or Password.',
         ]);
     }
 
