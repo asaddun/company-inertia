@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CareerController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -14,7 +15,15 @@ Route::post('/login', [AuthController::class, 'store']);
 Route::middleware('auth')->group(function () {
     Route::post('/logout', [AuthController::class, 'destroy']);
 
-    Route::get('/office', function () {
-        return Inertia::render('Office/Dashboard');
+    Route::prefix('office')->group(function () {
+        Route::get('/', function () {
+            return Inertia::render('Office/Dashboard');
+        });
+
+        // Career
+        Route::get('/careers', [CareerController::class, 'index'])->name('careers.index');
+        Route::post('/careers', [CareerController::class, 'add'])->name('careers.add');
+        Route::get('/careers/{career}', [CareerController::class, 'show'])->name('careers.show');
+        Route::put('/careers/{career}', [CareerController::class, 'update'])->name('careers.update');
     });
 });

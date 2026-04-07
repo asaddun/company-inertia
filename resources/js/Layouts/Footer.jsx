@@ -60,7 +60,7 @@ function Footer() {
                                     className="text-black hover:text-[#ff67a2]"
                                 >
                                     <span className="text-gray-800 hover:text-gray-400">
-                                        Carrers
+                                        Careers
                                     </span>
                                 </Link>
                             </li>

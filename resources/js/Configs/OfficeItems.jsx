@@ -69,9 +69,9 @@ export const officeItems = [
     },
     {
         key: "carrer",
-        label: "Carrer",
+        label: "Career",
         icon: <FileProtectOutlined />,
-        path: "/office/carrer",
+        path: "/office/careers",
         minLevel: Level.MANAGEMENT,
     },
 ];
