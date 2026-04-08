@@ -1,9 +1,8 @@
 import { useState, useEffect } from "react";
-import { Layout, Grid } from "antd";
+import { Layout, Grid, message } from "antd";
 import Navbar from "./Navbar";
 import DrawerOffice from "./DrawerOffice";
 import DrawerHome from "./DrawerHome";
-// import { useLoading } from "../contexts/LoadingContext";
 import { SyncLoader } from "react-spinners";
 import { Colors } from "../Themes/Colors";
 import ScrollToTop from "../Configs/ScrollToTop";
@@ -23,6 +22,26 @@ export default function MainLayout({ children }) {
     const [loading, setLoading] = useState(false);
     const [navbarOpen, setNavbarOpen] = useState(false);
     const [officeOpen, setOfficeOpen] = useState(false);
+    const [messageApi, contextHolder] = message.useMessage();
+    const { props } = usePage();
+
+    useEffect(() => {
+        if (props.flash?.success) {
+            messageApi.success(props.flash.success);
+            return;
+        }
+
+        const errorKeys = Object.keys(props.errors || {});
+        if (errorKeys.length > 0) {
+            const firstErrorMessage = props.errors[errorKeys[0]];
+            messageApi.error(firstErrorMessage);
+            return;
+        }
+
+        if (props.flash?.error) {
+            messageApi.error(props.flash.error);
+        }
+    }, [props.timestamp]);
 
     useEffect(() => {
         // Event ketika mulai pindah halaman
@@ -64,45 +83,48 @@ export default function MainLayout({ children }) {
     }, [isMobile]);
 
     return (
-        <Layout style={{ minHeight: "100vh" }}>
-            {loading && (
-                <div className="fixed inset-0 bg-black/30 flex items-center justify-center z-9999">
-                    <SyncLoader color={Colors.primary} />
-                </div>
-            )}
-            {!isLogin && (
-                <>
-                    <Navbar
-                        isMobile={isMobile}
-                        onHamburgerClick={handleHamburgerClick}
-                    />
-                    <DrawerHome
-                        open={navbarOpen}
-                        onClose={() => setNavbarOpen(false)}
-                        isAuthenticated={false}
-                    />
-                    <DrawerOffice
-                        open={officeOpen}
-                        onClose={() => setOfficeOpen(false)}
-                    />
-                </>
-            )}
+        <>
+            {contextHolder}
+            <Layout style={{ minHeight: "100vh" }}>
+                {loading && (
+                    <div className="fixed inset-0 bg-black/30 flex items-center justify-center z-9999">
+                        <SyncLoader color={Colors.primary} />
+                    </div>
+                )}
+                {!isLogin && (
+                    <>
+                        <Navbar
+                            isMobile={isMobile}
+                            onHamburgerClick={handleHamburgerClick}
+                        />
+                        <DrawerHome
+                            open={navbarOpen}
+                            onClose={() => setNavbarOpen(false)}
+                            isAuthenticated={false}
+                        />
+                        <DrawerOffice
+                            open={officeOpen}
+                            onClose={() => setOfficeOpen(false)}
+                        />
+                    </>
+                )}
 
-            <Content
-                style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    flex: 1,
-                    padding: !isOffice ? (isMobile ? 16 : 24) : 0,
-                    backgroundColor: "white",
-                }}
-            >
-                <ScrollToTop />
-                <AppContext.Provider value={{ isMobile }}>
-                    {children}
-                </AppContext.Provider>
-            </Content>
-            {!isOffice && !isLogin && <Footer />}
-        </Layout>
+                <Content
+                    style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        flex: 1,
+                        padding: !isOffice ? (isMobile ? 16 : 24) : 0,
+                        backgroundColor: "white",
+                    }}
+                >
+                    <ScrollToTop />
+                    <AppContext.Provider value={{ isMobile }}>
+                        {children}
+                    </AppContext.Provider>
+                </Content>
+                {!isOffice && !isLogin && <Footer />}
+            </Layout>
+        </>
     );
 }
