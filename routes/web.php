@@ -12,6 +12,8 @@ Route::get('/', function () {
 Route::get('/login', [AuthController::class, 'create'])->name('login');
 Route::post('/login', [AuthController::class, 'store']);
 
+Route::get('/career', [CareerController::class, 'active'])->name('careers.active');
+
 Route::middleware('auth')->group(function () {
     Route::post('/logout', [AuthController::class, 'destroy']);
 

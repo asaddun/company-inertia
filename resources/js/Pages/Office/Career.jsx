@@ -14,12 +14,12 @@ import { DeleteOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons";
 import { Colors } from "../../Themes/Colors";
 import FormUpdateCareer from "../../Components/Form/FormUpdateCarrer";
 import FormAddCareer from "../../Components/Form/FormAddCarrer";
-import { router } from "@inertiajs/react";
+import { router, usePage } from "@inertiajs/react";
 
 const { useBreakpoint } = Grid;
 const { Title } = Typography;
 
-function Career({ jobs }) {
+function Career({ careers }) {
     const screens = useBreakpoint();
     const isMobile = !screens.md;
 
@@ -31,6 +31,7 @@ function Career({ jobs }) {
     const [updateOpen, setUpdateOpen] = useState(false);
     const [selectedData, setSelectedData] = useState(null);
     const [saving, setSaving] = useState(false);
+    const { props } = usePage();
 
     // const [pagination, setPagination] = useState({
     //     current: 1,
@@ -38,12 +39,13 @@ function Career({ jobs }) {
     //     total: 0,
     // });
 
-    // useEffect(() => {
-    //     if (!messageState) return;
-
-    //     messageApi.open(messageState);
-    //     setMessageState(null);
-    // }, [messageState]);
+    useEffect(() => {
+        if (props.flash.success) {
+            message.success(props.flash.success);
+        } else if (props.flash.error) {
+            message.error(props.flash.error);
+        }
+    }, [props.flash]);
 
     // const fetchJobs = async (page = 1, pageSize = 10) => {
     //     setLoading(true);
@@ -85,9 +87,8 @@ function Career({ jobs }) {
     const handleAdd = async (values, form) => {
         router.post(route("careers.add"), values, {
             onSuccess: () => {
-                message.success("Career created successfully");
                 form.resetFields();
-                setModalOpen(false);
+                setAddOpen(false);
             },
             onError: (errors) => {
                 const fieldErrors = Object.keys(errors).map((key) => ({
@@ -96,10 +97,6 @@ function Career({ jobs }) {
                 }));
 
                 form.setFields(fieldErrors);
-            },
-            onFinish: () => {
-                setAddOpen(false);
-                form.resetFields();
             },
         });
     };
@@ -153,14 +150,13 @@ function Career({ jobs }) {
         //         setSaving(false);
         //     }
 
-        router.post(
+        router.put(
             route("careers.update", { career: selectedData.id }),
             values,
             {
                 onSuccess: () => {
-                    message.success("Career created successfully");
                     form.resetFields();
-                    setModalOpen(false);
+                    setUpdateOpen(false);
                 },
                 onError: (errors) => {
                     const fieldErrors = Object.keys(errors).map((key) => ({
@@ -252,7 +248,7 @@ function Career({ jobs }) {
             <Table
                 size={isMobile ? "small" : "middle"}
                 columns={columns}
-                dataSource={jobs}
+                dataSource={careers}
                 rowKey="id"
                 loading={loading}
                 scroll={{ x: "max-content" }}

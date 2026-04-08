@@ -21,34 +21,46 @@ class CareerController extends Controller
 
     public function index()
     {
-        $jobs = $this->service->getJobs();
+        $careers = $this->service->getJobs();
 
-        return Inertia::render('Office/Career', ['jobs' => $jobs]);
+        return Inertia::render('Office/Career', ['careers' => $careers]);
     }
 
     public function active()
     {
-        $jobs = $this->service->getActiveJobs();
+        // $careers = $this->service->getActiveJobs();
 
-        // return ApiResponse::success($jobs);
+        // return Inertia::render('Career', ['careers' => $careers]);
     }
 
-    public function show(Career $carrer)
-    {
-        // return ApiResponse::success($carrer);
-    }
+    // public function show(Career $carrer)
+    // {
+    //     return ApiResponse::success($carrer);
+    // }
 
     public function add(CareerAddRequest $request)
     {
-        $job = $this->service->addJob($request->validated());
+        try {
+            $this->service->addJob($request->validated());
 
-        // return ApiResponse::success($job, 'Job created successfully');
+            return redirect()
+                ->route('careers.index')
+                ->with('success', 'Career created successfully');
+        } catch (\Throwable $e) {
+            return back()->with('error', 'Failed create Career');
+        }
     }
 
-    public function update(CareerUpdateRequest $request, Career $carrer)
+    public function update(CareerUpdateRequest $request, Career $career)
     {
-        $job = $this->service->updateJob($carrer, $request->validated());
+        try {
+            $this->service->updateJob($career, $request->validated());
 
-        // return ApiResponse::success($job, 'Job updated successfully');
+            return redirect()
+                ->route('careers.index')
+                ->with('success', 'Career updated successfully');
+        } catch (\Throwable $e) {
+            return back()->with('error', 'Failed update Career');
+        }
     }
 }

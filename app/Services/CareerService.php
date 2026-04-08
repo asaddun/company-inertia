@@ -34,14 +34,12 @@ class CareerService
             'description' => $data['description'],
             'employment_type' => $data['employment_type'],
         ]);
-
-        // return $data;
     }
 
-    public function updateJob(Career $carrer, array $data)
+    public function updateJob(Career $career, array $data)
     {
-        $carrer->update($data);
+        $career->update($data);
 
-        return $carrer->fresh();
+        return $career->fresh();
     }
 }
