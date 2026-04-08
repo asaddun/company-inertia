@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import {
     Button,
     Grid,
-    message,
     Popconfirm,
     Space,
     Switch,
@@ -13,7 +12,7 @@ import { DeleteOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons";
 import { Colors } from "../../Themes/Colors";
 import FormUpdateCareer from "../../Components/Form/FormUpdateCarrer";
 import FormAddCareer from "../../Components/Form/FormAddCarrer";
-import { router, usePage } from "@inertiajs/react";
+import { router } from "@inertiajs/react";
 
 const { useBreakpoint } = Grid;
 const { Title } = Typography;
@@ -21,41 +20,12 @@ const { Title } = Typography;
 function Career({ careers }) {
     const screens = useBreakpoint();
     const isMobile = !screens.md;
-
-    const [messageApi, contextHolder] = message.useMessage();
-
     const [loading, setLoading] = useState();
     const [data, setData] = useState(careers);
-
     const [addOpen, setAddOpen] = useState(false);
     const [updateOpen, setUpdateOpen] = useState(false);
     const [selectedData, setSelectedData] = useState(null);
     const [saving, setSaving] = useState(false);
-    const { props } = usePage();
-
-    // MASIH ERROR NOTIF
-    useEffect(() => {
-        if (props.flash?.success) {
-            messageApi.success(props.flash.success);
-        }
-    }, [props.flash?.success?.timestamp]);
-
-    useEffect(() => {
-        if (props.flash?.error) {
-            messageApi.error(props.flash.error);
-        }
-    }, [props.flash?.error?.timestamp]);
-
-    useEffect(() => {
-        if (props.errors) {
-            const errorKeys = Object.keys(props.errors || {});
-
-            if (errorKeys.length > 0) {
-                const firstErrorMessage = props.errors[errorKeys[0]];
-                messageApi.error(firstErrorMessage);
-            }
-        }
-    }, [props.errors?.timestamp]);
 
     const handleAddButton = () => {
         setAddOpen(true);
@@ -109,19 +79,6 @@ function Career({ careers }) {
     };
 
     const handleUpdate = async (values, form) => {
-        //     setSaving(true);
-        //     try {
-        //         const res = await api.put(`/carrers/${selectedData.id}`, values);
-        //         setMessageState({
-        //             type: "success",
-        //             content: res.data.message,
-        //         });
-        //         setUpdateOpen(false);
-        //         fetchJobs(pagination.current, pagination.pageSize);
-        //     } finally {
-        //         setSaving(false);
-        //     }
-
         router.put(
             route("careers.update", { career: selectedData.id }),
             values,
@@ -203,8 +160,6 @@ function Career({ careers }) {
     ];
     return (
         <>
-            {contextHolder}
-
             <div className="flex justify-between px-2">
                 <Title level={3}>Career Management</Title>
                 <Button

@@ -22,10 +22,10 @@ class CareerUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => 'string',
-            'description' => 'string',
-            'employment_type' => 'string',
-            'is_active' => 'boolean',
+            'title' => ['string'],
+            'description' => ['string'],
+            'employment_type' => ['string'],
+            'is_active' => ['boolean'],
         ];
     }
 }
