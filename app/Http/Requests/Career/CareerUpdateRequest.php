@@ -24,7 +24,7 @@ class CareerUpdateRequest extends FormRequest
         return [
             'title' => 'string',
             'description' => 'string',
-            'employment_type' => 'required|string',
+            'employment_type' => 'string',
             'is_active' => 'boolean',
         ];
     }

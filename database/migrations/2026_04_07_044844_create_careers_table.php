@@ -17,6 +17,7 @@ return new class extends Migration
             $table->enum('employment_type', ['full_time', 'part_time']);
             $table->text('description');
             $table->boolean('is_active')->default(true);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

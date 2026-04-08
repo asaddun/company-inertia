@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-// import api from "../../services/api";
 import {
     Button,
     Grid,
@@ -26,6 +25,7 @@ function Career({ careers }) {
     const [messageApi, contextHolder] = message.useMessage();
 
     const [loading, setLoading] = useState();
+    const [data, setData] = useState(careers);
 
     const [addOpen, setAddOpen] = useState(false);
     const [updateOpen, setUpdateOpen] = useState(false);
@@ -33,52 +33,29 @@ function Career({ careers }) {
     const [saving, setSaving] = useState(false);
     const { props } = usePage();
 
-    // const [pagination, setPagination] = useState({
-    //     current: 1,
-    //     pageSize: 10,
-    //     total: 0,
-    // });
+    // MASIH ERROR NOTIF
+    useEffect(() => {
+        if (props.flash?.success) {
+            messageApi.success(props.flash.success);
+        }
+    }, [props.flash?.success?.timestamp]);
 
     useEffect(() => {
-        if (props.flash.success) {
-            message.success(props.flash.success);
-        } else if (props.flash.error) {
-            message.error(props.flash.error);
+        if (props.flash?.error) {
+            messageApi.error(props.flash.error);
         }
-    }, [props.flash]);
+    }, [props.flash?.error?.timestamp]);
 
-    // const fetchJobs = async (page = 1, pageSize = 10) => {
-    //     setLoading(true);
-    //     try {
-    //         const res = await api.get("/carrers", {
-    //             params: {
-    //                 page,
-    //                 per_page: pageSize,
-    //             },
-    //         });
+    useEffect(() => {
+        if (props.errors) {
+            const errorKeys = Object.keys(props.errors || {});
 
-    //         const { data, meta } = res.data;
-
-    //         setData(data);
-    //         setPagination({
-    //             current: meta.page,
-    //             pageSize: meta.per_page,
-    //             total: meta.total,
-    //         });
-    //     } catch (err) {
-    //         console.error(err.response?.data?.message ?? err);
-    //         setMessageState({
-    //             type: "error",
-    //             content: err.response?.data?.message,
-    //         });
-    //     } finally {
-    //         setLoading(false);
-    //     }
-    // };
-
-    // useEffect(() => {
-    //     fetchJobs();
-    // }, []);
+            if (errorKeys.length > 0) {
+                const firstErrorMessage = props.errors[errorKeys[0]];
+                messageApi.error(firstErrorMessage);
+            }
+        }
+    }, [props.errors?.timestamp]);
 
     const handleAddButton = () => {
         setAddOpen(true);
@@ -102,33 +79,28 @@ function Career({ careers }) {
     };
 
     const handleToggleStatus = async (id, checked) => {
-        //     // 1. Simpan data lama (untuk rollback)
-        //     const oldData = [...data];
-        //     // 2. Update UI langsung (smooth)
-        //     setData((prev) =>
-        //         prev.map((item) =>
-        //             item.id === id ? { ...item, is_active: checked ? 1 : 0 } : item,
-        //         ),
-        //     );
-        //     setSaving(id);
-        //     try {
-        //         const res = await api.put(`/carrers/${id}`, {
-        //             is_active: checked ? 1 : 0,
-        //         });
-        //         setMessageState({
-        //             type: "success",
-        //             content: res.data.message,
-        //         });
-        //         fetchJobs();
-        //     } catch (error) {
-        //         setData(oldData);
-        //         setMessageState({
-        //             type: "error",
-        //             content: error.response?.data?.message,
-        //         });
-        //     } finally {
-        //         setSaving(false);
-        //     }
+        // 1. Simpan data lama (untuk rollback)
+        const oldData = [...data];
+        // 2. Update UI langsung (smooth)
+        setData((prev) =>
+            prev.map((item) =>
+                item.id === id ? { ...item, is_active: checked ? 1 : 0 } : item,
+            ),
+        );
+        setSaving(id);
+        router.put(
+            route("careers.update", { career: id }),
+            { is_active: checked ? 1 : 0 },
+            {
+                onSuccess: () => {},
+                onError: (errors) => {
+                    setData(oldData);
+                },
+                onFinish: () => {
+                    setSaving(false);
+                },
+            },
+        );
     };
 
     const handleEditButton = (data) => {
