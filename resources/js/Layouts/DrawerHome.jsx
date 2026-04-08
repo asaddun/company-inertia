@@ -1,15 +1,14 @@
 import { ConfigProvider, Drawer, Menu } from "antd";
-// import { Link } from "react-router-dom";
-// import { useAuth } from "../contexts/AuthContext.jsx";
 // import { Logos } from "../assets/index.js";
-import { Colors } from "../Themes/Colors";
+import { Colors } from "../Themes/Colors.jsx";
 import { menuItems } from "../Configs/MenuItems.js";
-import { Link } from "@inertiajs/react";
+import { Link, usePage } from "@inertiajs/react";
 
-function DrawerNavbar({ open, onClose, isAuthenticated }) {
-    // const { isAuthenticated, logout } = useAuth();
+function DrawerHome({ open, onClose }) {
+    const { auth } = usePage().props;
+
     const items = menuItems
-        .filter((item) => !item.auth || isAuthenticated)
+        .filter((item) => !item.auth || auth.user)
         .map((item) => ({
             key: item.key,
             label: <Link href={item.path}>{item.label}</Link>,
@@ -72,4 +71,4 @@ function DrawerNavbar({ open, onClose, isAuthenticated }) {
     );
 }
 
-export default DrawerNavbar;
+export default DrawerHome;

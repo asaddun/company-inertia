@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Layout, Grid } from "antd";
 import Navbar from "./Navbar";
 import DrawerOffice from "./DrawerOffice";
-import DrawerNavbar from "./DrawerNavbar";
+import DrawerHome from "./DrawerHome";
 // import { useLoading } from "../contexts/LoadingContext";
 import { SyncLoader } from "react-spinners";
 import { Colors } from "../Themes/Colors";
@@ -76,7 +76,7 @@ export default function MainLayout({ children }) {
                         isMobile={isMobile}
                         onHamburgerClick={handleHamburgerClick}
                     />
-                    <DrawerNavbar
+                    <DrawerHome
                         open={navbarOpen}
                         onClose={() => setNavbarOpen(false)}
                         isAuthenticated={false}
