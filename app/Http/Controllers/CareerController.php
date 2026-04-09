@@ -38,11 +38,6 @@ class CareerController extends Controller
         // return Inertia::render('Career', ['careers' => $careers]);
     }
 
-    // public function show(Career $carrer)
-    // {
-    //     return ApiResponse::success($carrer);
-    // }
-
     public function store(CareerAddRequest $request)
     {
         try {
@@ -65,7 +60,7 @@ class CareerController extends Controller
                 ->back()
                 ->with('success', 'Career updated successfully');
         } catch (\Throwable $e) {
-            return back()->with('error', 'Failed update Career');
+            return back()->with('error', $e ? 'Failed update Career, ' . $e->getMessage() : 'Failed update Career');
         }
     }
 
@@ -90,7 +85,19 @@ class CareerController extends Controller
                 ->back()
                 ->with('success', 'Career restored successfully');
         } catch (\Throwable $e) {
-            return back()->with('error', 'Failed restore Career');
+            return back()->with('error', $e ? 'Failed restore Career, ' . $e->getMessage() : 'Failed restore Career');
+        }
+    }
+
+    public function forceDelete(Career $career)
+    {
+        try {
+            $this->service->forceDeleteCareer($career);
+            return redirect()
+                ->back()
+                ->with('success', 'Career deleted successfully');
+        } catch (\Throwable $e) {
+            return back()->with('error', $e ? 'Failed delete Career, ' . $e->getMessage() : 'Failed delete Career');
         }
     }
 }

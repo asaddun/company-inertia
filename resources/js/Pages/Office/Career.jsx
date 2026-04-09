@@ -33,7 +33,8 @@ function Career({ careers, filter }) {
     const [updateOpen, setUpdateOpen] = useState(false);
     const [selectedData, setSelectedData] = useState(null);
     const [saving, setSaving] = useState(false);
-    const [isTrash, setIsTrash] = useState(filter.status === "trash");
+    // const [isTrash, setIsTrash] = useState(filter.status === "trash");
+    const isTrash = filter.status === "trash";
 
     const handleAddButton = () => {
         setAddOpen(true);
@@ -122,11 +123,11 @@ function Career({ careers, filter }) {
     };
 
     const handleForceDelete = async (id) => {
-        router.delete(route("careers.destroy", { career: id }));
+        router.delete(route("careers.forceDelete", { career: id }));
     };
 
     const handleSwitchTrash = (checked) => {
-        setIsTrash(checked);
+        // setIsTrash(checked);
         router.get(route("careers.index"), {
             ...filter,
             status: checked ? "trash" : "active",

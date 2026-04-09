@@ -59,8 +59,10 @@ class CareerService
 
     public function updateCareer(Career $career, array $data)
     {
+        if ($career->trashed()) {
+            throw new \Exception('Career is deleted');
+        }
         $career->update($data);
-
         return $career->fresh();
     }
 
@@ -76,5 +78,13 @@ class CareerService
             throw new \Exception('Career is not deleted');
         }
         return $career->restore();
+    }
+
+    public function forceDeleteCareer(Career $career)
+    {
+        if (!$career->trashed()) {
+            throw new \Exception('Career is not deleted');
+        }
+        return $career->forceDelete();
     }
 }
