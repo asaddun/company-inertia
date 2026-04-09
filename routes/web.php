@@ -24,8 +24,10 @@ Route::middleware('auth')->group(function () {
 
         // Career
         Route::get('/careers', [CareerController::class, 'index'])->name('careers.index');
-        Route::post('/careers', [CareerController::class, 'add'])->name('careers.add');
+        Route::post('/careers', [CareerController::class, 'store'])->name('careers.store');
         Route::get('/careers/{career}', [CareerController::class, 'show'])->name('careers.show');
         Route::put('/careers/{career}', [CareerController::class, 'update'])->name('careers.update');
+        Route::delete('/careers/{career}', [CareerController::class, 'destroy'])->name('careers.destroy');
+        Route::put('/careers/{career}/restore', [CareerController::class, 'restore'])->withTrashed()->name('careers.restore');
     });
 });

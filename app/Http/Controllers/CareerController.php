@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Career\CareerAddRequest;
+use App\Http\Requests\Career\CareerIndexRequest;
 use App\Http\Requests\Career\CareerUpdateRequest;
 use App\Models\Career;
 use App\Services\CareerService;
@@ -19,16 +20,20 @@ class CareerController extends Controller
         $this->service = $service;
     }
 
-    public function index()
+    public function index(CareerIndexRequest $request)
     {
-        $careers = $this->service->getJobs();
+        $filters = $request->validatedWithDefaults();
+        $careers = $this->service->getCareers($filters);
 
-        return Inertia::render('Office/Career', ['careers' => $careers]);
+        return Inertia::render('Office/Career', [
+            'careers' => $careers,
+            'filter' => $filters,
+        ]);
     }
 
     public function active()
     {
-        // $careers = $this->service->getActiveJobs();
+        // $careers = $this->service->getActiveCareers();
 
         // return Inertia::render('Career', ['careers' => $careers]);
     }
@@ -38,10 +43,10 @@ class CareerController extends Controller
     //     return ApiResponse::success($carrer);
     // }
 
-    public function add(CareerAddRequest $request)
+    public function store(CareerAddRequest $request)
     {
         try {
-            $this->service->addJob($request->validated());
+            $this->service->addCareer($request->validated());
 
             return redirect()
                 ->route('careers.index')
@@ -54,13 +59,38 @@ class CareerController extends Controller
     public function update(CareerUpdateRequest $request, Career $career)
     {
         try {
-            $this->service->updateJob($career, $request->validated());
+            $this->service->updateCareer($career, $request->validated());
 
             return redirect()
-                ->route('careers.index')
+                ->back()
                 ->with('success', 'Career updated successfully');
         } catch (\Throwable $e) {
             return back()->with('error', 'Failed update Career');
+        }
+    }
+
+    public function destroy(Career $career)
+    {
+        try {
+            $this->service->deleteCareer($career);
+
+            return redirect()
+                ->back()
+                ->with('success', 'Career deleted successfully');
+        } catch (\Throwable $e) {
+            return back()->with('error', 'Failed delete Career');
+        }
+    }
+
+    public function restore(Career $career)
+    {
+        try {
+            $this->service->restoreCareer($career);
+            return redirect()
+                ->back()
+                ->with('success', 'Career restored successfully');
+        } catch (\Throwable $e) {
+            return back()->with('error', 'Failed restore Career');
         }
     }
 }

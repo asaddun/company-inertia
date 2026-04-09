@@ -1,14 +1,21 @@
 import { useEffect, useState } from "react";
 import {
     Button,
+    Flex,
     Grid,
     Popconfirm,
+    Segmented,
     Space,
     Switch,
     Table,
     Typography,
 } from "antd";
-import { DeleteOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons";
+import {
+    DeleteOutlined,
+    EditOutlined,
+    PlusOutlined,
+    RedoOutlined,
+} from "@ant-design/icons";
 import { Colors } from "../../Themes/Colors";
 import FormUpdateCareer from "../../Components/Form/FormUpdateCarrer";
 import FormAddCareer from "../../Components/Form/FormAddCarrer";
@@ -17,22 +24,26 @@ import { router } from "@inertiajs/react";
 const { useBreakpoint } = Grid;
 const { Title } = Typography;
 
-function Career({ careers }) {
+function Career({ careers, filter }) {
     const screens = useBreakpoint();
     const isMobile = !screens.md;
     const [loading, setLoading] = useState();
-    const [data, setData] = useState(careers);
+    const [data, setData] = useState(careers.data);
     const [addOpen, setAddOpen] = useState(false);
     const [updateOpen, setUpdateOpen] = useState(false);
     const [selectedData, setSelectedData] = useState(null);
     const [saving, setSaving] = useState(false);
+    const [isTrash, setIsTrash] = useState(filter.status === "trash");
 
     const handleAddButton = () => {
         setAddOpen(true);
     };
 
     const handleAdd = async (values, form) => {
-        router.post(route("careers.add"), values, {
+        setLoading(true);
+        router.post(route("careers.store"), values, {
+            // onBefore: () => {
+            // },
             onSuccess: () => {
                 form.resetFields();
                 setAddOpen(false);
@@ -44,6 +55,9 @@ function Career({ careers }) {
                 }));
 
                 form.setFields(fieldErrors);
+            },
+            onFinish: () => {
+                setLoading(false);
             },
         });
     };
@@ -99,6 +113,35 @@ function Career({ careers }) {
         );
     };
 
+    const handleDelete = async (id) => {
+        router.delete(route("careers.destroy", { career: id }));
+    };
+
+    const handleRestore = async (id) => {
+        router.put(route("careers.restore", { career: id }));
+    };
+
+    const handleForceDelete = async (id) => {
+        router.delete(route("careers.destroy", { career: id }));
+    };
+
+    const handleSwitchTrash = (checked) => {
+        setIsTrash(checked);
+        router.get(route("careers.index"), {
+            ...filter,
+            status: checked ? "trash" : "active",
+            page: 1,
+        });
+    };
+
+    const handlePagination = (pagination) => {
+        router.get(route("careers.index"), {
+            ...filter,
+            page: pagination.current,
+            per_page: pagination.pageSize,
+        });
+    };
+
     const columns = [
         {
             title: "No",
@@ -118,8 +161,6 @@ function Career({ careers }) {
             render: (is_active, record) => (
                 <Switch
                     checked={is_active === 1}
-                    // checkedChildren="I"
-                    // unCheckedChildren="O"
                     loading={saving === record.id}
                     onChange={(checked) =>
                         handleToggleStatus(record.id, checked)
@@ -132,36 +173,83 @@ function Career({ careers }) {
             key: "action",
             render: (_, record) => (
                 <Space>
-                    <Button
-                        color="primary"
-                        variant="solid"
-                        shape="circle"
-                        size="small"
-                        icon={<EditOutlined />}
-                        onClick={() => handleEditButton(record)}
-                    />
-                    <Popconfirm
-                        title="Delete Data?"
-                        okText="Delete"
-                        cancelText="Cancel"
-                        onConfirm={() => handleDelete(record.id)}
-                    >
-                        <Button
-                            color="danger"
-                            variant="solid"
-                            shape="circle"
-                            size="small"
-                            icon={<DeleteOutlined />}
-                        />
-                    </Popconfirm>
+                    {!isTrash ? (
+                        <>
+                            <Button
+                                color="primary"
+                                variant="solid"
+                                shape="circle"
+                                size="small"
+                                icon={<EditOutlined />}
+                                onClick={() => handleEditButton(record)}
+                            />
+                            <Popconfirm
+                                title="Move Data to Trash?"
+                                okText="Move"
+                                okButtonProps={{ danger: true }}
+                                cancelText="Cancel"
+                                onConfirm={() => handleDelete(record.id)}
+                            >
+                                <Button
+                                    color="danger"
+                                    variant="solid"
+                                    shape="circle"
+                                    size="small"
+                                    icon={<DeleteOutlined />}
+                                />
+                            </Popconfirm>
+                        </>
+                    ) : (
+                        <>
+                            <Popconfirm
+                                title="Restore Data?"
+                                okText="Restore"
+                                cancelText="Cancel"
+                                onConfirm={() => handleRestore(record.id)}
+                            >
+                                <Button
+                                    color="primary"
+                                    variant="solid"
+                                    shape="circle"
+                                    size="small"
+                                    icon={<RedoOutlined />}
+                                />
+                            </Popconfirm>
+                            <Popconfirm
+                                title="Delete Data?"
+                                okText="Delete"
+                                okButtonProps={{ danger: true }}
+                                cancelText="Cancel"
+                                onConfirm={() => handleForceDelete(record.id)}
+                            >
+                                <Button
+                                    color="danger"
+                                    variant="solid"
+                                    shape="circle"
+                                    size="small"
+                                    icon={<DeleteOutlined />}
+                                />
+                            </Popconfirm>
+                        </>
+                    )}
                 </Space>
             ),
         },
     ];
+
     return (
         <>
-            <div className="flex justify-between px-2">
-                <Title level={3}>Career Management</Title>
+            <Title level={3}>Career Management</Title>
+            <div className="flex justify-between py-2">
+                <div>
+                    <Switch
+                        checked={isTrash}
+                        onChange={handleSwitchTrash}
+                        checkedChildren={<DeleteOutlined />}
+                        unCheckedChildren={<DeleteOutlined />}
+                        style={{ backgroundColor: isTrash ? "red" : undefined }}
+                    />
+                </div>
                 <Button
                     variant="solid"
                     style={{ backgroundColor: Colors.primary, color: "#FFF" }}
@@ -175,10 +263,16 @@ function Career({ careers }) {
             <Table
                 size={isMobile ? "small" : "middle"}
                 columns={columns}
-                dataSource={careers}
+                dataSource={careers.data}
                 rowKey="id"
                 loading={loading}
                 scroll={{ x: "max-content" }}
+                pagination={{
+                    current: careers.current_page,
+                    pageSize: careers.per_page,
+                    total: careers.total,
+                }}
+                onChange={handlePagination}
             />
 
             <FormAddCareer
