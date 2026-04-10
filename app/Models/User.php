@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\UserLevel;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -34,6 +35,7 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'level' => UserLevel::class,
             'wage_per_component' => 'decimal:2',
         ];
     }

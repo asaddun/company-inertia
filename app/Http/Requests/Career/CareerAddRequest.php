@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Career;
 
+use App\Models\Career;
 use Illuminate\Foundation\Http\FormRequest;
 
 class CareerAddRequest extends FormRequest
@@ -11,7 +12,7 @@ class CareerAddRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        return $this->user()->can('create', Career::class);
     }
 
     /**

@@ -24,7 +24,7 @@ enum UserLevel: int
         return $this->value >= self::MANAGEMENT->value;
     }
 
-    public function isAtLeast(self $level): bool
+    public function atLeast(self $level): bool
     {
         return $this->value >= $level->value;
     }
