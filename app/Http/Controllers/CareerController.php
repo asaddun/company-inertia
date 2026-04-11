@@ -9,8 +9,6 @@ use App\Models\Career;
 use App\Services\CareerService;
 use Inertia\Inertia;
 
-// use Illuminate\Http\Request;
-
 class CareerController extends Controller
 {
     protected $service;
@@ -33,9 +31,9 @@ class CareerController extends Controller
 
     public function active()
     {
-        // $careers = $this->service->getActiveCareers();
+        $careers = $this->service->getActiveCareers();
 
-        // return Inertia::render('Career', ['careers' => $careers]);
+        return Inertia::render('Career', ['careers' => $careers]);
     }
 
     public function store(CareerAddRequest $request)

@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { colors } from "../../theme/colors";
+import { Colors } from "../../Themes/Colors";
 
 function CareerJoin() {
     return (
@@ -19,7 +19,7 @@ function CareerJoin() {
                 <a
                     href="https://discord.gg/uqNxz2Ty4p"
                     target="_blank"
-                    style={{ backgroundColor: colors.primary, color: "white" }}
+                    style={{ backgroundColor: Colors.primary, color: "white" }}
                     className="mt-4 inline-flex px-5 py-2 text-lg rounded-lg font-semibold"
                 >
                     Join Us

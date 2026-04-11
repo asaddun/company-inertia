@@ -1,18 +1,18 @@
 import { ConfigProvider, Drawer, Menu } from "antd";
 // import { Logos } from "../assets/index.js";
 import { Colors } from "../Themes/Colors.jsx";
-import { menuItems } from "../Configs/MenuItems.js";
+import { HomeItems } from "../Configs/HomeItems.js";
 import { Link, usePage } from "@inertiajs/react";
 
 function DrawerHome({ open, onClose }) {
     const { auth } = usePage().props;
 
-    const items = menuItems
-        .filter((item) => !item.auth || auth.user)
-        .map((item) => ({
+    const items = HomeItems.filter((item) => !item.auth || auth.user).map(
+        (item) => ({
             key: item.key,
             label: <Link href={item.path}>{item.label}</Link>,
-        }));
+        }),
+    );
     return (
         <Drawer
             title={

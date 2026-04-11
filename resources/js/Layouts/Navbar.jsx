@@ -1,7 +1,7 @@
 import { Layout, Menu, Button, Dropdown, ConfigProvider, Space } from "antd";
 import { MenuOutlined, LogoutOutlined, LoginOutlined } from "@ant-design/icons";
 import { Colors } from "../Themes/Colors";
-import { menuItems } from "../Configs/MenuItems.js";
+import { HomeItems } from "../Configs/HomeItems";
 import { useState } from "react";
 import { Link, router, usePage } from "@inertiajs/react";
 // import { Logos } from "../assets/index.js";
@@ -27,12 +27,12 @@ function Navbar({ onHamburgerClick, isMobile }) {
         });
     };
 
-    const items = menuItems
-        .filter((item) => !item.auth || auth.user)
-        .map((item) => ({
+    const items = HomeItems.filter((item) => !item.auth || auth.user).map(
+        (item) => ({
             key: item.key,
             label: <Link href={item.path}>{item.label}</Link>,
-        }));
+        }),
+    );
 
     const profileItems = [
         {

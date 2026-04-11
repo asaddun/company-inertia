@@ -1,13 +1,13 @@
-export const menuItems = [
+export const HomeItems = [
     {
         key: "home",
         label: "Home",
         path: "/",
     },
     {
-        key: "carrer",
+        key: "career",
         label: "Career",
-        path: "/carrer",
+        path: "/career",
     },
     {
         key: "autos",

@@ -1,10 +1,8 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
     Button,
-    Flex,
     Grid,
     Popconfirm,
-    Segmented,
     Space,
     Switch,
     Table,
@@ -33,7 +31,6 @@ function Career({ careers, filter }) {
     const [updateOpen, setUpdateOpen] = useState(false);
     const [selectedData, setSelectedData] = useState(null);
     const [saving, setSaving] = useState(false);
-    // const [isTrash, setIsTrash] = useState(filter.status === "trash");
     const isTrash = filter.status === "trash";
 
     const handleAddButton = () => {
@@ -43,8 +40,6 @@ function Career({ careers, filter }) {
     const handleAdd = async (values, form) => {
         setLoading(true);
         router.post(route("careers.store"), values, {
-            // onBefore: () => {
-            // },
             onSuccess: () => {
                 form.resetFields();
                 setAddOpen(false);
@@ -64,9 +59,7 @@ function Career({ careers, filter }) {
     };
 
     const handleToggleStatus = async (id, checked) => {
-        // 1. Simpan data lama (untuk rollback)
         const oldData = [...data];
-        // 2. Update UI langsung (smooth)
         setData((prev) =>
             prev.map((item) =>
                 item.id === id ? { ...item, is_active: checked ? 1 : 0 } : item,
@@ -127,7 +120,6 @@ function Career({ careers, filter }) {
     };
 
     const handleSwitchTrash = (checked) => {
-        // setIsTrash(checked);
         router.get(route("careers.index"), {
             ...filter,
             status: checked ? "trash" : "active",
@@ -185,7 +177,7 @@ function Career({ careers, filter }) {
                                 onClick={() => handleEditButton(record)}
                             />
                             <Popconfirm
-                                title="Move Data to Trash?"
+                                title="Move to trash?"
                                 okText="Move"
                                 okButtonProps={{ danger: true }}
                                 cancelText="Cancel"
@@ -203,7 +195,7 @@ function Career({ careers, filter }) {
                     ) : (
                         <>
                             <Popconfirm
-                                title="Restore Data?"
+                                title="Restore data?"
                                 okText="Restore"
                                 cancelText="Cancel"
                                 onConfirm={() => handleRestore(record.id)}
@@ -217,7 +209,7 @@ function Career({ careers, filter }) {
                                 />
                             </Popconfirm>
                             <Popconfirm
-                                title="Delete Data?"
+                                title="Delete data?"
                                 okText="Delete"
                                 okButtonProps={{ danger: true }}
                                 cancelText="Cancel"
