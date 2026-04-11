@@ -3,7 +3,7 @@ import Sidebar from "./Sidebar";
 import { useApp } from "../Context/AppContext";
 const { Content } = Layout;
 
-export default function OfficeLayout({ children }) {
+export default function PortalLayout({ children }) {
     const { isMobile } = useApp();
     return (
         <Layout>

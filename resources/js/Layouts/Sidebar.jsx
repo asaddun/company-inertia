@@ -1,7 +1,6 @@
-import { useEffect, useState } from "react";
-// import { Link, useLocation } from "react-router-dom";
+import { useState } from "react";
 import { Layout, Menu, ConfigProvider } from "antd";
-import { officeItems } from "../Configs/OfficeItems";
+import { PortalItems } from "../Configs/PortalItems";
 import { Colors } from "../Themes/Colors";
 import "../../css/SidebarStyle.css";
 import { filterMenuByRole } from "../Configs/FilterRole";
@@ -12,13 +11,6 @@ const { Sider } = Layout;
 function Sidebar({ isMobile, user, location }) {
     const [openKeys, setOpenKeys] = useState([]);
     const { auth } = usePage().props;
-
-    // useEffect(() => {
-    //     const segments = location.pathname.split("/").filter(Boolean);
-    //     if (segments.length >= 2) {
-    //         setOpenKeys([segments[1]]);
-    //     }
-    // }, []);
 
     const onOpenChange = (keys) => {
         setOpenKeys(keys.slice(-1));
@@ -52,7 +44,7 @@ function Sidebar({ isMobile, user, location }) {
         });
     }
 
-    const filteredItems = filterMenuByRole(officeItems, auth.user?.level ?? 0);
+    const filteredItems = filterMenuByRole(PortalItems, auth.user?.level ?? 0);
     const items = buildMenuItems(filteredItems);
 
     return (

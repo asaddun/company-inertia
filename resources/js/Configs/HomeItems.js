@@ -20,9 +20,8 @@ export const HomeItems = [
         path: "/cafe",
     },
     {
-        key: "office",
-        label: "Office",
-        path: "/office",
-        auth: true, // butuh login
+        key: "portal",
+        label: "Portal",
+        path: "/portal",
     },
 ];

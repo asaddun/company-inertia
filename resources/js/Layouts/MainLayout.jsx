@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Layout, Grid, message } from "antd";
 import Navbar from "./Navbar";
-import DrawerOffice from "./DrawerOffice";
+import DrawerPortal from "./DrawerPortal";
 import DrawerHome from "./DrawerHome";
 import { SyncLoader } from "react-spinners";
 import { Colors } from "../Themes/Colors";
@@ -17,11 +17,11 @@ export default function MainLayout({ children }) {
     const screens = useBreakpoint();
     const isMobile = !screens.lg;
     const { url } = usePage();
-    const isOffice = url.startsWith("/office");
+    const isOffice = url.startsWith("/portal");
     const isLogin = url.startsWith("/login");
     const [loading, setLoading] = useState(false);
     const [navbarOpen, setNavbarOpen] = useState(false);
-    const [officeOpen, setOfficeOpen] = useState(false);
+    const [portalOpen, setPortalOpen] = useState(false);
     const [messageApi, contextHolder] = message.useMessage();
     const { props } = usePage();
 
@@ -59,7 +59,7 @@ export default function MainLayout({ children }) {
 
     const handleHamburgerClick = () => {
         if (isOffice) {
-            setOfficeOpen(true);
+            setPortalOpen(true);
         } else {
             setNavbarOpen(true);
         }
@@ -67,7 +67,7 @@ export default function MainLayout({ children }) {
 
     const closeDrawers = () => {
         setNavbarOpen(false);
-        setOfficeOpen(false);
+        setPortalOpen(false);
     };
 
     // Auto close drawer saat pindah halaman
@@ -102,9 +102,9 @@ export default function MainLayout({ children }) {
                             onClose={() => setNavbarOpen(false)}
                             isAuthenticated={false}
                         />
-                        <DrawerOffice
-                            open={officeOpen}
-                            onClose={() => setOfficeOpen(false)}
+                        <DrawerPortal
+                            open={portalOpen}
+                            onClose={() => setPortalOpen(false)}
                         />
                     </>
                 )}

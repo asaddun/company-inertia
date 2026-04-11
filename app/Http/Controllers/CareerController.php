@@ -23,7 +23,7 @@ class CareerController extends Controller
         $filters = $request->validatedWithDefaults();
         $careers = $this->service->getCareers($filters);
 
-        return Inertia::render('Office/Career', [
+        return Inertia::render('Portal/Career', [
             'careers' => $careers,
             'filter' => $filters,
         ]);

@@ -2,7 +2,7 @@ import { createInertiaApp } from "@inertiajs/react";
 import { createRoot } from "react-dom/client";
 import "../css/app.css";
 import MainLayout from "./Layouts/MainLayout";
-import OfficeLayout from "./Layouts/OfficeLayout";
+import PortalLayout from "./Layouts/PortalLayout";
 
 createInertiaApp({
     resolve: async (name) => {
@@ -13,12 +13,12 @@ createInertiaApp({
         const page = await importPage();
 
         // 2. Sekarang page.default sudah bisa diakses karena sudah di-await
-        if (name.startsWith("Office/")) {
+        if (name.startsWith("Portal/")) {
             page.default.layout =
                 page.default.layout ||
                 ((page) => (
                     <MainLayout>
-                        <OfficeLayout>{page}</OfficeLayout>
+                        <PortalLayout>{page}</PortalLayout>
                     </MainLayout>
                 ));
         } else {

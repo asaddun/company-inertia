@@ -1,31 +1,21 @@
-import { useEffect, useState } from "react";
-// import { Link, useLocation } from "react-router-dom";
+import { useState } from "react";
 import { Drawer, Menu, ConfigProvider } from "antd";
-import { Colors } from "../Themes/Colors";
-import { officeItems } from "../Configs/OfficeItems.jsx";
+import { Colors } from "../Themes/Colors.jsx";
+import { PortalItems } from "../Configs/PortalItems";
 // import { Logos } from "../assets/index.js";
 import "../../css/SidebarStyle.css";
 import { filterMenuByRole } from "../Configs/FilterRole.js";
 import { Link, usePage } from "@inertiajs/react";
-// import { useAuth } from "../contexts/AuthContext.jsx";
 
-function DrawerOffice({ open, onClose, user }) {
+function DrawerPortal({ open, onClose }) {
     const [openKeys, setOpenKeys] = useState([]);
     const { auth } = usePage().props;
-
-    // useEffect(() => {
-    //     const segments = location.pathname.split("/").filter(Boolean);
-    //     if (segments.length >= 2) {
-    //         setOpenKeys([segments[1]]);
-    //     }
-    // }, []);
 
     const onOpenChange = (keys) => {
         setOpenKeys(keys.slice(-1));
     };
 
     const onMenuClick = ({ key, keyPath }) => {
-        // keyPath length = 1 → menu biasa (bukan submenu item)
         if (keyPath.length === 1) {
             setOpenKeys([]);
         }
@@ -52,7 +42,7 @@ function DrawerOffice({ open, onClose, user }) {
         });
     }
 
-    const filteredItems = filterMenuByRole(officeItems, auth.user?.level ?? 0);
+    const filteredItems = filterMenuByRole(PortalItems, auth.user?.level ?? 0);
     const items = buildMenuItems(filteredItems);
 
     return (
@@ -124,4 +114,4 @@ function DrawerOffice({ open, onClose, user }) {
     );
 }
 
-export default DrawerOffice;
+export default DrawerPortal;

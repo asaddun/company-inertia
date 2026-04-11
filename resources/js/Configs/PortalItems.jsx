@@ -7,18 +7,18 @@ import {
 } from "@ant-design/icons";
 import { Level } from "./EnumLevels";
 
-export const officeItems = [
+export const PortalItems = [
     {
         key: "dashboard",
         label: "Dashboard",
         icon: <DashboardOutlined />,
-        path: "/office",
+        path: "/portal",
     },
     {
         key: "members",
         label: "Members",
         icon: <UserOutlined />,
-        path: "/office/members",
+        path: "/portal/members",
         minLevel: Level.MANAGEMENT,
     },
     {
@@ -30,7 +30,7 @@ export const officeItems = [
             {
                 key: "my-reports",
                 label: "My Reports",
-                path: "/office/reports/me",
+                path: "/portal/reports/me",
                 minLevel: Level.EMPLOYEE,
             },
         ],
@@ -44,25 +44,25 @@ export const officeItems = [
             {
                 key: "payrolls",
                 label: "Payrolls",
-                path: "/office/payrolls",
+                path: "/portal/payrolls",
                 minLevel: Level.MANAGEMENT,
             },
             {
                 key: "my-payrolls",
                 label: "My Payrolls",
-                path: "/office/payrolls/me",
+                path: "/portal/payrolls/me",
                 minLevel: Level.EMPLOYEE,
             },
             {
                 key: "payrolls-config",
                 label: "Configuration",
-                path: "/office/payrolls/config",
+                path: "/portal/payrolls/config",
                 minLevel: Level.MANAGEMENT,
             },
             {
                 key: "payrolls-dashboard",
                 label: "Dashboard",
-                path: "/office/payrolls/dashboard",
+                path: "/portal/payrolls/dashboard",
                 minLevel: Level.EMPLOYEE,
             },
         ],
@@ -71,7 +71,7 @@ export const officeItems = [
         key: "carrer",
         label: "Career",
         icon: <FileProtectOutlined />,
-        path: "/office/careers",
+        path: "/portal/careers",
         minLevel: Level.MANAGEMENT,
     },
 ];

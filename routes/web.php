@@ -17,9 +17,9 @@ Route::get('/career', [CareerController::class, 'active'])->name('careers.active
 Route::middleware('auth')->group(function () {
     Route::post('/logout', [AuthController::class, 'destroy']);
 
-    Route::prefix('office')->group(function () {
+    Route::prefix('portal')->group(function () {
         Route::get('/', function () {
-            return Inertia::render('Office/Dashboard');
+            return Inertia::render('Portal/Dashboard');
         });
 
         // Career
