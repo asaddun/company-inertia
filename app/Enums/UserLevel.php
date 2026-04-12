@@ -19,6 +19,14 @@ enum UserLevel: int
         };
     }
 
+    public static function toArray(): array
+    {
+        return array_map(fn($level) => [
+            'value' => $level->value,
+            'label' => $level->label(),
+        ], self::cases());
+    }
+
     public function isManagement(): bool
     {
         return $this->value >= self::MANAGEMENT->value;

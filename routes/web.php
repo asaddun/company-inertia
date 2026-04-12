@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CareerController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -21,6 +22,9 @@ Route::middleware('auth')->group(function () {
         Route::get('/', function () {
             return Inertia::render('Portal/Dashboard');
         });
+
+        // User
+        Route::get('/users', [UserController::class, 'index'])->name('users.index');
 
         // Career
         Route::get('/careers', [CareerController::class, 'index'])->name('careers.index');
