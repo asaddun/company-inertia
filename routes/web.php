@@ -10,17 +10,17 @@ Route::get('/', function () {
 });
 
 Route::get('/login', [AuthController::class, 'create'])->name('login');
-Route::post('/login', [AuthController::class, 'store']);
+Route::post('/login', [AuthController::class, 'store'])->name('login.store');
 
 Route::get('/career', [CareerController::class, 'active'])->name('careers.active');
 
 Route::middleware('auth')->group(function () {
-    Route::post('/logout', [AuthController::class, 'destroy']);
+    Route::post('/logout', [AuthController::class, 'destroy'])->name('logout');
 
     Route::prefix('portal')->group(function () {
         Route::get('/', function () {
             return Inertia::render('Portal/Dashboard');
-        });
+        })->name('portal.dashboard');
 
         // Career
         Route::get('/careers', [CareerController::class, 'index'])->name('careers.index');

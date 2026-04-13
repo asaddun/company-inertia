@@ -13,7 +13,7 @@ function Navbar({ onHamburgerClick, isMobile }) {
     const { auth } = usePage().props;
 
     const handleLogout = async () => {
-        router.post("/logout", {
+        router.post(route("logout"), {
             onStart: () => {
                 // Bisa tambahkan loading state di sini jika perlu
                 setLoading(true);

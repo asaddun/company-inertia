@@ -14,7 +14,7 @@ function Login() {
     const onFinish = async (values) => {
         if (loading) return;
 
-        router.post("/login", values, {
+        router.post(route("login.store"), values, {
             onStart: () => {
                 // Bisa tambahkan loading state di sini jika perlu
                 setLoading(true);
