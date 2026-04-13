@@ -2,15 +2,21 @@ import { useEffect, useState } from "react";
 // import api from "../../services/api";
 import {
     Button,
+    Form,
     Grid,
     message,
     Popconfirm,
+    Popover,
+    Segmented,
+    Select,
     Space,
+    Switch,
     Table,
     Typography,
 } from "antd";
 import {
     DeleteOutlined,
+    FilterOutlined,
     InfoCircleOutlined,
     PlusOutlined,
 } from "@ant-design/icons";
@@ -22,7 +28,7 @@ import { useApp } from "../../Context/AppContext";
 const { useBreakpoint } = Grid;
 const { Title } = Typography;
 
-function Users({ users, levels }) {
+function Users({ users, levels, filter }) {
     // const screens = useBreakpoint();
     // const isMobile = !screens.md;
     const { isMobile } = useApp();
@@ -37,6 +43,9 @@ function Users({ users, levels }) {
     const [updateOpen, setUpdateOpen] = useState(false);
     const [selectedUser, setSelectedUser] = useState(null);
     const [saving, setSaving] = useState(false);
+    const type = filter.type;
+    const isTrash = filter.status === "trash";
+    const [form] = Form.useForm();
 
     // const [pagination, setPagination] = useState({
     //     current: 1,
@@ -148,12 +157,82 @@ function Users({ users, levels }) {
         },
     ];
 
+    const handleSwitchTrash = (checked) => {
+        // router.get(route("careers.index"), {
+        //     ...filter,
+        //     status: checked ? "trash" : "active",
+        //     page: 1,
+        // });
+    };
+
+    const popoverContent = (
+        <Form
+            form={form}
+            layout="vertical"
+            // onFinish={handleFinish}
+            className="flex flex-col gap-4"
+        >
+            <div>
+                <div className="text-xs text-gray-500 mb-1">Type</div>
+                <Form.Item>
+                    {!isMobile ? (
+                        <Segmented
+                            options={["All", "Employee", "Member"]}
+                            // onChange={(value) => console.log(value)}
+                        />
+                    ) : (
+                        <Select
+                            defaultValue="all"
+                            className="min-w-35"
+                            options={[
+                                { value: "all", label: "All" },
+                                { value: "employee", label: "Employee" },
+                                { value: "member", label: "Member" },
+                            ]}
+                        />
+                    )}
+                </Form.Item>
+            </div>
+
+            <div>
+                <div className="text-xs text-gray-500 mb-1">Trash</div>
+                <Switch
+                    checked={isTrash}
+                    onChange={handleSwitchTrash}
+                    checkedChildren={<DeleteOutlined />}
+                    unCheckedChildren={<DeleteOutlined />}
+                    style={{ backgroundColor: isTrash ? "red" : undefined }}
+                />
+            </div>
+            {/* </div> */}
+        </Form>
+    );
+
+    const content = (
+        <div style={{ padding: "8px" }}>
+            <p>
+                Teks singkat ini akan membuat Popover menyesuaikan lebar secara
+                otomatis.
+            </p>
+        </div>
+    );
+
     return (
         <>
             <Title level={3}>Member List</Title>
             <div className="flex justify-between py-2">
-                <div class="flex items-center gap-2"></div>
-                <div class="flex items-center gap-2">
+                <div className="flex items-center gap-2">
+                    <Popover
+                        placement="rightTop"
+                        trigger="click"
+                        title={"Filter"}
+                        content={popoverContent}
+                        style={{ maxWidth: "none", width: "max-content" }}
+                    >
+                        <Button icon={<FilterOutlined />}>Filter</Button>
+                    </Popover>
+                </div>
+                <div className="flex items-center gap-2">
                     <Button
                         variant="solid"
                         style={{

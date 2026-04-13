@@ -25,7 +25,11 @@ class UserController extends Controller
     {
         $filters = $request->validatedWithDefaults();
         $users = $this->service->getUsers($filters);
-        return Inertia::render('Portal/Users', ['users' => $users, 'levels' => UserLevel::toArray()]);
+        return Inertia::render('Portal/Users', [
+            'users' => $users,
+            'levels' => UserLevel::toArray(),
+            'filter' => $filters,
+        ]);
     }
 
     /**

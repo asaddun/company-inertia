@@ -15,10 +15,10 @@ export const PortalItems = [
         path: "/portal",
     },
     {
-        key: "members",
-        label: "Members",
+        key: "users",
+        label: "Users",
         icon: <UserOutlined />,
-        path: "/portal/members",
+        path: "/portal/users",
         minLevel: Level.MANAGEMENT,
     },
     {

@@ -4,7 +4,7 @@ namespace App\Enums;
 
 enum UserLevel: int
 {
-    case VISITOR = 1;
+    case MEMBER = 1;
     case EMPLOYEE = 2;
     case MANAGEMENT = 3;
     case OWNER = 4;
@@ -12,7 +12,7 @@ enum UserLevel: int
     public function label(): string
     {
         return match ($this) {
-            self::VISITOR => 'Visitor',
+            self::MEMBER => 'Member',
             self::EMPLOYEE => 'Employee',
             self::MANAGEMENT => 'Management',
             self::OWNER => 'Owner',

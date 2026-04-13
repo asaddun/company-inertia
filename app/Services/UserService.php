@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Enums\UserLevel;
 use App\Models\User;
 use Illuminate\Pagination\LengthAwarePaginator;
 
@@ -14,6 +15,20 @@ class UserService
         // Status
         if ($filters['status'] === 'trash') {
             $query->onlyTrashed();
+        }
+
+        // Type
+        if ($filters['type']) {
+            switch ($filters['type']) {
+                case 'all':
+                    break;
+                case 'member':
+                    $query->where('level', UserLevel::MEMBER);
+                    break;
+                case 'employee':
+                    $query->where('level', '>=', UserLevel::EMPLOYEE->value);
+                    break;
+            }
         }
 
         // Search

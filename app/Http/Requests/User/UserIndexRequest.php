@@ -34,6 +34,7 @@ class UserIndexRequest extends FormRequest
     {
         return array_merge([
             'status'   => 'active',
+            'type'   => 'employee',
             'per_page' => 10,
             'search'   => null,
             'sort'     => null,
