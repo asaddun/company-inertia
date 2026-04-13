@@ -23,5 +23,6 @@ export const HomeItems = [
         key: "portal",
         label: "Portal",
         path: "/portal",
+        auth: true,
     },
 ];
