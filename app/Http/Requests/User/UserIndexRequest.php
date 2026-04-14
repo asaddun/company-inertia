@@ -23,6 +23,7 @@ class UserIndexRequest extends FormRequest
     {
         return [
             'status'     => 'nullable|in:active,trash',
+            'type'       => 'nullable|in:all,employee,member',
             'search'     => 'nullable|string|max:100',
             'page'       => 'nullable|integer|min:1',
             'per_page'   => 'nullable|integer|min:1|max:100',
@@ -34,7 +35,7 @@ class UserIndexRequest extends FormRequest
     {
         return array_merge([
             'status'   => 'active',
-            'type'   => 'employee',
+            'type'     => 'employee',
             'per_page' => 10,
             'search'   => null,
             'sort'     => null,

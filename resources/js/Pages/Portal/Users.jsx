@@ -1,10 +1,9 @@
-import { useEffect, useState } from "react";
-// import api from "../../services/api";
+import { useState } from "react";
 import {
     Button,
+    ConfigProvider,
     Form,
-    Grid,
-    message,
+    Input,
     Popconfirm,
     Popover,
     Segmented,
@@ -24,89 +23,32 @@ import FormInfoUser from "../../Components/Form/FormInfoUser";
 import FormAddMember from "../../Components/Form/FormAddMember";
 import { Colors } from "../../Themes/Colors";
 import { useApp } from "../../Context/AppContext";
+import { router } from "@inertiajs/react";
 
-const { useBreakpoint } = Grid;
 const { Title } = Typography;
 
 function Users({ users, levels, filter }) {
-    // const screens = useBreakpoint();
-    // const isMobile = !screens.md;
     const { isMobile } = useApp();
-
-    // const [messageApi, contextHolder] = message.useMessage();
-    // const [messageState, setMessageState] = useState(null);
-
-    const [data, setData] = useState([]);
-    const [loading, setLoading] = useState();
-
     const [addOpen, setAddOpen] = useState(false);
-    const [updateOpen, setUpdateOpen] = useState(false);
+    const [infoOpen, setInfoOpen] = useState(false);
     const [selectedUser, setSelectedUser] = useState(null);
-    const [saving, setSaving] = useState(false);
-    const type = filter.type;
-    const isTrash = filter.status === "trash";
     const [form] = Form.useForm();
-
-    // const [pagination, setPagination] = useState({
-    //     current: 1,
-    //     pageSize: 10,
-    //     total: 0,
-    // });
-
-    // useEffect(() => {
-    //     if (!messageState) return;
-
-    //     messageApi.open(messageState);
-    //     setMessageState(null);
-    // }, [messageState]);
 
     const handleAddButton = (user) => {
         setAddOpen(true);
     };
 
     const handleAdd = async (values) => {
-        // setSaving(true);
-        // try {
-        //     const res = await api.post(`/users`, values);
-        //     setMessageState({
-        //         type: "success",
-        //         content: res.data.message,
-        //     });
-        //     setAddOpen(false);
-        //     fetchMembers(pagination.current, pagination.pageSize);
-        // } catch (err) {
-        //     setMessageState({
-        //         type: "error",
-        //         content: err.response?.data?.message,
-        //     });
-        // } finally {
-        //     setSaving(false);
-        // }
+        //
     };
 
     const handleEditButton = (user) => {
         setSelectedUser(user);
-        setUpdateOpen(true);
+        setInfoOpen(true);
     };
 
     const handleUpdate = async (values) => {
-        // setSaving(true);
-        // try {
-        //     const res = await api.put(`/users/${selectedUser.id}`, values);
-        //     setMessageState({
-        //         type: "success",
-        //         content: res.data.message,
-        //     });
-        //     setUpdateOpen(false);
-        //     fetchMembers(pagination.current, pagination.pageSize);
-        // } catch (err) {
-        //     setMessageState({
-        //         type: "error",
-        //         content: err.response?.data?.message,
-        //     });
-        // } finally {
-        //     setSaving(false);
-        // }
+        //
     };
 
     const levelsMap = Object.fromEntries(
@@ -157,69 +99,120 @@ function Users({ users, levels, filter }) {
         },
     ];
 
-    const handleSwitchTrash = (checked) => {
-        // router.get(route("careers.index"), {
-        //     ...filter,
-        //     status: checked ? "trash" : "active",
-        //     page: 1,
-        // });
+    const handlePagination = (pagination) => {
+        router.get(route("users.index"), {
+            ...filter,
+            page: pagination.current,
+            per_page: pagination.pageSize,
+        });
     };
+
+    const handleFinish = (values) => {
+        router.get(route("users.index"), values);
+        console.log(form.getFieldsValue());
+    };
+
+    const handleReset = () => {
+        form.resetFields();
+        router.get(
+            route("users.index"),
+            {},
+            {
+                replace: true,
+            },
+        );
+    };
+
+    const options = [
+        { label: "All", value: "all" },
+        { label: "Employee", value: "employee" },
+        { label: "Member", value: "member" },
+    ];
 
     const popoverContent = (
         <Form
             form={form}
-            layout="vertical"
-            // onFinish={handleFinish}
-            className="flex flex-col gap-4"
+            layout="inline"
+            onFinish={handleFinish}
+            initialValues={{
+                search: filter?.search,
+                type: filter?.type ?? "employee",
+                status: filter?.status ?? "active",
+            }}
+            className="flex flex-col gap-2"
         >
+            {/* SEARCH */}
+            <div>
+                <div className="text-xs text-gray-500 mb-1">Search</div>
+
+                <Form.Item name="search">
+                    <Input placeholder="Search user" />
+                </Form.Item>
+            </div>
+
+            {/* TYPE */}
             <div>
                 <div className="text-xs text-gray-500 mb-1">Type</div>
-                <Form.Item>
+
+                <Form.Item name="type">
                     {!isMobile ? (
-                        <Segmented
-                            options={["All", "Employee", "Member"]}
-                            // onChange={(value) => console.log(value)}
-                        />
+                        <Segmented options={options} />
                     ) : (
-                        <Select
-                            defaultValue="all"
-                            className="min-w-35"
-                            options={[
-                                { value: "all", label: "All" },
-                                { value: "employee", label: "Employee" },
-                                { value: "member", label: "Member" },
-                            ]}
-                        />
+                        <Select className="min-w-35" options={options} />
                     )}
                 </Form.Item>
             </div>
 
+            {/* TRASH */}
             <div>
                 <div className="text-xs text-gray-500 mb-1">Trash</div>
-                <Switch
-                    checked={isTrash}
-                    onChange={handleSwitchTrash}
-                    checkedChildren={<DeleteOutlined />}
-                    unCheckedChildren={<DeleteOutlined />}
-                    style={{ backgroundColor: isTrash ? "red" : undefined }}
-                />
-            </div>
-            {/* </div> */}
-        </Form>
-    );
 
-    const content = (
-        <div style={{ padding: "8px" }}>
-            <p>
-                Teks singkat ini akan membuat Popover menyesuaikan lebar secara
-                otomatis.
-            </p>
-        </div>
+                <ConfigProvider
+                    theme={{
+                        components: {
+                            Switch: {
+                                colorPrimary: "#ff4d4f",
+                                colorPrimaryHover: "#ff4d4f",
+                            },
+                        },
+                    }}
+                >
+                    <Form.Item
+                        name="status"
+                        valuePropName="checked"
+                        getValueProps={(value) => ({
+                            checked: value === "trash",
+                        })}
+                        getValueFromEvent={(checked) => {
+                            return checked ? "trash" : "active";
+                        }}
+                    >
+                        <Switch
+                            checkedChildren={<DeleteOutlined />}
+                            unCheckedChildren={<DeleteOutlined />}
+                        />
+                    </Form.Item>
+                </ConfigProvider>
+            </div>
+
+            {/* ACTION */}
+            <div className="flex justify-end gap-2">
+                <Button onClick={handleReset}>Reset</Button>
+
+                <Button
+                    type="primary"
+                    htmlType="submit"
+                    style={{ backgroundColor: Colors.primary }}
+                >
+                    Apply
+                </Button>
+            </div>
+        </Form>
     );
 
     return (
         <>
-            <Title level={3}>Member List</Title>
+            <Title level={3}>Users List</Title>
             <div className="flex justify-between py-2">
                 <div className="flex items-center gap-2">
                     <Popover
@@ -263,24 +256,20 @@ function Users({ users, levels, filter }) {
                     showQuickJumper: !isMobile,
                     simple: isMobile,
                 }}
-                onChange={(pagination) => {
-                    fetchMembers(pagination.current, pagination.pageSize);
-                }}
+                onChange={handlePagination}
             />
 
             <FormAddMember
                 open={addOpen}
-                loading={saving}
                 onCancel={() => setAddOpen(false)}
                 onSubmit={handleAdd}
             />
 
             <FormInfoUser
-                open={updateOpen}
-                user={selectedUser}
-                loading={saving}
-                onCancel={() => setUpdateOpen(false)}
+                open={infoOpen}
+                onCancel={() => setInfoOpen(false)}
                 onSubmit={handleUpdate}
+                user={selectedUser}
                 levels={levels}
             />
         </>

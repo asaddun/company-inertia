@@ -2,14 +2,7 @@ import { Form, Input, Modal, Select } from "antd";
 import { useEffect } from "react";
 import { Colors } from "../../Themes/Colors";
 
-// const ROLE_MAP = [
-//     { value: 1, label: "Visitor" },
-//     { value: 2, label: "Employee" },
-//     { value: 3, label: "Management" },
-//     { value: 4, label: "Owner" },
-// ];
-
-function FormInfoUser({ open, onCancel, user, onSubmit, loading, levels }) {
+function FormInfoUser({ open, onCancel, onSubmit, user, levels }) {
     const [form] = Form.useForm();
 
     useEffect(() => {
@@ -30,13 +23,12 @@ function FormInfoUser({ open, onCancel, user, onSubmit, loading, levels }) {
             onCancel={onCancel}
             okButtonProps={{ style: { backgroundColor: Colors.primary } }}
             onOk={() => form.submit()}
-            confirmLoading={loading}
             destroyOnHidden
             okText="Update"
         >
             <Form form={form} layout="vertical" onFinish={onSubmit}>
                 <Form.Item name="name" label="Name">
-                    <Input />
+                    <Input disabled />
                 </Form.Item>
 
                 <Form.Item name="phone" label="Phone">

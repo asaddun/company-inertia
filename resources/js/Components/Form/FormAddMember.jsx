@@ -1,7 +1,7 @@
 import { Form, Input, Modal } from "antd";
 import { Colors } from "../../Themes/Colors";
 
-function FormAddMember({ open, onCancel, onSubmit, loading }) {
+function FormAddMember({ open, onCancel, onSubmit }) {
     const [form] = Form.useForm();
 
     const handleFinish = async (values) => {
@@ -17,7 +17,6 @@ function FormAddMember({ open, onCancel, onSubmit, loading }) {
             onCancel={onCancel}
             okButtonProps={{ style: { backgroundColor: Colors.primary } }}
             onOk={() => form.submit()}
-            confirmLoading={loading}
             okText="Add"
         >
             <Form form={form} layout="vertical" onFinish={handleFinish}>

@@ -23,7 +23,7 @@ class UserService
                 case 'all':
                     break;
                 case 'member':
-                    $query->where('level', UserLevel::MEMBER);
+                    $query->where('level', '=', UserLevel::MEMBER->value);
                     break;
                 case 'employee':
                     $query->where('level', '>=', UserLevel::EMPLOYEE->value);
@@ -33,7 +33,7 @@ class UserService
 
         // Search
         if ($filters['search']) {
-            $query->where('title', 'like', '%' . $filters['search'] . '%');
+            $query->where('name', 'like', '%' . $filters['search'] . '%');
         }
 
         // Sort
