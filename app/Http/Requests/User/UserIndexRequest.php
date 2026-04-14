@@ -38,7 +38,7 @@ class UserIndexRequest extends FormRequest
             'type'     => 'employee',
             'per_page' => 10,
             'search'   => null,
-            'sort'     => null,
+            'sort'     => '-level',
         ], $this->validated());
     }
 }
