@@ -245,7 +245,6 @@ function Users({ users, levels, filter }) {
                 columns={columns}
                 dataSource={users.data}
                 rowKey="id"
-                loading={loading}
                 scroll={{ x: "max-content" }}
                 pagination={{
                     current: users.current_page,
