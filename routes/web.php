@@ -26,7 +26,10 @@ Route::middleware('auth')->group(function () {
         // User
         Route::get('/users', [UserController::class, 'index'])->name('users.index');
         Route::post('/users', [UserController::class, 'store'])->name('users.store');
-        Route::put('/users/{user}', [UserController::class, 'update'])->name('users.update');
+        Route::put('/users/{user}', [UserController::class, 'update'])->withTrashed()->name('users.update');
+        Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
+        Route::put('/users/{user}/restore', [UserController::class, 'restore'])->withTrashed()->name('users.restore');
+        Route::delete('/users/{user}/force', [UserController::class, 'forceDelete'])->withTrashed()->name('users.forceDelete');
 
         // Career
         Route::get('/careers', [CareerController::class, 'index'])->name('careers.index');

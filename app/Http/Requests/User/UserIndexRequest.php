@@ -31,14 +31,19 @@ class UserIndexRequest extends FormRequest
         ];
     }
 
-    public function validatedWithDefaults(): array
+    public static function defaults(): array
     {
-        return array_merge([
+        return [
             'status'   => 'active',
             'type'     => 'employee',
             'per_page' => 10,
             'search'   => null,
             'sort'     => '-level',
-        ], $this->validated());
+        ];
+    }
+
+    public function validatedWithDefaults(): array
+    {
+        return array_merge(self::defaults(), $this->validated());
     }
 }

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import {
+    Badge,
     Button,
     ConfigProvider,
     Form,
@@ -15,9 +16,11 @@ import {
 } from "antd";
 import {
     DeleteOutlined,
+    FilterFilled,
     FilterOutlined,
     InfoCircleOutlined,
     PlusOutlined,
+    RedoOutlined,
 } from "@ant-design/icons";
 import FormInfoUser from "../../Components/Form/FormInfoUser";
 import FormAddMember from "../../Components/Form/FormAddMember";
@@ -27,12 +30,13 @@ import { router } from "@inertiajs/react";
 
 const { Title } = Typography;
 
-function Users({ users, levels, filter }) {
+function Users({ users, levels, filter, defaultFilters }) {
     const { isMobile } = useApp();
     const [addOpen, setAddOpen] = useState(false);
     const [infoOpen, setInfoOpen] = useState(false);
     const [selectedUser, setSelectedUser] = useState(null);
     const [form] = Form.useForm();
+    const filterValues = Form.useWatch([], form);
 
     const handleAddButton = () => {
         setAddOpen(true);
@@ -76,6 +80,18 @@ function Users({ users, levels, filter }) {
         });
     };
 
+    const handleDelete = async (id) => {
+        router.delete(route("users.destroy", { user: id }));
+    };
+
+    const handleRestore = async (id) => {
+        router.put(route("users.restore", { user: id }));
+    };
+
+    const handleForceDelete = async (id) => {
+        router.delete(route("users.forceDelete", { user: id }));
+    };
+
     const levelsMap = Object.fromEntries(
         levels.map((level) => [level.value, level.label]),
     );
@@ -97,28 +113,65 @@ function Users({ users, levels, filter }) {
             key: "action",
             render: (_, record) => (
                 <Space>
-                    <Button
-                        color="primary"
-                        variant="solid"
-                        shape="circle"
-                        size="small"
-                        icon={<InfoCircleOutlined />}
-                        onClick={() => handleEditButton(record)}
-                    />
-                    <Popconfirm
-                        title="Delete Member?"
-                        okText="Delete"
-                        cancelText="Cancel"
-                        onConfirm={() => handleDelete(record.id)}
-                    >
-                        <Button
-                            color="danger"
-                            variant="solid"
-                            shape="circle"
-                            size="small"
-                            icon={<DeleteOutlined />}
-                        />
-                    </Popconfirm>
+                    {filter.status != "trash" ? (
+                        <>
+                            <Button
+                                color="primary"
+                                variant="solid"
+                                shape="circle"
+                                size="small"
+                                icon={<InfoCircleOutlined />}
+                                onClick={() => handleEditButton(record)}
+                            />
+                            <Popconfirm
+                                title="Move to trash?"
+                                okText="Move"
+                                okButtonProps={{ danger: true }}
+                                cancelText="Cancel"
+                                onConfirm={() => handleDelete(record.id)}
+                            >
+                                <Button
+                                    color="danger"
+                                    variant="solid"
+                                    shape="circle"
+                                    size="small"
+                                    icon={<DeleteOutlined />}
+                                />
+                            </Popconfirm>
+                        </>
+                    ) : (
+                        <>
+                            <Popconfirm
+                                title="Restore data?"
+                                okText="Restore"
+                                cancelText="Cancel"
+                                onConfirm={() => handleRestore(record.id)}
+                            >
+                                <Button
+                                    color="primary"
+                                    variant="solid"
+                                    shape="circle"
+                                    size="small"
+                                    icon={<RedoOutlined />}
+                                />
+                            </Popconfirm>
+                            <Popconfirm
+                                title="Delete data?"
+                                okText="Delete"
+                                okButtonProps={{ danger: true }}
+                                cancelText="Cancel"
+                                onConfirm={() => handleForceDelete(record.id)}
+                            >
+                                <Button
+                                    color="danger"
+                                    variant="solid"
+                                    shape="circle"
+                                    size="small"
+                                    icon={<DeleteOutlined />}
+                                />
+                            </Popconfirm>
+                        </>
+                    )}
                 </Space>
             ),
         },
@@ -132,9 +185,8 @@ function Users({ users, levels, filter }) {
         });
     };
 
-    const handleFinish = (values) => {
+    const handleFilter = (values) => {
         router.get(route("users.index"), values);
-        console.log(form.getFieldsValue());
     };
 
     const handleReset = () => {
@@ -154,21 +206,48 @@ function Users({ users, levels, filter }) {
         { label: "Member", value: "member" },
     ];
 
+    const normalize = (val) => val ?? "";
+
+    const isFiltered = Object.keys(defaultFilters).some((key) => {
+        return normalize(filter?.[key]) !== normalize(defaultFilters[key]);
+    });
+
+    const isFieldActive = (key) => {
+        return normalize(filter?.[key]) !== normalize(defaultFilters[key]);
+    };
+
+    const activeCount = Object.keys(defaultFilters).filter((key) => {
+        return normalize(filter?.[key]) !== normalize(defaultFilters[key]);
+    }).length;
+
     const popoverContent = (
         <Form
             form={form}
             layout="inline"
-            onFinish={handleFinish}
+            onFinish={handleFilter}
             initialValues={{
                 search: filter?.search,
                 type: filter?.type ?? "employee",
                 status: filter?.status ?? "active",
             }}
+            onValuesChange={(changed, all) => {
+                if (changed.status === "trash" || changed.search != null) {
+                    form.setFieldsValue({ type: "all" });
+                }
+            }}
             className="flex flex-col gap-2"
         >
             {/* SEARCH */}
             <div>
-                <div className="text-xs text-gray-500 mb-1">Search</div>
+                <div
+                    className={`text-xs mb-1 ${
+                        isFieldActive("search")
+                            ? "text-blue-500 font-semibold"
+                            : "text-gray-500"
+                    }`}
+                >
+                    Search
+                </div>
 
                 <Form.Item name="search">
                     <Input placeholder="Search user" />
@@ -177,20 +256,43 @@ function Users({ users, levels, filter }) {
 
             {/* TYPE */}
             <div>
-                <div className="text-xs text-gray-500 mb-1">Type</div>
+                <div
+                    className={`text-xs mb-1 ${
+                        isFieldActive("type")
+                            ? "text-blue-500 font-semibold"
+                            : "text-gray-500"
+                    }`}
+                >
+                    Type
+                </div>
 
                 <Form.Item name="type">
                     {!isMobile ? (
-                        <Segmented options={options} />
+                        <Segmented
+                            disabled={filterValues?.status === "trash"}
+                            options={options}
+                        />
                     ) : (
-                        <Select className="min-w-35" options={options} />
+                        <Select
+                            className="min-w-35"
+                            disabled={filterValues?.status === "trash"}
+                            options={options}
+                        />
                     )}
                 </Form.Item>
             </div>
 
             {/* TRASH */}
             <div>
-                <div className="text-xs text-gray-500 mb-1">Trash</div>
+                <div
+                    className={`text-xs mb-1 ${
+                        isFieldActive("status")
+                            ? "text-blue-500 font-semibold"
+                            : "text-gray-500"
+                    }`}
+                >
+                    Trash
+                </div>
 
                 <ConfigProvider
                     theme={{
@@ -247,7 +349,19 @@ function Users({ users, levels, filter }) {
                         content={popoverContent}
                         style={{ maxWidth: "none", width: "max-content" }}
                     >
-                        <Button icon={<FilterOutlined />}>Filter</Button>
+                        <Badge count={activeCount}>
+                            <Button
+                                icon={
+                                    isFiltered ? (
+                                        <FilterFilled />
+                                    ) : (
+                                        <FilterOutlined />
+                                    )
+                                }
+                            >
+                                Filter
+                            </Button>
+                        </Badge>
                     </Popover>
                 </div>
                 <div className="flex items-center gap-2">

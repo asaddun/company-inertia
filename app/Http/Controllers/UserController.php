@@ -30,15 +30,8 @@ class UserController extends Controller
             'users' => $users,
             'levels' => UserLevel::toArray(),
             'filter' => $filters,
+            'defaultFilters' => $request::defaults()
         ]);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -58,22 +51,6 @@ class UserController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(User $user)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(User $user)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      */
     public function update(UserUpdateRequest $request, User $user)
@@ -85,7 +62,7 @@ class UserController extends Controller
                 ->route('users.index')
                 ->with('success', 'User updated successfully');
         } catch (\Throwable $e) {
-            return back()->with('error', $e ? 'Failed to update User, ' . $e->getMessage() : 'Failed update User');
+            return back()->with('error', $e ? 'Failed to update User, ' . $e->getMessage() : 'Failed to update User');
         }
     }
 
@@ -94,6 +71,40 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        //
+        try {
+            $this->service->deleteUser($user);
+
+            return redirect()
+                ->route('users.index')
+                ->with('success', 'User deleted successfully');
+        } catch (\Throwable $e) {
+            return back()->with('error', $e ? 'Failed to delete User, ' . $e->getMessage() : 'Failed to delete User');
+        }
+    }
+
+    public function restore(User $user)
+    {
+        try {
+            $this->service->restoreUser($user);
+
+            return redirect()
+                ->route('users.index')
+                ->with('success', 'User restored successfully');
+        } catch (\Throwable $e) {
+            return back()->with('error', $e ? 'Failed to restore User, ' . $e->getMessage() : 'Failed to restore User');
+        }
+    }
+
+    public function forceDelete(User $user)
+    {
+        try {
+            $this->service->forceDeleteUser($user);
+
+            return redirect()
+                ->route('users.index')
+                ->with('success', 'User deleted successfully');
+        } catch (\Throwable $e) {
+            return back()->with('error', $e ? 'Failed to delete User, ' . $e->getMessage() : 'Failed to delete User');
+        }
     }
 }

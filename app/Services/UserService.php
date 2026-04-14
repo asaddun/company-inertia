@@ -68,4 +68,25 @@ class UserService
         $user->update($data);
         return $user->fresh();
     }
+
+    public function deleteUser(User $user)
+    {
+        return $user->delete();
+    }
+
+    public function restoreUser(User $user)
+    {
+        if (!$user->trashed()) {
+            throw new \Exception('User is not deleted');
+        }
+        return $user->restore();
+    }
+
+    public function forceDeleteUser(User $user)
+    {
+        if (!$user->trashed()) {
+            throw new \Exception('User is not deleted');
+        }
+        return $user->forceDelete();
+    }
 }
