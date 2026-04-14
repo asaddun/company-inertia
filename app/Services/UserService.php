@@ -59,4 +59,13 @@ class UserService
             'level' => UserLevel::EMPLOYEE,
         ]);
     }
+
+    public function updateUser(User $user, array $data)
+    {
+        if ($user->trashed()) {
+            throw new \Exception('User is deleted');
+        }
+        $user->update($data);
+        return $user->fresh();
+    }
 }

@@ -5,9 +5,9 @@ namespace App\Http\Controllers;
 use App\Enums\UserLevel;
 use App\Http\Requests\User\UserIndexRequest;
 use App\Http\Requests\User\UserStoreRequest;
+use App\Http\Requests\User\UserUpdateRequest;
 use App\Models\User;
 use App\Services\UserService;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class UserController extends Controller
@@ -76,9 +76,17 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, User $user)
+    public function update(UserUpdateRequest $request, User $user)
     {
-        //
+        try {
+            $this->service->updateUser($user, $request->validated());
+
+            return redirect()
+                ->route('users.index')
+                ->with('success', 'User updated successfully');
+        } catch (\Throwable $e) {
+            return back()->with('error', $e ? 'Failed to update User, ' . $e->getMessage() : 'Failed update User');
+        }
     }
 
     /**

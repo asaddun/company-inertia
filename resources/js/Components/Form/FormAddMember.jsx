@@ -5,7 +5,7 @@ function FormAddMember({ open, onCancel, onSubmit }) {
     const [form] = Form.useForm();
 
     const handleFinish = (values) => {
-        onSubmit(values, form); // kirim ke parent
+        onSubmit(values, form);
     };
 
     return (

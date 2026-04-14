@@ -60,8 +60,20 @@ function Users({ users, levels, filter }) {
         setInfoOpen(true);
     };
 
-    const handleUpdate = async (values) => {
-        //
+    const handleUpdate = async (values, form) => {
+        router.put(route("users.update", selectedUser.id), values, {
+            onSuccess: () => {
+                setInfoOpen(false);
+            },
+            onError: (errors) => {
+                const fieldErrors = Object.keys(errors).map((key) => ({
+                    name: key,
+                    errors: [errors[key]],
+                }));
+
+                form.setFields(fieldErrors);
+            },
+        });
     };
 
     const levelsMap = Object.fromEntries(

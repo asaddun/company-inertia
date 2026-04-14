@@ -5,6 +5,10 @@ import { Colors } from "../../Themes/Colors";
 function FormInfoUser({ open, onCancel, onSubmit, user, levels }) {
     const [form] = Form.useForm();
 
+    const handleFinish = (values) => {
+        onSubmit(values, form);
+    };
+
     useEffect(() => {
         if (open && user) {
             form.setFieldsValue({
@@ -26,7 +30,7 @@ function FormInfoUser({ open, onCancel, onSubmit, user, levels }) {
             destroyOnHidden
             okText="Update"
         >
-            <Form form={form} layout="vertical" onFinish={onSubmit}>
+            <Form form={form} layout="vertical" onFinish={handleFinish}>
                 <Form.Item name="name" label="Name">
                     <Input disabled />
                 </Form.Item>
