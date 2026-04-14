@@ -5,6 +5,8 @@ namespace App\Services;
 use App\Enums\UserLevel;
 use App\Models\User;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class UserService
 {
@@ -45,5 +47,16 @@ class UserService
         }
 
         return $query->paginate($filters['per_page'])->withQueryString();
+    }
+
+    public function createEmployee(array $data)
+    {
+        $username = Str::of($data['name'])->lower()->slug('.');
+        return User::create([
+            'name' => $data['name'],
+            'username' => $username,
+            'password' => Hash::make('companypassword'),
+            'level' => UserLevel::EMPLOYEE,
+        ]);
     }
 }

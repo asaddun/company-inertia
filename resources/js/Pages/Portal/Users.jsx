@@ -34,12 +34,25 @@ function Users({ users, levels, filter }) {
     const [selectedUser, setSelectedUser] = useState(null);
     const [form] = Form.useForm();
 
-    const handleAddButton = (user) => {
+    const handleAddButton = () => {
         setAddOpen(true);
     };
 
-    const handleAdd = async (values) => {
-        //
+    const handleAdd = async (values, form) => {
+        router.post(route("users.store"), values, {
+            onSuccess: () => {
+                form.resetFields();
+                setAddOpen(false);
+            },
+            onError: (errors) => {
+                const fieldErrors = Object.keys(errors).map((key) => ({
+                    name: key,
+                    errors: [errors[key]],
+                }));
+
+                form.setFields(fieldErrors);
+            },
+        });
     };
 
     const handleEditButton = (user) => {

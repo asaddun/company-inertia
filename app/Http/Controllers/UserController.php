@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Enums\UserLevel;
 use App\Http\Requests\User\UserIndexRequest;
+use App\Http\Requests\User\UserStoreRequest;
 use App\Models\User;
 use App\Services\UserService;
 use Illuminate\Http\Request;
@@ -43,9 +44,17 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(UserStoreRequest $request)
     {
-        //
+        try {
+            $this->service->createEmployee($request->validated());
+
+            return redirect()
+                ->route('users.index')
+                ->with('success', 'User created successfully');
+        } catch (\Throwable $e) {
+            return back()->with('error', 'Failed to create User');
+        }
     }
 
     /**

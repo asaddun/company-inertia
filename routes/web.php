@@ -25,6 +25,7 @@ Route::middleware('auth')->group(function () {
 
         // User
         Route::get('/users', [UserController::class, 'index'])->name('users.index');
+        Route::post('/users', [UserController::class, 'store'])->name('users.store');
 
         // Career
         Route::get('/careers', [CareerController::class, 'index'])->name('careers.index');

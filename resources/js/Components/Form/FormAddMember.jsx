@@ -4,9 +4,8 @@ import { Colors } from "../../Themes/Colors";
 function FormAddMember({ open, onCancel, onSubmit }) {
     const [form] = Form.useForm();
 
-    const handleFinish = async (values) => {
-        await onSubmit(values); // kirim ke parent
-        form.resetFields(); // reset di child
+    const handleFinish = (values) => {
+        onSubmit(values, form); // kirim ke parent
     };
 
     return (
