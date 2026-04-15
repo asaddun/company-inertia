@@ -30,7 +30,8 @@ class UserController extends Controller
             'users' => $users,
             'levels' => UserLevel::toArray(),
             'filter' => $filters,
-            'defaultFilters' => $request::defaults()
+            'defaultFilters' => $request::defaults(),
+            'filterKeys' => ['search', 'type', 'status'],
         ]);
     }
 

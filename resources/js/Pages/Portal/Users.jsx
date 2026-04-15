@@ -30,7 +30,7 @@ import { router } from "@inertiajs/react";
 
 const { Title } = Typography;
 
-function Users({ users, levels, filter, defaultFilters }) {
+function Users({ users, levels, filter, defaultFilters, filterKeys }) {
     const { isMobile } = useApp();
     const [addOpen, setAddOpen] = useState(false);
     const [infoOpen, setInfoOpen] = useState(false);
@@ -208,7 +208,7 @@ function Users({ users, levels, filter, defaultFilters }) {
 
     const normalize = (val) => val ?? "";
 
-    const isFiltered = Object.keys(defaultFilters).some((key) => {
+    const isFiltered = filterKeys.some((key) => {
         return normalize(filter?.[key]) !== normalize(defaultFilters[key]);
     });
 
@@ -216,7 +216,7 @@ function Users({ users, levels, filter, defaultFilters }) {
         return normalize(filter?.[key]) !== normalize(defaultFilters[key]);
     };
 
-    const activeCount = Object.keys(defaultFilters).filter((key) => {
+    const activeCount = filterKeys.filter((key) => {
         return normalize(filter?.[key]) !== normalize(defaultFilters[key]);
     }).length;
 
