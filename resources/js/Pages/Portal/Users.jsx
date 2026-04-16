@@ -23,7 +23,7 @@ import {
     RedoOutlined,
 } from "@ant-design/icons";
 import FormInfoUser from "../../Components/Form/FormInfoUser";
-import FormAddMember from "../../Components/Form/FormAddMember";
+import FormAddEmployee from "../../Components/Form/FormAddEmployee";
 import { Colors } from "../../Themes/Colors";
 import { useApp } from "../../Context/AppContext";
 import { router } from "@inertiajs/react";
@@ -397,7 +397,7 @@ function Users({ users, levels, filter, defaultFilters, filterKeys }) {
                 onChange={handlePagination}
             />
 
-            <FormAddMember
+            <FormAddEmployee
                 open={addOpen}
                 onCancel={() => setAddOpen(false)}
                 onSubmit={handleAdd}

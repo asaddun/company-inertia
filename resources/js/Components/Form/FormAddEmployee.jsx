@@ -1,7 +1,7 @@
 import { Form, Input, Modal } from "antd";
 import { Colors } from "../../Themes/Colors";
 
-function FormAddMember({ open, onCancel, onSubmit }) {
+function FormAddEmployee({ open, onCancel, onSubmit }) {
     const [form] = Form.useForm();
 
     const handleFinish = (values) => {
@@ -10,7 +10,7 @@ function FormAddMember({ open, onCancel, onSubmit }) {
 
     return (
         <Modal
-            title="Add Member"
+            title="Add Employee"
             open={open}
             destroyOnHidden
             onCancel={onCancel}
@@ -31,4 +31,4 @@ function FormAddMember({ open, onCancel, onSubmit }) {
     );
 }
 
-export default FormAddMember;
+export default FormAddEmployee;
