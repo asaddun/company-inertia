@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\JobType\JobTypeBulkUpdateRequest;
 use App\Http\Requests\JobType\JobTypeIndexRequest;
+use App\Models\JobType;
 use App\Services\JobTypeService;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -49,7 +51,7 @@ class JobTypeController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(JobType $jobType)
     {
         //
     }
@@ -57,7 +59,7 @@ class JobTypeController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(JobType $jobType)
     {
         //
     }
@@ -65,20 +67,28 @@ class JobTypeController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, JobType $jobType)
     {
         //
     }
 
-    // public function updateBulk(Request $request, string $id)
-    // {
-    //     //
-    // }
+    public function updateBulk(JobTypeBulkUpdateRequest $request, JobType $jobType)
+    {
+        try {
+            $this->service->updateBulkJobTypes($request->validated('data'));
+
+            return redirect()
+                ->route('job-types.index')
+                ->with('success', 'Job Type updated successfully');
+        } catch (\Throwable $e) {
+            return back()->with('error', $e ? 'Failed to update Job Type, ' . $e->getMessage() : 'Failed to update Job Type');
+        }
+    }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(JobType $jobType)
     {
         //
     }

@@ -2,9 +2,9 @@
 
 namespace App\Policies;
 
+use App\Enums\UserLevel;
 use App\Models\JobType;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class JobTypePolicy
 {
@@ -37,7 +37,7 @@ class JobTypePolicy
      */
     public function update(User $user, JobType $jobType): bool
     {
-        return false;
+        return $user->level->atLeast(UserLevel::MANAGEMENT);
     }
 
     /**

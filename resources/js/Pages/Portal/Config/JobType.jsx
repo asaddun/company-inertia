@@ -2,6 +2,7 @@ import { Table, InputNumber, Button, message, Typography, Grid } from "antd";
 import { useEffect, useState } from "react";
 import { Colors } from "../../../Themes/Colors";
 import { useApp } from "../../../Context/AppContext";
+import { router } from "@inertiajs/react";
 
 const { Title } = Typography;
 
@@ -43,11 +44,11 @@ function JobType({ jobTypes }) {
     };
 
     const handleSave = async () => {
-        // const changedRows = data.filter((row) => dirtyRows.has(row.id));
-        // if (changedRows.length === 0) return;
-        // router.put(route("job-types.update-bulk"), {
-        //     data: changedRows,
-        // });
+        const changedRows = data.filter((row) => dirtyRows.has(row.id));
+        if (changedRows.length === 0) return;
+        router.put(route("job-types.update-bulk"), {
+            data: changedRows,
+        });
     };
 
     const columns = [
