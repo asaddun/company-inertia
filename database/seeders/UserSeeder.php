@@ -24,6 +24,14 @@ class UserSeeder extends Seeder
                     'created_at' => now(),
                     'updated_at' => now()
                 ],
+                [
+                    'name' => 'Jamie Carvinson',
+                    'username' => 'jamie.carvinson',
+                    'password' => Hash::make('carvinson'),
+                    'level' => UserLevel::OWNER,
+                    'created_at' => now(),
+                    'updated_at' => now()
+                ],
             ],
             ['username'],
             ['name', 'password', 'level']

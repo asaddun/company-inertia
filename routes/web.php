@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CareerController;
+use App\Http\Controllers\JobTypeController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -39,5 +40,12 @@ Route::middleware('auth')->group(function () {
         Route::delete('/careers/{career}', [CareerController::class, 'destroy'])->name('careers.destroy');
         Route::put('/careers/{career}/restore', [CareerController::class, 'restore'])->withTrashed()->name('careers.restore');
         Route::delete('/careers/{career}/force', [CareerController::class, 'forceDelete'])->withTrashed()->name('careers.forceDelete');
+
+        // Configuration
+        Route::prefix('config')->group(function () {
+            // Job Type
+            Route::get('/job-type', [JobTypeController::class, 'index'])->name('job-types.index');
+            // Route::put('/job-type/update-bulk', [JobTypeController::class, 'updateBulk'])->name('job-types.update-bulk');
+        });
     });
 });

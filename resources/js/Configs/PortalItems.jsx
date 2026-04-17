@@ -3,6 +3,7 @@ import {
     DollarOutlined,
     FileProtectOutlined,
     FileTextOutlined,
+    SettingOutlined,
     UserOutlined,
 } from "@ant-design/icons";
 import { Level } from "./EnumLevels";
@@ -73,5 +74,19 @@ export const PortalItems = [
         icon: <FileProtectOutlined />,
         path: "/portal/careers",
         minLevel: Level.MANAGEMENT,
+    },
+    {
+        key: "configuration",
+        label: "Configuration",
+        icon: <SettingOutlined />,
+        minLevel: Level.MANAGEMENT,
+        children: [
+            {
+                key: "jobtype",
+                label: "Job Type",
+                path: "/portal/config/job-type",
+                minLevel: Level.MANAGEMENT,
+            },
+        ],
     },
 ];
