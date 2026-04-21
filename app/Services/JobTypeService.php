@@ -33,6 +33,11 @@ class JobTypeService
         return $query->paginate($filters['per_page'])->withQueryString();
     }
 
+    public function updateJobTypes(JobType $jobType, array $data): void
+    {
+        $jobType->update($data);
+    }
+
     public function updateBulkJobTypes(array $data): void
     {
         DB::transaction(function () use ($data) {

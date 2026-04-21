@@ -45,6 +45,7 @@ Route::middleware('auth')->group(function () {
         Route::prefix('config')->group(function () {
             // Job Type
             Route::get('/job-type', [JobTypeController::class, 'index'])->name('job-types.index');
+            Route::put('/job-type/{jobType}', [JobTypeController::class, 'update'])->name('job-types.update');
             Route::put('/job-type/update-bulk', [JobTypeController::class, 'updateBulk'])->name('job-types.update-bulk');
         });
     });

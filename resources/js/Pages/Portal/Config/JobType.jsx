@@ -1,17 +1,32 @@
-import { Table, InputNumber, Button, message, Typography, Grid } from "antd";
+import {
+    Table,
+    InputNumber,
+    Button,
+    message,
+    Typography,
+    Grid,
+    Space,
+    Popconfirm,
+} from "antd";
 import { useEffect, useState } from "react";
 import { Colors } from "../../../Themes/Colors";
 import { useApp } from "../../../Context/AppContext";
 import { router } from "@inertiajs/react";
+import {
+    DeleteOutlined,
+    EditOutlined,
+    RedoOutlined,
+    SaveOutlined,
+} from "@ant-design/icons";
 
 const { Title } = Typography;
 
-function JobType({ jobTypes }) {
+function JobType({ jobTypes, filter }) {
     const [data, setData] = useState(jobTypes.data);
     const [original, setOriginal] = useState(jobTypes.data);
     const [dirtyRows, setDirtyRows] = useState(new Set());
-    const [loading, setLoading] = useState(false);
     const { isMobile } = useApp();
+    const isTrash = filter.status === "trash";
 
     const isRowChanged = (row, originalRow) => {
         return Object.keys(row).some((key) => row[key] !== originalRow[key]);
@@ -43,11 +58,17 @@ function JobType({ jobTypes }) {
         setDirtyRows(new Set());
     };
 
-    const handleSave = async () => {
-        const changedRows = data.filter((row) => dirtyRows.has(row.id));
-        if (changedRows.length === 0) return;
-        router.put(route("job-types.update-bulk"), {
-            data: changedRows,
+    const handleSave = async (id) => {
+        const changedRows = data.find((row) => row.id === id);
+        if (!changedRows) return;
+        router.put(route("job-types.update", id), changedRows, {
+            onSuccess: () => {
+                setDirtyRows((prev) => {
+                    const newDirty = new Set(prev);
+                    newDirty.delete(id);
+                    return newDirty;
+                });
+            },
         });
     };
 
@@ -84,6 +105,82 @@ function JobType({ jobTypes }) {
                 />
             ),
         },
+        {
+            title: "Action",
+            key: "action",
+            render: (_, record) => (
+                <Space>
+                    {!isTrash ? (
+                        <>
+                            <Button
+                                color="primary"
+                                variant="solid"
+                                shape="circle"
+                                disabled={!dirtyRows.has(record.id)}
+                                size="small"
+                                icon={<SaveOutlined />}
+                                onClick={() => handleSave(record.id)}
+                            />
+                            <Button
+                                color="primary"
+                                variant="solid"
+                                shape="circle"
+                                size="small"
+                                icon={<EditOutlined />}
+                                onClick={() => handleEditButton(record)}
+                            />
+                            <Popconfirm
+                                title="Move to trash?"
+                                okText="Move"
+                                okButtonProps={{ danger: true }}
+                                cancelText="Cancel"
+                                onConfirm={() => handleDelete(record.id)}
+                            >
+                                <Button
+                                    color="danger"
+                                    variant="solid"
+                                    shape="circle"
+                                    size="small"
+                                    icon={<DeleteOutlined />}
+                                />
+                            </Popconfirm>
+                        </>
+                    ) : (
+                        <>
+                            <Popconfirm
+                                title="Restore data?"
+                                okText="Restore"
+                                cancelText="Cancel"
+                                onConfirm={() => handleRestore(record.id)}
+                            >
+                                <Button
+                                    color="primary"
+                                    variant="solid"
+                                    shape="circle"
+                                    size="small"
+                                    icon={<RedoOutlined />}
+                                />
+                            </Popconfirm>
+                            <Popconfirm
+                                title="Delete data?"
+                                okText="Delete"
+                                okButtonProps={{ danger: true }}
+                                cancelText="Cancel"
+                                onConfirm={() => handleForceDelete(record.id)}
+                            >
+                                <Button
+                                    color="danger"
+                                    variant="solid"
+                                    shape="circle"
+                                    size="small"
+                                    icon={<DeleteOutlined />}
+                                />
+                            </Popconfirm>
+                        </>
+                    )}
+                </Space>
+            ),
+        },
     ];
 
     return (
@@ -94,11 +191,7 @@ function JobType({ jobTypes }) {
                 columns={columns}
                 dataSource={data}
                 size={isMobile ? "small" : "middle"}
-                loading={loading}
                 scroll={{ x: "max-content" }}
-                rowClassName={(record) =>
-                    dirtyRows.has(record.id) ? "row-dirty" : ""
-                }
                 pagination={{
                     current: jobTypes.current_page,
                     pageSize: jobTypes.per_page,
@@ -110,22 +203,13 @@ function JobType({ jobTypes }) {
                 }}
             />
 
-            <div className="w-full flex justify-end items-end gap-2">
+            <div className="flex justify-end items-end">
                 <Button
                     onClick={handleReset}
                     disabled={dirtyRows.size === 0}
-                    loading={loading}
+                    icon={<RedoOutlined />}
                 >
-                    Reset
-                </Button>
-                <Button
-                    type="primary"
-                    onClick={handleSave}
-                    disabled={dirtyRows.size === 0}
-                    loading={loading}
-                    style={{ backgroundColor: Colors.primary }}
-                >
-                    Save Changes
+                    Reset Changes
                 </Button>
             </div>
         </>

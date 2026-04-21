@@ -23,8 +23,8 @@ class JobTypeUpdateRequest extends FormRequest
     {
         return [
             'name' => ['string', 'max:255'],
-            'wage_per_item' => ['decimal:0,2', 'max:255'],
-            'current_price' => ['decimal:0,2', 'max:255'],
+            'wage_per_item' => ['decimal:0,2'],
+            'current_price' => ['decimal:0,2'],
         ];
     }
 }

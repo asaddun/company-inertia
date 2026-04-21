@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\JobType\JobTypeBulkUpdateRequest;
 use App\Http\Requests\JobType\JobTypeIndexRequest;
+use App\Http\Requests\JobType\JobTypeUpdateRequest;
 use App\Models\JobType;
 use App\Services\JobTypeService;
 use Illuminate\Http\Request;
@@ -67,9 +68,17 @@ class JobTypeController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, JobType $jobType)
+    public function update(JobTypeUpdateRequest $request, JobType $jobType)
     {
-        //
+        try {
+            $this->service->updateJobTypes($jobType, $request->validated());
+
+            return redirect()
+                ->route('job-types.index')
+                ->with('success', 'Job Type updated successfully');
+        } catch (\Throwable $e) {
+            return back()->with('error', $e ? 'Failed to update Job Type, ' . $e->getMessage() : 'Failed to update Job Type');
+        }
     }
 
     public function updateBulk(JobTypeBulkUpdateRequest $request, JobType $jobType)
