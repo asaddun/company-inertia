@@ -29,7 +29,7 @@ class JobTypePolicy
      */
     public function create(User $user): bool
     {
-        return false;
+        return $user->level->atLeast(UserLevel::MANAGEMENT);
     }
 
     /**

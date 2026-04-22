@@ -45,6 +45,7 @@ Route::middleware('auth')->group(function () {
         Route::prefix('config')->group(function () {
             // Job Type
             Route::get('/job-type', [JobTypeController::class, 'index'])->name('job-types.index');
+            Route::post('/job-type', [JobTypeController::class, 'store'])->name('job-types.store');
             Route::put('/job-type/{jobType}', [JobTypeController::class, 'update'])->name('job-types.update');
             Route::put('/job-type/update-bulk', [JobTypeController::class, 'updateBulk'])->name('job-types.update-bulk');
             Route::delete('/job-type/{jobType}', [JobTypeController::class, 'destroy'])->name('job-types.destroy');

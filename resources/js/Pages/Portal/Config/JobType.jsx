@@ -20,13 +20,16 @@ import {
     SaveOutlined,
 } from "@ant-design/icons";
 import Filter from "../../../Components/Filter";
+import FormJobType from "../../../Components/Form/FormJobType";
 
 const { Title } = Typography;
 
-function JobType({ jobTypes, filter, defaultFilters, filterKeys }) {
+function JobType({ jobTypes, filter, defaultFilters, filterKeys, fields }) {
     const [data, setData] = useState(jobTypes.data);
+    const [selectedData, setSelectedData] = useState(null);
     const [original, setOriginal] = useState(jobTypes.data);
     const [dirtyRows, setDirtyRows] = useState(new Set());
+    const [formOpen, setFormOpen] = useState(false);
     const { isMobile } = useApp();
     const isTrash = filter.status === "trash";
 
@@ -61,7 +64,48 @@ function JobType({ jobTypes, filter, defaultFilters, filterKeys }) {
     };
 
     const handleAddButton = () => {
-        //
+        setFormOpen(true);
+    };
+
+    const handleSubmit = async (values, data, form) => {
+        if (data) {
+            // Update data
+            router.put(route("job-types.update", data.id), values, {
+                onSuccess: () => {
+                    form.resetFields();
+                    setFormOpen(false);
+                },
+                onError: (errors) => {
+                    const fieldErrors = Object.keys(errors).map((key) => ({
+                        name: key,
+                        errors: [errors[key]],
+                    }));
+
+                    form.setFields(fieldErrors);
+                },
+            });
+        } else {
+            // Store data
+            router.post(route("job-types.store"), values, {
+                onSuccess: () => {
+                    form.resetFields();
+                    setFormOpen(false);
+                },
+                onError: (errors) => {
+                    const fieldErrors = Object.keys(errors).map((key) => ({
+                        name: key,
+                        errors: [errors[key]],
+                    }));
+
+                    form.setFields(fieldErrors);
+                },
+            });
+        }
+    };
+
+    const handleEditButton = (data) => {
+        setSelectedData(data);
+        setFormOpen(true);
     };
 
     const handleReset = async () => {
@@ -69,7 +113,7 @@ function JobType({ jobTypes, filter, defaultFilters, filterKeys }) {
         setDirtyRows(new Set());
     };
 
-    const handleSave = async (id) => {
+    const handleUpdate = async (id) => {
         const changedRows = data.find((row) => row.id === id);
         if (!changedRows) return;
         router.put(route("job-types.update", id), changedRows, {
@@ -146,7 +190,7 @@ function JobType({ jobTypes, filter, defaultFilters, filterKeys }) {
                                 disabled={!dirtyRows.has(record.id)}
                                 size="small"
                                 icon={<SaveOutlined />}
-                                onClick={() => handleSave(record.id)}
+                                onClick={() => handleUpdate(record.id)}
                             />
                             <Button
                                 color="primary"
@@ -266,6 +310,14 @@ function JobType({ jobTypes, filter, defaultFilters, filterKeys }) {
                     Reset Changes
                 </Button>
             </div>
+
+            <FormJobType
+                data={selectedData}
+                open={formOpen}
+                onCancel={() => setFormOpen(false)}
+                onSubmit={handleSubmit}
+                optionsFields={fields}
+            />
         </>
     );
 }

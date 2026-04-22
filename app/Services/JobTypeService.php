@@ -33,6 +33,17 @@ class JobTypeService
         return $query->paginate($filters['per_page'])->withQueryString();
     }
 
+    public function createJobType(array $data): JobType
+    {
+        return JobType::create([
+            'name'   => $data['name'],
+            'unit_label' => $data['unit_label'],
+            'wage_per_item' => 0,
+            'current_price' => 0,
+            'form_fields' => $data['form_fields'],
+        ]);
+    }
+
     public function updateJobTypes(JobType $jobType, array $data): void
     {
         $jobType->update($data);

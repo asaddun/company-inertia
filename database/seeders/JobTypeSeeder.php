@@ -16,26 +16,17 @@ class JobTypeSeeder extends Seeder
             [
                 [
                     'name' => 'Autos',
-                    'unit_label' => 'component(s)',
+                    'unit_label' => 'component',
                     'wage_per_item' => 0.5,
-                    'current_price' => 1.6,
+                    'current_price' => 1.8,
                     'form_fields' => json_encode(['quantity', 'stored']),
                     'created_at' => now(),
                     'updated_at' => now()
                 ],
                 [
                     'name' => 'Logistics',
-                    'unit_label' => 'crate(s)',
+                    'unit_label' => 'crate',
                     'wage_per_item' => 50,
-                    'current_price' => 0,
-                    'form_fields' => json_encode(['quantity']),
-                    'created_at' => now(),
-                    'updated_at' => now()
-                ],
-                [
-                    'name' => 'Cafe',
-                    'unit_label' => 'menu(s)',
-                    'wage_per_item' => 25,
                     'current_price' => 0,
                     'form_fields' => json_encode(['quantity']),
                     'created_at' => now(),

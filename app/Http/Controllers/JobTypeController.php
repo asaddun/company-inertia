@@ -4,10 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\JobType\JobTypeBulkUpdateRequest;
 use App\Http\Requests\JobType\JobTypeIndexRequest;
+use App\Http\Requests\JobType\JobTypeStoreRequest;
 use App\Http\Requests\JobType\JobTypeUpdateRequest;
 use App\Models\JobType;
 use App\Services\JobTypeService;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class JobTypeController extends Controller
@@ -24,6 +24,19 @@ class JobTypeController extends Controller
      */
     public function index(JobTypeIndexRequest $request)
     {
+        $fields = [
+            [
+                'label' => 'Quantity',
+                'value' => 'quantity',
+                'type' => 'number',
+            ],
+            [
+                'label' => 'Stored Money',
+                'value' => 'stored',
+                'type' => 'number',
+            ]
+        ];
+
         $filters = $request->validatedWithDefaults();
         $jobTypes = $this->service->getJobTypes($filters);
 
@@ -32,6 +45,7 @@ class JobTypeController extends Controller
             'filter' => $filters,
             'defaultFilters' => $request::defaults(),
             'filterKeys' => ['search', 'status'],
+            'fields' => $fields,
         ]);
     }
 
@@ -46,9 +60,17 @@ class JobTypeController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(JobTypeStoreRequest $request)
     {
-        //
+        try {
+            $this->service->createJobType($request->validated());
+
+            return redirect()
+                ->route('job-types.index')
+                ->with('success', 'Data created successfully');
+        } catch (\Throwable $e) {
+            return back()->with('error', 'Failed to create Data');
+        }
     }
 
     /**
@@ -77,9 +99,9 @@ class JobTypeController extends Controller
 
             return redirect()
                 ->route('job-types.index')
-                ->with('success', 'Job Type updated successfully');
+                ->with('success', 'Data updated successfully');
         } catch (\Throwable $e) {
-            return back()->with('error', $e ? 'Failed to update Job Type, ' . $e->getMessage() : 'Failed to update Job Type');
+            return back()->with('error', $e ? 'Failed to update Data, ' . $e->getMessage() : 'Failed to update Data');
         }
     }
 
