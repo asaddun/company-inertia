@@ -89,7 +89,7 @@ class JobTypeController extends Controller
             $this->service->updateBulkJobTypes($request->validated('data'));
 
             return redirect()
-                ->route('job-types.index')
+                ->back()
                 ->with('success', 'Job Type updated successfully');
         } catch (\Throwable $e) {
             return back()->with('error', $e ? 'Failed to update Job Type, ' . $e->getMessage() : 'Failed to update Job Type');
@@ -101,6 +101,40 @@ class JobTypeController extends Controller
      */
     public function destroy(JobType $jobType)
     {
-        //
+        try {
+            $this->service->deleteJobType($jobType);
+
+            return redirect()
+                ->back()
+                ->with('success', 'Data deleted successfully');
+        } catch (\Throwable $e) {
+            return back()->with('error', $e ? 'Failed to delete Data, ' . $e->getMessage() : 'Failed to delete Data');
+        }
+    }
+
+    public function restore(JobType $jobType)
+    {
+        try {
+            $this->service->restoreJobType($jobType);
+
+            return redirect()
+                ->back()
+                ->with('success', 'Data restored successfully');
+        } catch (\Throwable $e) {
+            return back()->with('error', $e ? 'Failed to restore Data, ' . $e->getMessage() : 'Failed to restore Data');
+        }
+    }
+
+    public function forceDelete(JobType $jobType)
+    {
+        try {
+            $this->service->forceDeleteJobType($jobType);
+
+            return redirect()
+                ->back()
+                ->with('success', 'Data deleted successfully');
+        } catch (\Throwable $e) {
+            return back()->with('error', $e ? 'Failed to delete Data, ' . $e->getMessage() : 'Failed to delete Data');
+        }
     }
 }

@@ -30,6 +30,11 @@ function JobType({ jobTypes, filter, defaultFilters, filterKeys }) {
     const { isMobile } = useApp();
     const isTrash = filter.status === "trash";
 
+    useEffect(() => {
+        setData(jobTypes.data);
+        setOriginal(jobTypes.data);
+    }, [jobTypes]);
+
     const isRowChanged = (row, originalRow) => {
         return Object.keys(row).some((key) => row[key] !== originalRow[key]);
     };

@@ -50,4 +50,25 @@ class JobTypeService
             }
         });
     }
+
+    public function deleteJobType(JobType $jobType)
+    {
+        return $jobType->delete();
+    }
+
+    public function restoreJobType(JobType $jobType)
+    {
+        if (!$jobType->trashed()) {
+            throw new \Exception('Data is not deleted');
+        }
+        return $jobType->restore();
+    }
+
+    public function forceDeleteJobType(JobType $jobType)
+    {
+        if (!$jobType->trashed()) {
+            throw new \Exception('Data is not deleted');
+        }
+        return $jobType->forceDelete();
+    }
 }
