@@ -39,7 +39,9 @@ function JobType({ jobTypes, filter, defaultFilters, filterKeys, fields }) {
     }, [jobTypes]);
 
     const isRowChanged = (row, originalRow) => {
-        return Object.keys(row).some((key) => row[key] !== originalRow[key]);
+        return Object.keys(row).some((key) => {
+            return row[key] != originalRow[key];
+        });
     };
 
     const handleChange = (id, field, value) => {
