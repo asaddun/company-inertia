@@ -30,6 +30,8 @@ class JobTypeController extends Controller
         return Inertia::render('Portal/Config/JobType', [
             'jobTypes' => $jobTypes,
             'filter' => $filters,
+            'defaultFilters' => $request::defaults(),
+            'filterKeys' => ['search', 'status'],
         ]);
     }
 

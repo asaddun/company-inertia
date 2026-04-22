@@ -23,7 +23,11 @@ class JobTypeIndexRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'status' => ['nullable', 'in:active,trash'],
+            'search' => ['nullable', 'string', 'max:100'],
+            'page' => ['nullable', 'integer', 'min:1'],
+            'per_page' => ['nullable', 'integer', 'min:1', 'max:100'],
+            'sort' => ['nullable', 'string'],
         ];
     }
 

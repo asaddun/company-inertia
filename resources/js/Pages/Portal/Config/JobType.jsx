@@ -15,13 +15,15 @@ import { router } from "@inertiajs/react";
 import {
     DeleteOutlined,
     EditOutlined,
+    PlusOutlined,
     RedoOutlined,
     SaveOutlined,
 } from "@ant-design/icons";
+import Filter from "../../../Components/Filter";
 
 const { Title } = Typography;
 
-function JobType({ jobTypes, filter }) {
+function JobType({ jobTypes, filter, defaultFilters, filterKeys }) {
     const [data, setData] = useState(jobTypes.data);
     const [original, setOriginal] = useState(jobTypes.data);
     const [dirtyRows, setDirtyRows] = useState(new Set());
@@ -53,6 +55,10 @@ function JobType({ jobTypes, filter }) {
         setDirtyRows(newDirty);
     };
 
+    const handleAddButton = () => {
+        //
+    };
+
     const handleReset = async () => {
         setData(original);
         setDirtyRows(new Set());
@@ -70,6 +76,22 @@ function JobType({ jobTypes, filter }) {
                 });
             },
         });
+    };
+
+    const handleFilter = (values) => {
+        router.get(route("job-types.index"), values);
+    };
+
+    const handleDelete = async (id) => {
+        router.delete(route("job-types.destroy", { jobType: id }));
+    };
+
+    const handleRestore = async (id) => {
+        router.put(route("job-types.restore", { jobType: id }));
+    };
+
+    const handleForceDelete = async (id) => {
+        router.delete(route("job-types.forceDelete", { jobType: id }));
     };
 
     const columns = [
@@ -186,6 +208,33 @@ function JobType({ jobTypes, filter }) {
     return (
         <>
             <Title level={3}>Job Type Configuration</Title>
+
+            <div className="flex justify-between py-2">
+                <div className="flex items-center gap-2">
+                    <Filter
+                        filter={filter}
+                        defaultFilters={defaultFilters}
+                        filterKeys={filterKeys}
+                        options={null}
+                        handleFilter={handleFilter}
+                        isMobile={isMobile}
+                    />
+                </div>
+                <div className="flex items-center gap-2">
+                    <Button
+                        variant="solid"
+                        style={{
+                            backgroundColor: Colors.primary,
+                            color: "#FFF",
+                        }}
+                        onClick={handleAddButton}
+                        icon={<PlusOutlined />}
+                    >
+                        Add
+                    </Button>
+                </div>
+            </div>
+
             <Table
                 rowKey="id"
                 columns={columns}

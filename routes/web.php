@@ -47,6 +47,9 @@ Route::middleware('auth')->group(function () {
             Route::get('/job-type', [JobTypeController::class, 'index'])->name('job-types.index');
             Route::put('/job-type/{jobType}', [JobTypeController::class, 'update'])->name('job-types.update');
             Route::put('/job-type/update-bulk', [JobTypeController::class, 'updateBulk'])->name('job-types.update-bulk');
+            Route::delete('/job-type/{jobType}', [JobTypeController::class, 'destroy'])->name('job-types.destroy');
+            Route::put('/job-type/{jobType}/restore', [JobTypeController::class, 'restore'])->withTrashed()->name('job-types.restore');
+            Route::delete('/job-type/{jobType}/force', [JobTypeController::class, 'forceDelete'])->withTrashed()->name('job-types.forceDelete');
         });
     });
 });
