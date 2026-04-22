@@ -30,13 +30,18 @@ class CareerIndexRequest extends FormRequest
         ];
     }
 
-    public function validatedWithDefaults(): array
+    public static function defaults(): array
     {
-        return array_merge([
+        return [
             'status'   => 'active',
             'per_page' => 10,
             'search'   => null,
-            'sort'     => null,
-        ], $this->validated());
+            'sort'     => '-is_active',
+        ];
+    }
+
+    public function validatedWithDefaults(): array
+    {
+        return array_merge(self::defaults(), $this->validated());
     }
 }

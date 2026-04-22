@@ -1,13 +1,5 @@
 import { useState } from "react";
-import {
-    Button,
-    Grid,
-    Popconfirm,
-    Space,
-    Switch,
-    Table,
-    Typography,
-} from "antd";
+import { Button, Popconfirm, Space, Switch, Table, Typography } from "antd";
 import {
     DeleteOutlined,
     EditOutlined,
@@ -18,13 +10,13 @@ import { Colors } from "../../Themes/Colors";
 import FormUpdateCareer from "../../Components/Form/FormUpdateCarrer";
 import FormAddCareer from "../../Components/Form/FormAddCarrer";
 import { router } from "@inertiajs/react";
+import Filter from "../../Components/Filter";
+import { useApp } from "../../Context/AppContext";
 
-const { useBreakpoint } = Grid;
 const { Title } = Typography;
 
-function Career({ careers, filter }) {
-    const screens = useBreakpoint();
-    const isMobile = !screens.md;
+function Career({ careers, filter, defaultFilters, filterKeys }) {
+    const { isMobile } = useApp();
     const [loading, setLoading] = useState();
     const [data, setData] = useState(careers.data);
     const [addOpen, setAddOpen] = useState(false);
@@ -119,12 +111,8 @@ function Career({ careers, filter }) {
         router.delete(route("careers.forceDelete", { career: id }));
     };
 
-    const handleSwitchTrash = (checked) => {
-        router.get(route("careers.index"), {
-            ...filter,
-            status: checked ? "trash" : "active",
-            page: 1,
-        });
+    const handleFilter = (values) => {
+        router.get(route("careers.index"), values);
     };
 
     const handlePagination = (pagination) => {
@@ -235,12 +223,13 @@ function Career({ careers, filter }) {
             <Title level={3}>Career Management</Title>
             <div className="flex justify-between py-2">
                 <div>
-                    <Switch
-                        checked={isTrash}
-                        onChange={handleSwitchTrash}
-                        checkedChildren={<DeleteOutlined />}
-                        unCheckedChildren={<DeleteOutlined />}
-                        style={{ backgroundColor: isTrash ? "red" : undefined }}
+                    <Filter
+                        filter={filter}
+                        defaultFilters={defaultFilters}
+                        filterKeys={filterKeys}
+                        optionsType={null}
+                        handleFilter={handleFilter}
+                        isMobile={isMobile}
                     />
                 </div>
                 <Button

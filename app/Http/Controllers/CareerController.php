@@ -26,6 +26,8 @@ class CareerController extends Controller
         return Inertia::render('Portal/Career', [
             'careers' => $careers,
             'filter' => $filters,
+            'defaultFilters' => $request::defaults(),
+            'filterKeys' => ['search', 'type', 'status'],
         ]);
     }
 
