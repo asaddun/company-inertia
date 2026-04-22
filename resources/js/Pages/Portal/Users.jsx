@@ -1,23 +1,7 @@
 import { useState } from "react";
-import {
-    Badge,
-    Button,
-    ConfigProvider,
-    Form,
-    Input,
-    Popconfirm,
-    Popover,
-    Segmented,
-    Select,
-    Space,
-    Switch,
-    Table,
-    Typography,
-} from "antd";
+import { Button, Form, Popconfirm, Space, Table, Typography } from "antd";
 import {
     DeleteOutlined,
-    FilterFilled,
-    FilterOutlined,
     InfoCircleOutlined,
     PlusOutlined,
     RedoOutlined,
@@ -27,6 +11,7 @@ import FormAddEmployee from "../../Components/Form/FormAddEmployee";
 import { Colors } from "../../Themes/Colors";
 import { useApp } from "../../Context/AppContext";
 import { router } from "@inertiajs/react";
+import Filter from "../../Components/Filter";
 
 const { Title } = Typography;
 
@@ -35,8 +20,6 @@ function Users({ users, levels, filter, defaultFilters, filterKeys }) {
     const [addOpen, setAddOpen] = useState(false);
     const [infoOpen, setInfoOpen] = useState(false);
     const [selectedUser, setSelectedUser] = useState(null);
-    const [form] = Form.useForm();
-    const filterValues = Form.useWatch([], form);
 
     const handleAddButton = () => {
         setAddOpen(true);
@@ -189,180 +172,25 @@ function Users({ users, levels, filter, defaultFilters, filterKeys }) {
         router.get(route("users.index"), values);
     };
 
-    const handleReset = () => {
-        form.resetFields();
-        router.get(
-            route("users.index"),
-            {},
-            {
-                replace: true,
-            },
-        );
-    };
-
-    const options = [
+    const optionsType = [
         { label: "All", value: "all" },
         { label: "Employee", value: "employee" },
         { label: "Member", value: "member" },
     ];
-
-    const normalize = (val) => val ?? "";
-
-    const isFiltered = filterKeys.some((key) => {
-        return normalize(filter?.[key]) !== normalize(defaultFilters[key]);
-    });
-
-    const isFieldActive = (key) => {
-        return normalize(filter?.[key]) !== normalize(defaultFilters[key]);
-    };
-
-    const activeCount = filterKeys.filter((key) => {
-        return normalize(filter?.[key]) !== normalize(defaultFilters[key]);
-    }).length;
-
-    const popoverContent = (
-        <Form
-            form={form}
-            layout="inline"
-            onFinish={handleFilter}
-            initialValues={{
-                search: filter?.search,
-                type: filter?.type ?? "employee",
-                status: filter?.status ?? "active",
-            }}
-            onValuesChange={(changed, all) => {
-                if (changed.status === "trash" || changed.search != null) {
-                    form.setFieldsValue({ type: "all" });
-                }
-            }}
-            className="flex flex-col gap-2"
-        >
-            {/* SEARCH */}
-            <div>
-                <div
-                    className={`text-xs mb-1 ${
-                        isFieldActive("search")
-                            ? "text-blue-500 font-semibold"
-                            : "text-gray-500"
-                    }`}
-                >
-                    Search
-                </div>
-
-                <Form.Item name="search">
-                    <Input placeholder="Search user" />
-                </Form.Item>
-            </div>
-
-            {/* TYPE */}
-            <div>
-                <div
-                    className={`text-xs mb-1 ${
-                        isFieldActive("type")
-                            ? "text-blue-500 font-semibold"
-                            : "text-gray-500"
-                    }`}
-                >
-                    Type
-                </div>
-
-                <Form.Item name="type">
-                    {!isMobile ? (
-                        <Segmented
-                            disabled={filterValues?.status === "trash"}
-                            options={options}
-                        />
-                    ) : (
-                        <Select
-                            className="min-w-35"
-                            disabled={filterValues?.status === "trash"}
-                            options={options}
-                        />
-                    )}
-                </Form.Item>
-            </div>
-
-            {/* TRASH */}
-            <div>
-                <div
-                    className={`text-xs mb-1 ${
-                        isFieldActive("status")
-                            ? "text-blue-500 font-semibold"
-                            : "text-gray-500"
-                    }`}
-                >
-                    Trash
-                </div>
-
-                <ConfigProvider
-                    theme={{
-                        components: {
-                            Switch: {
-                                colorPrimary: "#ff4d4f",
-                                colorPrimaryHover: "#ff4d4f",
-                            },
-                        },
-                    }}
-                >
-                    <Form.Item
-                        name="status"
-                        valuePropName="checked"
-                        getValueProps={(value) => ({
-                            checked: value === "trash",
-                        })}
-                        getValueFromEvent={(checked) => {
-                            return checked ? "trash" : "active";
-                        }}
-                    >
-                        <Switch
-                            checkedChildren={<DeleteOutlined />}
-                            unCheckedChildren={<DeleteOutlined />}
-                        />
-                    </Form.Item>
-                </ConfigProvider>
-            </div>
-
-            {/* ACTION */}
-            <div className="flex justify-end gap-2">
-                <Button onClick={handleReset}>Reset</Button>
-
-                <Button
-                    type="primary"
-                    htmlType="submit"
-                    style={{ backgroundColor: Colors.primary }}
-                >
-                    Apply
-                </Button>
-            </div>
-        </Form>
-    );
 
     return (
         <>
             <Title level={3}>Users List</Title>
             <div className="flex justify-between py-2">
                 <div className="flex items-center gap-2">
-                    <Popover
-                        placement="rightTop"
-                        trigger="click"
-                        title={"Filter"}
-                        content={popoverContent}
-                        style={{ maxWidth: "none", width: "max-content" }}
-                    >
-                        <Badge count={activeCount}>
-                            <Button
-                                icon={
-                                    isFiltered ? (
-                                        <FilterFilled />
-                                    ) : (
-                                        <FilterOutlined />
-                                    )
-                                }
-                            >
-                                Filter
-                            </Button>
-                        </Badge>
-                    </Popover>
+                    <Filter
+                        filter={filter}
+                        defaultFilters={defaultFilters}
+                        filterKeys={filterKeys}
+                        optionsType={optionsType}
+                        handleFilter={handleFilter}
+                        isMobile={isMobile}
+                    />
                 </div>
                 <div className="flex items-center gap-2">
                     <Button
