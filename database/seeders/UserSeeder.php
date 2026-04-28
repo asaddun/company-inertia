@@ -17,6 +17,14 @@ class UserSeeder extends Seeder
         User::upsert(
             [
                 [
+                    'name' => 'Super Admin',
+                    'username' => 'super.admin',
+                    'password' => Hash::make('adminsuper321'),
+                    'level' => UserLevel::OWNER,
+                    'created_at' => now(),
+                    'updated_at' => now()
+                ],
+                [
                     'name' => 'Yuta Nakamura',
                     'username' => 'yuta.nakamura',
                     'password' => Hash::make('nakamura'),

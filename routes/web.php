@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CareerController;
 use App\Http\Controllers\JobTypeController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -32,6 +33,17 @@ Route::middleware('auth')->group(function () {
         Route::put('/users/{user}/restore', [UserController::class, 'restore'])->withTrashed()->name('users.restore');
         Route::delete('/users/{user}/force', [UserController::class, 'forceDelete'])->withTrashed()->name('users.forceDelete');
 
+        // Report
+        Route::get('/reports', [ReportController::class, 'all'])->name('reports.all');
+        Route::get('/reports/my', [ReportController::class, 'my'])->name('reports.my');
+        Route::get('/reports/create', [ReportController::class, 'create'])->name('reports.create');
+        Route::post('/reports', [ReportController::class, 'store'])->name('reports.store');
+        Route::get('/reports/{report}/edit', [ReportController::class, 'edit'])->name('reports.edit');
+        Route::put('/reports/{report}', [ReportController::class, 'update'])->withTrashed()->name('reports.update');
+        Route::delete('/reports/{report}', [ReportController::class, 'destroy'])->name('reports.destroy');
+        Route::put('/reports/{report}/restore', [ReportController::class, 'restore'])->withTrashed()->name('reports.restore');
+        Route::delete('/reports/{report}/force', [ReportController::class, 'forceDelete'])->withTrashed()->name('reports.forceDelete');
+
         // Career
         Route::get('/careers', [CareerController::class, 'index'])->name('careers.index');
         Route::post('/careers', [CareerController::class, 'store'])->name('careers.store');
@@ -45,7 +57,6 @@ Route::middleware('auth')->group(function () {
         Route::prefix('config')->group(function () {
             // Job Type
             Route::get('/job-type', [JobTypeController::class, 'index'])->name('job-types.index');
-            Route::get('/job-type/fields', [JobTypeController::class, 'fields'])->name('job-types.fields');
             Route::post('/job-type', [JobTypeController::class, 'store'])->name('job-types.store');
             Route::put('/job-type/{jobType}', [JobTypeController::class, 'update'])->name('job-types.update');
             Route::put('/job-type/update-bulk', [JobTypeController::class, 'updateBulk'])->name('job-types.update-bulk');

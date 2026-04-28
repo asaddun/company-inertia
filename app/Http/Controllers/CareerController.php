@@ -27,7 +27,7 @@ class CareerController extends Controller
             'careers' => $careers,
             'filter' => $filters,
             'defaultFilters' => $request::defaults(),
-            'filterKeys' => ['search', 'type', 'status'],
+            'filterKeys' => config('filter_keys'),
         ]);
     }
 

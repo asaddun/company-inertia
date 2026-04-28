@@ -253,6 +253,10 @@ function Career({ careers, filter, defaultFilters, filterKeys }) {
                     current: careers.current_page,
                     pageSize: careers.per_page,
                     total: careers.total,
+                    showSizeChanger: !isMobile,
+                    pageSizeOptions: [5, 10, 30, 50],
+                    showQuickJumper: !isMobile,
+                    simple: isMobile,
                 }}
                 onChange={handlePagination}
             />

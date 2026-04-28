@@ -40,6 +40,7 @@ export default function MainLayout({ children }) {
 
         if (props.flash?.error) {
             messageApi.error(props.flash.error);
+            console.error(props.flash.error);
         }
     }, [props.timestamp]);
 

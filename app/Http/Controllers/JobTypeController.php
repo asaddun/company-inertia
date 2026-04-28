@@ -14,27 +14,9 @@ class JobTypeController extends Controller
 {
     protected $service;
 
-    public $fields = [
-        [
-            'label' => 'Quantity',
-            'value' => 'quantity',
-            'type' => 'number',
-        ],
-        [
-            'label' => 'Stored Money',
-            'value' => 'stored',
-            'type' => 'number',
-        ]
-    ];
-
     public function __construct(JobTypeService $service)
     {
         $this->service = $service;
-    }
-
-    public function fields()
-    {
-        return $this->fields;
     }
 
     /**
@@ -49,8 +31,8 @@ class JobTypeController extends Controller
             'jobTypes' => $jobTypes,
             'filter' => $filters,
             'defaultFilters' => $request::defaults(),
-            'filterKeys' => ['search', 'status'],
-            'fields' => $this->fields,
+            'filterKeys' => config('filter_keys'),
+            'fields' => config('job_fields'),
         ]);
     }
 

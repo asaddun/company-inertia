@@ -7,6 +7,7 @@ import {
     Badge,
     Button,
     ConfigProvider,
+    DatePicker,
     Form,
     Input,
     Popover,
@@ -15,12 +16,15 @@ import {
     Switch,
 } from "antd";
 import { Colors } from "../Themes/Colors";
+import dayjs from "dayjs";
 
 function Filter({
     filter,
     defaultFilters,
     filterKeys,
     optionsType,
+    datePicker,
+    rangeDatePicker,
     handleFilter,
     isMobile,
 }) {
@@ -41,6 +45,24 @@ function Filter({
         return normalize(filter?.[key]) !== normalize(defaultFilters[key]);
     }).length;
 
+    const handleFinish = (values) => {
+        const payload = {
+            ...values,
+            ...(values.date && {
+                date: values.date.format("YYYY-MM-DD"),
+            }),
+
+            ...(values.range && {
+                range: [
+                    values.range[0].format("YYYY-MM-DD"),
+                    values.range[1].format("YYYY-MM-DD"),
+                ],
+            }),
+        };
+
+        handleFilter(payload);
+    };
+
     const handleReset = () => {
         form.resetFields();
         handleFilter();
@@ -50,11 +72,15 @@ function Filter({
         <Form
             form={form}
             layout="inline"
-            onFinish={handleFilter}
+            onFinish={handleFinish}
             initialValues={{
                 search: filter?.search,
                 type: filter?.type,
                 status: filter?.status ?? "active",
+                date: filter?.date ? dayjs(filter.date) : null,
+                range: filter?.range
+                    ? [dayjs(filter.range[0]), dayjs(filter.range[1])]
+                    : null,
             }}
             onValuesChange={(changed, all) => {
                 if (changed.status === "trash" || changed.search != null) {
@@ -106,6 +132,43 @@ function Filter({
                                 options={optionsType}
                             />
                         )}
+                    </Form.Item>
+                </div>
+            )}
+
+            {/* DATE */}
+            {datePicker && (
+                <div>
+                    <div
+                        className={`text-xs mb-1 ${
+                            isFieldActive("date")
+                                ? "text-blue-500 font-semibold"
+                                : "text-gray-500"
+                        }`}
+                    >
+                        {datePicker.charAt(0).toUpperCase() +
+                            datePicker.slice(1)}
+                    </div>
+                    <Form.Item name="date">
+                        <DatePicker picker={datePicker} />
+                    </Form.Item>
+                </div>
+            )}
+
+            {/* RANGE */}
+            {rangeDatePicker && (
+                <div>
+                    <div
+                        className={`text-xs mb-1 ${
+                            isFieldActive("range")
+                                ? "text-blue-500 font-semibold"
+                                : "text-gray-500"
+                        }`}
+                    >
+                        Range
+                    </div>
+                    <Form.Item name="range">
+                        <DatePicker.RangePicker />
                     </Form.Item>
                 </div>
             )}

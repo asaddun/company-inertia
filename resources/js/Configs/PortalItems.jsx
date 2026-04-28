@@ -29,9 +29,15 @@ export const PortalItems = [
         minLevel: Level.EMPLOYEE,
         children: [
             {
+                key: "all-reports",
+                label: "All Reports",
+                path: "/portal/reports",
+                minLevel: Level.MANAGEMENT,
+            },
+            {
                 key: "my-reports",
                 label: "My Reports",
-                path: "/portal/reports/me",
+                path: "/portal/reports/my",
                 minLevel: Level.EMPLOYEE,
             },
         ],
@@ -51,7 +57,7 @@ export const PortalItems = [
             {
                 key: "my-payrolls",
                 label: "My Payrolls",
-                path: "/portal/payrolls/me",
+                path: "/portal/payrolls/my",
                 minLevel: Level.EMPLOYEE,
             },
             {
@@ -69,7 +75,7 @@ export const PortalItems = [
         ],
     },
     {
-        key: "carrer",
+        key: "career",
         label: "Career",
         icon: <FileProtectOutlined />,
         path: "/portal/careers",
