@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Enums\PayrollStatus;
 use App\Models\JobType;
 use App\Models\Payroll;
 use App\Models\Report;
@@ -13,11 +14,14 @@ use Illuminate\Support\Facades\DB;
 
 class ReportService
 {
-    public function getReports($query, $filters): LengthAwarePaginator
+    public function getReports($query, array $filters): LengthAwarePaginator
     {
         $query
-            ->with('jobType:id,name,unit_label')
-            ->with('user:id,name');
+            ->with([
+                'jobType:id,name,unit_label',
+                'user:id,name',
+                'payroll:id,status'
+            ]);
 
         // Status
         if ($filters['status'] === 'trash') {
@@ -77,7 +81,7 @@ class ReportService
                 $stored = $data['stored'] ?? 0;
 
                 if ($stored > $expectedStored) {
-                    $bonus = ($stored - $expectedStored) * 0.75;
+                    $bonus = ($stored - $expectedStored) * 0.9;
                     $wageAmount += $bonus;
                 } elseif ($stored < $expectedStored) {
                     $penalty = $expectedStored - $stored;
@@ -97,7 +101,7 @@ class ReportService
                     'user_id'           => $userId,
                     'week_code'         => $weekCode,
                     'total_wage_amount' => 0,
-                    'status'            => 'draft',
+                    'status'            => PayrollStatus::DRAFT,
                 ]);
             } catch (QueryException $e) {
                 // kalau tabrakan unique key → ambil row yang menang
@@ -109,7 +113,7 @@ class ReportService
                     throw new \RuntimeException('Payroll not found');
                 }
 
-                if ($payroll->status !== 'draft') {
+                if ($payroll->status !== PayrollStatus::DRAFT) {
                     throw new \DomainException('Payroll no longer in draft');
                 }
             }

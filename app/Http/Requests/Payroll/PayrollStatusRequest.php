@@ -1,17 +1,19 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Payroll;
 
+use App\Enums\PayrollStatus;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
-class ReportEditRequest extends FormRequest
+class PayrollStatusRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return $this->user()->can('view', $this->route('report'));
+        return $this->user()->can('updateStatus', $this->route('payroll'));
     }
 
     /**
@@ -22,7 +24,7 @@ class ReportEditRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'status' => ['required', Rule::enum(PayrollStatus::class)],
         ];
     }
 }

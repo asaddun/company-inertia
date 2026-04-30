@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Report\ReportIndexRequest;
 use App\Http\Requests\Report\ReportStoreRequest;
-use App\Http\Requests\ReportEditRequest;
+use App\Http\Requests\Report\ReportEditRequest;
 use App\Models\JobType;
 use App\Models\Report;
 use App\Services\ReportService;
@@ -118,7 +118,7 @@ class ReportController extends Controller
             $this->service->deleteReport($report);
 
             return redirect()
-                ->route('reports.my')
+                ->back()
                 ->with('success', 'Data deleted successfully');
         } catch (\Throwable $e) {
             return back()->with('error', $e ? 'Failed to delete Data, ' . $e->getMessage() : 'Failed to delete Data');

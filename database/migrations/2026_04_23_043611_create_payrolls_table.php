@@ -22,8 +22,7 @@ return new class extends Migration
 
             $table->decimal('total_wage_amount', 16, 2);
 
-            $table->enum('status', ['draft', 'submitted', 'approved', 'paid'])
-                ->default('draft');
+            $table->string('status')->default('draft');
 
             $table->softDeletes();
             $table->timestamps();

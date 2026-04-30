@@ -45,4 +45,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Report::class);
     }
+
+    public function payrolls(): HasMany
+    {
+        return $this->hasMany(Payroll::class);
+    }
 }

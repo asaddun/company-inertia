@@ -37,7 +37,7 @@ class ReportPolicy
      */
     public function update(User $user, Report $report): bool
     {
-        return $user->level->atLeast(UserLevel::MANAGEMENT) || $user->id === $report->user->id;
+        return ($user->level->atLeast(UserLevel::MANAGEMENT) || $user->id === $report->user->id);
     }
 
     /**

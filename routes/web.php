@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CareerController;
 use App\Http\Controllers\JobTypeController;
+use App\Http\Controllers\PayrollController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -43,6 +44,14 @@ Route::middleware('auth')->group(function () {
         Route::delete('/reports/{report}', [ReportController::class, 'destroy'])->name('reports.destroy');
         Route::put('/reports/{report}/restore', [ReportController::class, 'restore'])->withTrashed()->name('reports.restore');
         Route::delete('/reports/{report}/force', [ReportController::class, 'forceDelete'])->withTrashed()->name('reports.forceDelete');
+
+        // Payroll
+        Route::get('/payrolls', [PayrollController::class, 'index'])->name('payrolls.index');
+        Route::get('/payrolls/{payroll}', [PayrollController::class, 'show'])->name('payrolls.show');
+        Route::patch('/payrolls/{payroll}/status', [PayrollController::class, 'status'])->withTrashed()->name('payrolls.status');
+        Route::delete('/payrolls/{payroll}', [PayrollController::class, 'destroy'])->name('payrolls.destroy');
+        Route::put('/payrolls/{payroll}/restore', [PayrollController::class, 'restore'])->withTrashed()->name('payrolls.restore');
+        Route::delete('/payrolls/{payroll}/force', [PayrollController::class, 'forceDelete'])->withTrashed()->name('payrolls.forceDelete');
 
         // Career
         Route::get('/careers', [CareerController::class, 'index'])->name('careers.index');

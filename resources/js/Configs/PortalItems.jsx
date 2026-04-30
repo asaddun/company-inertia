@@ -52,12 +52,6 @@ export const PortalItems = [
                 key: "payrolls",
                 label: "Payrolls",
                 path: "/portal/payrolls",
-                minLevel: Level.MANAGEMENT,
-            },
-            {
-                key: "my-payrolls",
-                label: "My Payrolls",
-                path: "/portal/payrolls/my",
                 minLevel: Level.EMPLOYEE,
             },
             {
