@@ -1,6 +1,7 @@
 import { Layout } from "antd";
 import Sidebar from "./Sidebar";
 import { useApp } from "../Context/AppContext";
+import { Colors } from "../Themes/Colors";
 const { Content } = Layout;
 
 export default function PortalLayout({ children }) {
@@ -9,7 +10,9 @@ export default function PortalLayout({ children }) {
         <Layout>
             {/* SIDEBAR DESKTOP */}
             <Sidebar isMobile={isMobile} />
-            <Content style={{ padding: 16 }}>{children}</Content>
+            <Content style={{ padding: 16, backgroundColor: Colors.canvas }}>
+                {children}
+            </Content>
         </Layout>
     );
 }
