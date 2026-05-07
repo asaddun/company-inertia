@@ -30,14 +30,14 @@ function AutosHero({ isHome }) {
                 <h1
                     className={`${titleSize} font-bold text-gray-900 leading-tight`}
                 >
-                    Dabellyou Autos
+                    Autos Performance
                 </h1>
 
                 <p className="mt-6 text-lg text-gray-600 max-w-xl">
                     Stands not just as a garage, but as a symbol of automotive
                     lifestyle and forward-thinking vision. Born from a small
-                    garage and a big idea, Dabellyou Autos was founded on a deep
-                    passion for machines, design, and performance.
+                    garage and a big idea, Autos Performance was founded on a
+                    deep passion for machines, design, and performance.
                 </p>
 
                 {isHome && (

@@ -31,7 +31,7 @@ function Footer() {
                                     objectFit: "contain",
                                 }}
                             /> */}
-                            Dabellyou
+                            Company
                         </Link>
                         <p className="mt-3 text-sm text-gray-500">
                             The best way to predict the Future is to Create it.

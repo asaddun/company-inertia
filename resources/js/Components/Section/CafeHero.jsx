@@ -21,7 +21,7 @@ function CafeHero({ isHome }) {
                 <h2
                     className={`${titleSize} font-bold text-gray-900 leading-tight`}
                 >
-                    Dabellyou Cafe
+                    Kawaii Cafe
                 </h2>
 
                 <p className="mt-6 text-lg text-gray-600 max-w-xl">
