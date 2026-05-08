@@ -136,18 +136,28 @@ function Navbar({ onHamburgerClick, isMobile }) {
                         </Space>
                     </Dropdown>
                 ) : (
-                    <Link href="/login">
-                        <Button
-                            style={{
-                                color: "#fff",
-                                backgroundColor: Colors.primary,
-                                fontSize: 16,
-                            }}
-                            icon={<LoginOutlined />}
-                        >
-                            Login
-                        </Button>
-                    </Link>
+                    <div className="flex gap-2">
+                        <Link href={route("login")}>
+                            <Button
+                                style={{
+                                    color: "#fff",
+                                    backgroundColor: Colors.primary,
+                                    fontSize: 16,
+                                }}
+                            >
+                                Login
+                            </Button>
+                        </Link>
+                        <Link href={route("register")}>
+                            <Button
+                                style={{
+                                    fontSize: 16,
+                                }}
+                            >
+                                Register
+                            </Button>
+                        </Link>
+                    </div>
                 )}
             </div>
         </Header>

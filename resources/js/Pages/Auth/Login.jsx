@@ -110,8 +110,8 @@ function Login() {
                 </Form.Item>
             </Form>
             <div>
-                Create new account?{" "}
-                <Link href={route("register")}>Register now.</Link>
+                Don't have an account?{" "}
+                <Link href={route("register")}>Register</Link>
             </div>
         </div>
     );

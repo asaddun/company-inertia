@@ -29,16 +29,12 @@ class RegisterController extends Controller
      */
     public function store(RegisterRequest $request)
     {
-        try {
-            $user = $this->service->createMember($request->validated());
+        $user = $this->service->createMember($request->validated());
+        Auth::login($user);
+        $request->session()->regenerate();
 
-            Auth::login($user);
-
-            return redirect()
-                ->route('portal.dashboard')
-                ->with('success', 'Account created successfully');
-        } catch (\Throwable $e) {
-            return back()->with('error', 'Registration error');
-        }
+        return redirect()
+            ->route('portal.dashboard')
+            ->with('success', 'Account created successfully');
     }
 }

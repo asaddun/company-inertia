@@ -154,8 +154,8 @@ function Register() {
                 </Form.Item>
             </Form>
             <div>
-                Already had an account?{" "}
-                <Link href={route("login")}>Login.</Link>
+                Already have an account?{" "}
+                <Link href={route("login")}>Login</Link>
             </div>
         </div>
     );

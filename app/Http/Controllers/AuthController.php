@@ -28,9 +28,10 @@ class AuthController extends Controller
             return redirect()->intended(route('portal.dashboard'))->with('success', 'Login successful.');
         }
 
-        return back()->withErrors([
-            'login' => 'Invalid Username or Password.',
-        ]);
+        return back()
+            ->withErrors([
+                'login' => 'Invalid Username or Password.',
+            ]);
     }
 
     public function destroy(Request $request)
