@@ -76,7 +76,7 @@ class UserController extends Controller
             $this->service->deleteUser($user);
 
             return redirect()
-                ->route('users.index')
+                ->back()
                 ->with('success', 'User deleted successfully');
         } catch (\Throwable $e) {
             return back()->with('error', $e ? 'Failed to delete User, ' . $e->getMessage() : 'Failed to delete User');
@@ -102,7 +102,7 @@ class UserController extends Controller
             $this->service->forceDeleteUser($user);
 
             return redirect()
-                ->route('users.index')
+                ->back()
                 ->with('success', 'User deleted successfully');
         } catch (\Throwable $e) {
             return back()->with('error', $e ? 'Failed to delete User, ' . $e->getMessage() : 'Failed to delete User');

@@ -10,7 +10,7 @@ use Illuminate\Support\Str;
 
 class UserService
 {
-    public function getUsers($filters): LengthAwarePaginator
+    public function getUsers(array $filters): LengthAwarePaginator
     {
         $query = User::query();
 
@@ -57,6 +57,17 @@ class UserService
             'username' => $username,
             'password' => Hash::make('companypassword'),
             'level' => UserLevel::EMPLOYEE,
+        ]);
+    }
+
+    public function createMember(array $data)
+    {
+        return User::create([
+            'name' => $data['name'],
+            'username' => $data['username'],
+            'identity_number' => $data['identity_number'],
+            'password' => Hash::make($data['password']),
+            'level' => UserLevel::MEMBER,
         ]);
     }
 

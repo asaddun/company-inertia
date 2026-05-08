@@ -16,6 +16,7 @@ use Illuminate\Notifications\Notifiable;
     'username',
     'password',
     'phone',
+    'identity_number',
     'bank_account_number',
     'level',
     'wage_per_component',

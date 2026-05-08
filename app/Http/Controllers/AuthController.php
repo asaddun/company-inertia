@@ -15,7 +15,7 @@ class AuthController extends Controller
             return redirect()->route('portal.dashboard');
         }
 
-        return Inertia::render('Login');
+        return Inertia::render('Auth/Login');
     }
 
     public function store(LoginRequest $request)

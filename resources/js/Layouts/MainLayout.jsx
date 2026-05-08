@@ -16,9 +16,10 @@ const { useBreakpoint } = Grid;
 export default function MainLayout({ children }) {
     const screens = useBreakpoint();
     const isMobile = !screens.lg;
-    const { url } = usePage();
-    const isOffice = url.startsWith("/portal");
-    const isLogin = url.startsWith("/login");
+    const { url, component } = usePage();
+    const isOffice = component.startsWith("Portal/");
+    const isAuth = component.startsWith("Auth/");
+    // const isAuth = url.startsWith("/login");
     const [loading, setLoading] = useState(false);
     const [navbarOpen, setNavbarOpen] = useState(false);
     const [portalOpen, setPortalOpen] = useState(false);
@@ -92,7 +93,7 @@ export default function MainLayout({ children }) {
                         <SyncLoader color={Colors.primary} />
                     </div>
                 )}
-                {!isLogin && (
+                {!isAuth && (
                     <>
                         <Navbar
                             isMobile={isMobile}
@@ -124,7 +125,7 @@ export default function MainLayout({ children }) {
                         {children}
                     </AppContext.Provider>
                 </Content>
-                {!isOffice && !isLogin && <Footer />}
+                {!isOffice && !isAuth && <Footer />}
             </Layout>
         </>
     );

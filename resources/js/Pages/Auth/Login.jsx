@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { Form, Input, Button, Typography } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
-import { Colors } from "../Themes/Colors";
-import { router, usePage } from "@inertiajs/react";
+import { Colors } from "../../Themes/Colors";
+import { Link, router, usePage } from "@inertiajs/react";
+import { color } from "framer-motion";
 // import { Logos } from "../assets";
 
 const { Title } = Typography;
@@ -30,8 +31,7 @@ function Login() {
 
     return (
         <div className="flex-1 flex flex-col justify-center items-center">
-            {/* Logo */}
-            <div className="mb-8">
+            <Link href="/">
                 {/* <img
                     src={Logos.main}
                     alt="Dabellyou logo"
@@ -42,9 +42,18 @@ function Login() {
                         objectFit: "contain",
                     }}
                 /> */}
+                <Title
+                    level={2}
+                    className="text-center"
+                    style={{ color: Colors.primary }}
+                >
+                    Company
+                </Title>
+            </Link>
 
+            <div className="mb-8">
                 <Title level={2} className="text-center">
-                    Sign in to your account
+                    Log in to your account
                 </Title>
             </div>
 
@@ -60,7 +69,7 @@ function Login() {
                     rules={[
                         {
                             required: true,
-                            message: "Please input your username",
+                            message: "Please input your Username",
                         },
                     ]}
                 >
@@ -76,7 +85,7 @@ function Login() {
                     rules={[
                         {
                             required: true,
-                            message: "Please input your password",
+                            message: "Please input your Password",
                         },
                     ]}
                     validateStatus={errors.login ? "error" : ""}
@@ -100,6 +109,10 @@ function Login() {
                     </Button>
                 </Form.Item>
             </Form>
+            <div>
+                Create new account?{" "}
+                <Link href={route("register")}>Register now.</Link>
+            </div>
         </div>
     );
 }

@@ -18,9 +18,9 @@ return new class extends Migration
             $table->string('email')->unique()->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->integer('identity_number')->unique()->nullable();
-            $table->integer('phone')->nullable();
-            $table->integer('bank_account_number')->nullable();
+            $table->string('identity_number')->unique()->nullable();
+            $table->string('phone')->nullable();
+            $table->string('bank_account_number')->nullable();
             // See App\Enums\UserLevel
             $table->unsignedTinyInteger('level')->default(1);
             $table->rememberToken();
