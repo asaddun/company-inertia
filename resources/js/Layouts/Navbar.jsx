@@ -1,5 +1,10 @@
 import { Layout, Menu, Button, Dropdown, ConfigProvider, Space } from "antd";
-import { MenuOutlined, LogoutOutlined, LoginOutlined } from "@ant-design/icons";
+import {
+    MenuOutlined,
+    LogoutOutlined,
+    LoginOutlined,
+    UserOutlined,
+} from "@ant-design/icons";
 import { Colors } from "../Themes/Colors";
 import { HomeItems } from "../Configs/HomeItems";
 import { useState } from "react";
@@ -35,6 +40,14 @@ function Navbar({ onHamburgerClick, isMobile }) {
     );
 
     const profileItems = [
+        {
+            key: "accound",
+            icon: <UserOutlined />,
+            label: "Account",
+        },
+        {
+            type: "divider",
+        },
         {
             key: "logout",
             icon: <LogoutOutlined />,
