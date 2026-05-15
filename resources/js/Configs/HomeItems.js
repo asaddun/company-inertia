@@ -10,14 +10,9 @@ export const HomeItems = [
         path: "/career",
     },
     {
-        key: "autos",
-        label: "Autos",
-        path: "/autos",
-    },
-    {
-        key: "cafe",
-        label: "Cafe",
-        path: "/cafe",
+        key: "membership",
+        label: "Membership",
+        path: "/membership",
     },
     {
         key: "portal",
