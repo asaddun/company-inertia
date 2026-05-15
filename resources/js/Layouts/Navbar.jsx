@@ -25,7 +25,7 @@ function Navbar({ onHamburgerClick, isMobile }) {
 
     const profileItems = [
         {
-            key: "accound",
+            key: "account",
             icon: <UserOutlined />,
             label: "Account",
             onClick: () => router.get(route("account")),

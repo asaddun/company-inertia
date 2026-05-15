@@ -13,6 +13,10 @@ createInertiaApp({
         const page = await importPage();
 
         // 2. Sekarang page.default sudah bisa diakses karena sudah di-await
+        if (name === "Error") {
+            return page;
+        }
+
         if (name.startsWith("Portal/")) {
             page.default.layout =
                 page.default.layout ||
