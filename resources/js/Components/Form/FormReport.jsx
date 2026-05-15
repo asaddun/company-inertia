@@ -95,7 +95,7 @@ function FormReport({ selectedDate, types, selectedType, jobFields, report }) {
                     );
                 })}
 
-                <Form.Item label={null}>
+                <Form.Item className="flex justify-end">
                     <Button
                         style={{
                             backgroundColor: Colors.primary,

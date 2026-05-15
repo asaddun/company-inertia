@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AccountController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CareerController;
 use App\Http\Controllers\JobTypeController;
@@ -77,5 +78,11 @@ Route::middleware('auth')->group(function () {
             Route::put('/job-type/{jobType}/restore', [JobTypeController::class, 'restore'])->withTrashed()->name('job-types.restore');
             Route::delete('/job-type/{jobType}/force', [JobTypeController::class, 'forceDelete'])->withTrashed()->name('job-types.forceDelete');
         });
+
+        // Account Center
+        Route::get('/account', [AccountController::class, 'index'])->name('account');
+        Route::patch('/account/info', [AccountController::class, 'updateInfo'])->name('account.info.update');
+        Route::patch('/account/username', [AccountController::class, 'updateUsername'])->name('account.username.update');
+        Route::patch('/account/password', [AccountController::class, 'updatePassword'])->name('account.password.update');
     });
 });

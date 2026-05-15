@@ -137,7 +137,7 @@ function Register() {
                 >
                     <Input.Password
                         prefix={<LockOutlined />}
-                        placeholder="Re-enter Password"
+                        placeholder="Confirm Password"
                     />
                 </Form.Item>
 

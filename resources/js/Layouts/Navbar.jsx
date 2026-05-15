@@ -14,23 +14,7 @@ import { Link, router, usePage } from "@inertiajs/react";
 const { Header } = Layout;
 
 function Navbar({ onHamburgerClick, isMobile }) {
-    const [loading, setLoading] = useState(false);
     const { auth } = usePage().props;
-
-    const handleLogout = async () => {
-        router.post(route("logout"), {
-            onStart: () => {
-                // Bisa tambahkan loading state di sini jika perlu
-                setLoading(true);
-            },
-            onError: (errors) => {
-                console.error("Logout Failed:", errors);
-            },
-            onFinish: () => {
-                setLoading(false);
-            },
-        });
-    };
 
     const items = HomeItems.filter((item) => !item.auth || auth.user).map(
         (item) => ({
@@ -44,6 +28,7 @@ function Navbar({ onHamburgerClick, isMobile }) {
             key: "accound",
             icon: <UserOutlined />,
             label: "Account",
+            onClick: () => router.get(route("account")),
         },
         {
             type: "divider",
@@ -52,6 +37,7 @@ function Navbar({ onHamburgerClick, isMobile }) {
             key: "logout",
             icon: <LogoutOutlined />,
             label: "Logout",
+            onClick: () => router.post(route("logout")),
             danger: true,
         },
     ];
@@ -135,17 +121,12 @@ function Navbar({ onHamburgerClick, isMobile }) {
                     <Dropdown
                         menu={{
                             items: profileItems,
-                            onClick: ({ key }) => {
-                                if (key === "logout") {
-                                    handleLogout();
-                                }
-                            },
                         }}
                         trigger={["click"]}
                         placement="bottomRight"
                     >
                         <Space style={{ cursor: "pointer" }}>
-                            <Button loading={loading}>{auth.user?.name}</Button>
+                            <Button>{auth.user?.name}</Button>
                         </Space>
                     </Dropdown>
                 ) : (
