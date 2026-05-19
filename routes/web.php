@@ -3,6 +3,7 @@
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CareerController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\JobTypeController;
 use App\Http\Controllers\PayrollController;
 use App\Http\Controllers\RegisterController;
@@ -27,9 +28,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/logout', [AuthController::class, 'destroy'])->name('logout');
 
     Route::prefix('portal')->group(function () {
-        Route::get('/', function () {
-            return Inertia::render('Portal/Dashboard');
-        })->name('portal.dashboard');
+        Route::get('/', [DashboardController::class, 'index'])->name('portal.dashboard');
 
         // User
         Route::get('/users', [UserController::class, 'index'])->name('users.index');
