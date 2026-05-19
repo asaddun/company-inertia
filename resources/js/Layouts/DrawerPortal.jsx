@@ -10,6 +10,8 @@ import { Link, usePage } from "@inertiajs/react";
 function DrawerPortal({ open, onClose }) {
     const [openKeys, setOpenKeys] = useState([]);
     const { auth } = usePage().props;
+    const { url } = usePage();
+    const currentPath = url.split("?")[0];
 
     const onOpenChange = (keys) => {
         setOpenKeys(keys.slice(-1));
@@ -99,7 +101,7 @@ function DrawerPortal({ open, onClose }) {
                 <Menu
                     theme="dark"
                     mode="inline"
-                    // selectedKeys={[location.pathname]}
+                    selectedKeys={[currentPath]}
                     openKeys={openKeys}
                     onOpenChange={onOpenChange}
                     onClick={onMenuClick}
