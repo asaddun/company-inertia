@@ -5,14 +5,22 @@ import { Colors } from "../Themes/Colors";
 function Error({ status }) {
     const config = {
         403: {
+            status: "403",
             title: "403",
             subTitle: "You are not authorized to access this page.",
         },
         404: {
+            status: "404",
             title: "404",
             subTitle: "The page you visited does not exist.",
         },
+        429: {
+            status: "error",
+            title: "429",
+            subTitle: "Too many requests. Please try again later.",
+        },
         500: {
+            status: "500",
             title: "500",
             subTitle: "Something went wrong.",
         },
@@ -23,7 +31,7 @@ function Error({ status }) {
     return (
         <div className="min-h-screen flex items-center justify-center">
             <Result
-                status={String(status)}
+                status={current.status}
                 title={current.title}
                 subTitle={current.subTitle}
                 extra={
