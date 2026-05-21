@@ -16,16 +16,18 @@ Route::get('/', function () {
     return Inertia::render('Home');
 });
 
-Route::get('/login', [AuthController::class, 'create'])->name('login');
-Route::post('/login', [AuthController::class, 'store'])->name('login.store');
+Route::middleware('throttle:5,1')->group(function () {
+    Route::get('/login', [AuthController::class, 'create'])->name('login');
+    Route::post('/login', [AuthController::class, 'store'])->name('login.store');
 
-Route::get('/register', [RegisterController::class, 'create'])->name('register');
-Route::post('/register', [RegisterController::class, 'store'])->name('register.store');
+    Route::get('/register', [RegisterController::class, 'create'])->name('register');
+    Route::post('/register', [RegisterController::class, 'store'])->name('register.store');
+});
 
 Route::get('/career', [CareerController::class, 'active'])->name('careers.active');
 
 Route::middleware('auth')->group(function () {
-    Route::post('/logout', [AuthController::class, 'destroy'])->name('logout');
+    Route::post('/logout', [AuthController::class, 'destroy'])->name('logout')->middleware('throttle:5,1');
 
     Route::prefix('portal')->group(function () {
         Route::get('/', [DashboardController::class, 'index'])->name('portal.dashboard');
@@ -82,6 +84,6 @@ Route::middleware('auth')->group(function () {
         Route::get('/account', [AccountController::class, 'index'])->name('account');
         Route::patch('/account/info', [AccountController::class, 'updateInfo'])->name('account.info.update');
         Route::patch('/account/username', [AccountController::class, 'updateUsername'])->name('account.username.update');
-        Route::patch('/account/password', [AccountController::class, 'updatePassword'])->name('account.password.update');
+        Route::patch('/account/password', [AccountController::class, 'updatePassword'])->name('account.password.update')->middleware('throttle:5,1');
     });
 });
