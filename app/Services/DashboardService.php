@@ -64,13 +64,21 @@ class DashboardService
 
     private function weeklyQuantityChart(): array
     {
+        $weeks = Report::query()
+            ->select('week_code')
+            ->distinct()
+            ->orderByDesc('week_code')
+            ->limit(7)
+            ->pluck('week_code');
+
         $reports = Report::query()
             ->selectRaw('
-            week_code,
-            job_type_id,
-            SUM(quantity) as total_qty
-        ')
+                week_code,
+                job_type_id,
+                SUM(quantity) as total_qty
+            ')
             ->with('jobType:id,name')
+            ->whereIn('week_code', $weeks)
             ->groupBy('week_code', 'job_type_id')
             ->orderBy('week_code')
             ->get();
