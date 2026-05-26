@@ -1,7 +1,13 @@
 import { Deferred, usePage } from "@inertiajs/react";
-import { Skeleton, Typography, Card } from "antd";
+import { Skeleton, Typography, Card, FloatButton } from "antd";
 import SummaryCard from "../../../Components/Dashboard/SummaryCard";
 import WeeklyQuantityChart from "../../../Components/Dashboard/WeeklyQuantityChart";
+import {
+    FileTextOutlined,
+    ThunderboltOutlined,
+    WalletOutlined,
+} from "@ant-design/icons";
+import { Colors } from "../../../Themes/Colors";
 
 const { Title } = Typography;
 function Management() {
@@ -27,6 +33,23 @@ function Management() {
                     </Card>
                 </Deferred>
             </div>
+            <FloatButton.Group
+                shape="circle"
+                trigger="click"
+                type="primary"
+                icon={<ThunderboltOutlined />}
+            >
+                <FloatButton
+                    icon={<FileTextOutlined />}
+                    tooltip="Create Report"
+                    styles={{ backgroundColor: Colors.primary }}
+                />
+
+                <FloatButton
+                    icon={<WalletOutlined />}
+                    tooltip="Submit Payroll"
+                />
+            </FloatButton.Group>
         </>
     );
 }
