@@ -4,6 +4,7 @@ use App\Http\Controllers\AccountController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CareerController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\GlobalController;
 use App\Http\Controllers\JobTypeController;
 use App\Http\Controllers\PayrollController;
 use App\Http\Controllers\RegisterController;
@@ -16,11 +17,11 @@ Route::get('/', function () {
     return Inertia::render('Home');
 });
 
-Route::middleware('throttle:5,1')->group(function () {
-    Route::get('/login', [AuthController::class, 'create'])->name('login');
-    Route::post('/login', [AuthController::class, 'store'])->name('login.store');
+Route::get('/login', [AuthController::class, 'create'])->name('login');
+Route::get('/register', [RegisterController::class, 'create'])->name('register');
 
-    Route::get('/register', [RegisterController::class, 'create'])->name('register');
+Route::middleware('throttle:5,1')->group(function () {
+    Route::post('/login', [AuthController::class, 'store'])->name('login.store');
     Route::post('/register', [RegisterController::class, 'store'])->name('register.store');
 });
 
@@ -37,6 +38,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/users', [UserController::class, 'store'])->name('users.store');
         Route::put('/users/{user}', [UserController::class, 'update'])->withTrashed()->name('users.update');
         Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
+        Route::put('/users/{user}/reset', [UserController::class, 'reset'])->withTrashed()->name('users.reset');
         Route::put('/users/{user}/restore', [UserController::class, 'restore'])->withTrashed()->name('users.restore');
         Route::delete('/users/{user}/force', [UserController::class, 'forceDelete'])->withTrashed()->name('users.forceDelete');
 
@@ -70,6 +72,9 @@ Route::middleware('auth')->group(function () {
 
         // Configuration
         Route::prefix('config')->group(function () {
+            // Global Configuration
+            Route::get('/global', [GlobalController::class, 'index'])->name('global');
+
             // Job Type
             Route::get('/job-type', [JobTypeController::class, 'index'])->name('job-types.index');
             Route::post('/job-type', [JobTypeController::class, 'store'])->name('job-types.store');

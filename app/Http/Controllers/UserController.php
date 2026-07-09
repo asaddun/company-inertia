@@ -83,6 +83,19 @@ class UserController extends Controller
         }
     }
 
+    public function reset(User $user)
+    {
+        try {
+            $this->service->resetCredential($user);
+
+            return redirect()
+                ->back()
+                ->with('success', 'User credentials reset successfully');
+        } catch (\Throwable $e) {
+            return back()->with('error', $e ? 'Failed to credentials reset User, ' . $e->getMessage() : 'Failed to credentials reset User');
+        }
+    }
+
     public function restore(User $user)
     {
         try {

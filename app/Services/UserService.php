@@ -4,12 +4,20 @@ namespace App\Services;
 
 use App\Enums\UserLevel;
 use App\Models\User;
+use App\Models\Setting;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
 class UserService
 {
+    private $settings;
+
+    public function __construct()
+    {
+        $this->settings = Setting::getSetting();
+    }
+
     public function getUsers(array $filters): LengthAwarePaginator
     {
         $query = User::query();
@@ -55,7 +63,7 @@ class UserService
         return User::create([
             'name' => $data['name'],
             'username' => $username,
-            'password' => Hash::make('companypassword'),
+            'password' => Hash::make($this->settings->default_password),
             'level' => UserLevel::EMPLOYEE,
         ]);
     }
@@ -77,6 +85,17 @@ class UserService
             throw new \Exception('User is deleted');
         }
         $user->update($data);
+        return $user->fresh();
+    }
+
+    public function resetCredential(User $user)
+    {
+        if ($user->trashed()) {
+            throw new \Exception('User is deleted');
+        }
+        $user->username = Str::of($user->name)->lower()->slug('.');
+        $user->password = Hash::make($this->settings->default_password);
+        $user->save();
         return $user->fresh();
     }
 

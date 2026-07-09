@@ -67,6 +67,10 @@ function Users({ users, levels, filter, defaultFilters, filterKeys }) {
         router.delete(route("users.destroy", { user: id }));
     };
 
+    const handleReset = async (id) => {
+        router.put(route("users.reset", { user: id }));
+    };
+
     const handleRestore = async (id) => {
         router.put(route("users.restore", { user: id }));
     };
@@ -119,6 +123,22 @@ function Users({ users, levels, filter, defaultFilters, filterKeys }) {
                                     shape="circle"
                                     size="small"
                                     icon={<DeleteOutlined />}
+                                />
+                            </Popconfirm>
+                            <Popconfirm
+                                title="Reset Credential?"
+                                description="This will reset the user's username dan password to default. Are you sure?"
+                                okText="Reset"
+                                okButtonProps={{ danger: true }}
+                                cancelText="Cancel"
+                                onConfirm={() => handleReset(record.id)}
+                            >
+                                <Button
+                                    color="danger"
+                                    variant="solid"
+                                    shape="circle"
+                                    size="small"
+                                    icon={<RedoOutlined />}
                                 />
                             </Popconfirm>
                         </>
