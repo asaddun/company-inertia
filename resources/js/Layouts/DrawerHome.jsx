@@ -5,7 +5,7 @@ import { HomeItems } from "../Configs/HomeItems.js";
 import { Link, usePage } from "@inertiajs/react";
 
 function DrawerHome({ open, onClose }) {
-    const { auth } = usePage().props;
+    const { app, auth } = usePage().props;
 
     const items = HomeItems.filter((item) => !item.auth || auth.user).map(
         (item) => ({
@@ -36,7 +36,7 @@ function DrawerHome({ open, onClose }) {
                             objectFit: "contain",
                         }}
                     /> */}
-                    Company
+                    {app.company_name}
                 </Link>
             }
             placement="left"

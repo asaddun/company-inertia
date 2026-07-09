@@ -82,6 +82,12 @@ export const PortalItems = [
         minLevel: Level.MANAGEMENT,
         children: [
             {
+                key: "global",
+                label: "Global",
+                path: "/portal/config/global",
+                minLevel: Level.MANAGEMENT,
+            },
+            {
                 key: "jobtype",
                 label: "Job Type",
                 path: "/portal/config/job-type",

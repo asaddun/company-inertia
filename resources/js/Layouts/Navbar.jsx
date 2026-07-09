@@ -14,7 +14,7 @@ import { Link, router, usePage } from "@inertiajs/react";
 const { Header } = Layout;
 
 function Navbar({ onHamburgerClick, isMobile }) {
-    const { auth } = usePage().props;
+    const { app, auth } = usePage().props;
 
     const items = HomeItems.filter((item) => !item.auth || auth.user).map(
         (item) => ({
@@ -81,7 +81,7 @@ function Navbar({ onHamburgerClick, isMobile }) {
                                 objectFit: "contain",
                             }}
                         /> */}
-                        Company
+                        {app.company_name}
                     </Link>
                 )}
             </div>
