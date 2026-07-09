@@ -9,7 +9,7 @@ function CompanyProfile({ settings }) {
     const [form] = Form.useForm();
 
     const handleFinish = async (values) => {
-        // router.patch(route("account.info.update"), values);
+        router.patch(route("global.update"), values);
     };
 
     return (
@@ -18,12 +18,12 @@ function CompanyProfile({ settings }) {
                 form={form}
                 layout="vertical"
                 initialValues={{
-                    name: settings.company_name,
+                    company_name: settings.company_name,
                 }}
                 style={{ width: isMobile ? "100%" : "50%" }}
                 onFinish={handleFinish}
             >
-                <Form.Item label="Company Name" name="name">
+                <Form.Item label="Company Name" name="company_name">
                     <Input />
                 </Form.Item>
 

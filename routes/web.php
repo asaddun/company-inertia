@@ -4,7 +4,7 @@ use App\Http\Controllers\AccountController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CareerController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\GlobalController;
+use App\Http\Controllers\SettingController;
 use App\Http\Controllers\JobTypeController;
 use App\Http\Controllers\PayrollController;
 use App\Http\Controllers\RegisterController;
@@ -73,7 +73,8 @@ Route::middleware('auth')->group(function () {
         // Configuration
         Route::prefix('config')->group(function () {
             // Global Configuration
-            Route::get('/global', [GlobalController::class, 'index'])->name('global');
+            Route::get('/global', [SettingController::class, 'index'])->name('global');
+            Route::patch('/global', [SettingController::class, 'update'])->name('global.update');
 
             // Job Type
             Route::get('/job-type', [JobTypeController::class, 'index'])->name('job-types.index');

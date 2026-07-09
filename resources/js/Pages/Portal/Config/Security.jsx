@@ -8,7 +8,7 @@ function Security({ settings }) {
     const [form] = Form.useForm();
 
     const handleFinish = async (values) => {
-        // router.patch(route("account.info.update"), values);
+        router.patch(route("global.update"), values);
     };
 
     return (
@@ -18,12 +18,12 @@ function Security({ settings }) {
                     form={form}
                     layout="vertical"
                     initialValues={{
-                        password: settings.default_password,
+                        default_password: settings.default_password,
                     }}
                     style={{ width: isMobile ? "100%" : "50%" }}
                     onFinish={handleFinish}
                 >
-                    <Form.Item label="Default Password" name="password">
+                    <Form.Item label="Default Password" name="default_password">
                         <Input />
                     </Form.Item>
 
