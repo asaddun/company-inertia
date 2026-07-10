@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use App\Models\Setting;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Middleware;
 
 class HandleInertiaRequests extends Middleware
@@ -36,10 +37,17 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
-        $settings = Setting::getSetting();
+        $setting = Setting::getSetting();
+        $logoUrl = null;
+
+        if ($setting->company_logo && Storage::disk('public')->exists($setting->company_logo)) {
+            $logoUrl = Storage::url($setting->company_logo)
+                . '?v=' . Storage::disk('public')->lastModified($setting->company_logo);
+        }
         return array_merge(parent::share($request), [
             'app' => [
-                'company_name' => $settings->company_name
+                'company_name' => $setting->company_name,
+                'company_logo' => $logoUrl,
             ],
             'auth' => [
                 'user' => $request->user()?->only('id', 'name', 'username', 'level', 'bank_account_number', 'phone', 'identity_number'),

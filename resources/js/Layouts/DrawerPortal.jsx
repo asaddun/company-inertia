@@ -9,7 +9,7 @@ import { Link, usePage } from "@inertiajs/react";
 
 function DrawerPortal({ open, onClose }) {
     const [openKeys, setOpenKeys] = useState([]);
-    const { auth } = usePage().props;
+    const { app, auth } = usePage().props;
     const { url } = usePage();
     const currentPath = url.split("?")[0];
 
@@ -76,16 +76,16 @@ function DrawerPortal({ open, onClose }) {
                             color: Colors.primary,
                         }}
                     >
-                        {/* <img
-                            src={Logos.main}
-                            alt="Dabellyou"
+                        <img
+                            src={app.company_logo}
+                            alt="Company Logo"
                             style={{
                                 height: 32,
                                 width: 32,
                                 objectFit: "contain",
                             }}
-                        /> */}
-                        Company
+                        />
+                        {app.company_name}
                     </Link>
                 }
                 size="60%"

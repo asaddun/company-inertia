@@ -13,7 +13,7 @@ function Security({ settings }) {
 
     return (
         <div className="flex flex-col gap-2">
-            <Card title="Default Password" className="w-full">
+            <Card title="Security" className="w-full">
                 <Form
                     form={form}
                     layout="vertical"

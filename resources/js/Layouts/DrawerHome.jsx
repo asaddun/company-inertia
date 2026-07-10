@@ -27,15 +27,15 @@ function DrawerHome({ open, onClose }) {
                         color: Colors.primary,
                     }}
                 >
-                    {/* <img
-                        src={Logos.main}
-                        alt="Dabellyou"
+                    <img
+                        src={app.company_logo}
+                        alt="Company Logo"
                         style={{
                             height: 32,
                             width: 32,
                             objectFit: "contain",
                         }}
-                    /> */}
+                    />
                     {app.company_name}
                 </Link>
             }

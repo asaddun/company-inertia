@@ -2,16 +2,17 @@
 
 namespace App\Http\Requests\Setting;
 
+use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class SettingUpdateRequest extends FormRequest
+class SettingStoreRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return true;
+        return false;
     }
 
     /**
@@ -22,14 +23,7 @@ class SettingUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'company_name' => ['nullable', 'string', 'max:255'],
-            'company_logo' => [
-                'nullable',
-                'image',
-                'mimes:jpg,jpeg,png,webp',
-                'max:2048',
-            ],
-            'default_password' => ['nullable', 'string', 'max:255'],
+            //
         ];
     }
 }

@@ -11,12 +11,10 @@ use Inertia\Inertia;
 class SettingController extends Controller
 {
     protected $service;
-    protected $setting;
 
     public function __construct(SettingService $service)
     {
         $this->service = $service;
-        $this->setting = Setting::getSetting();
     }
 
     /**
@@ -25,7 +23,7 @@ class SettingController extends Controller
     public function index()
     {
         return Inertia::render('Portal/Config/Global', [
-            'settings' => $this->setting
+            'settings' => Setting::getSetting()
         ]);
     }
 
@@ -67,7 +65,7 @@ class SettingController extends Controller
     public function update(SettingUpdateRequest $request)
     {
         try {
-            $this->service->updateSetting($this->setting, $request->validated());
+            $this->service->updateSetting($request->validated(), $request->file('company_logo'));
 
             return redirect()
                 ->route('global')
