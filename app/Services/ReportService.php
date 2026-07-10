@@ -72,12 +72,46 @@ class ReportService
                 throw new \InvalidArgumentException('Quantity must be greater than 0');
             }
 
-            $wagePerItem = $jobType->wage_per_item;
+            $workDateCarbon = Carbon::parse($data['work_date']);
+            $workDate = $workDateCarbon->toDateString();
+
+            $weekCode = $workDateCarbon->isoWeekYear
+                . 'W'
+                . str_pad($workDateCarbon->isoWeek, 2, '0', STR_PAD_LEFT);
+
+            /*
+            |--------------------------------------------------------------------------
+            | Report (Create / Update)
+            |--------------------------------------------------------------------------
+            */
+            $existingReport = Report::withTrashed()
+                ->where('user_id', $userId)
+                ->where('job_type_id', $jobType->id)
+                ->where('work_date', $workDate)
+                ->first();
+
+            if ($existingReport) {
+                // UPDATE
+                $wagePerItem = $existingReport->wage_per_item;
+                $pricePerItem = $existingReport->price_per_item;
+            } else {
+                // CREATE
+                $wagePerItem = $jobType->wage_per_item;
+                $pricePerItem = $jobType->current_price;
+            }
+
+            /*
+            |--------------------------------------------------------------------------
+            | Calculate Wage
+            |--------------------------------------------------------------------------
+            */
             $wageAmount = $quantity * $wagePerItem;
 
-            if ($jobType->current_price > 0) {
-                $pricePerItem = $jobType->current_price;
-                $expectedStored = $data['quantity'] * $pricePerItem;
+            $expectedStored = null;
+            $bonus = null;
+
+            if ($pricePerItem > 0) {
+                $expectedStored = $quantity * $pricePerItem;
                 $stored = $data['stored'] ?? 0;
 
                 if ($stored > $expectedStored) {
@@ -89,13 +123,11 @@ class ReportService
                 }
             }
 
-            $workDateCarbon = Carbon::parse($data['work_date']);
-            $workDate = $workDateCarbon->toDateString();
-
-            $weekCode = $workDateCarbon->isoWeekYear
-                . 'W'
-                . str_pad($workDateCarbon->isoWeek, 2, '0', STR_PAD_LEFT);
-
+            /*
+            |--------------------------------------------------------------------------
+            | Payroll
+            |--------------------------------------------------------------------------
+            */
             try {
                 $payroll = Payroll::create([
                     'user_id'           => $userId,
@@ -104,7 +136,6 @@ class ReportService
                     'status'            => PayrollStatus::DRAFT,
                 ]);
             } catch (QueryException $e) {
-                // kalau tabrakan unique key → ambil row yang menang
                 $payroll = Payroll::where('user_id', $userId)
                     ->where('week_code', $weekCode)
                     ->first();
@@ -118,32 +149,39 @@ class ReportService
                 }
             }
 
+            /*
+            |--------------------------------------------------------------------------
+            | Save Report
+            |--------------------------------------------------------------------------
+            */
             $report = Report::withTrashed()->updateOrCreate(
-                // Kondisi pencarian (unique key)
                 [
                     'user_id'     => $userId,
                     'job_type_id' => $jobType->id,
                     'work_date'   => $workDate,
                 ],
-
-                // Data yang di-update / di-insert
                 [
                     'week_code'      => $weekCode,
                     'payroll_id'     => $payroll->id,
                     'quantity'       => $quantity,
-                    'expected'       => $expectedStored ?? null,
+
+                    // Snapshot
+                    'wage_per_item'  => $wagePerItem,
+                    'price_per_item' => $pricePerItem,
+
+                    'expected'       => $expectedStored,
                     'stored'         => $data['stored'] ?? null,
-                    'bonus'          => $bonus ?? null,
+                    'bonus'          => $bonus,
                     'wage_amount'    => $wageAmount,
                 ]
             );
 
-            // Restore jika ada di trash
             if ($report->trashed()) {
                 $report->restore();
             }
 
             app(PayrollService::class)->recalculate($payroll->id);
+
             return $report;
         });
     }

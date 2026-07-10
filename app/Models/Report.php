@@ -17,6 +17,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
     'expected',
     'stored',
     'bonus',
+    'wage_per_item',
+    'price_per_item',
     'wage_amount',
 ])]
 class Report extends Model
