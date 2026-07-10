@@ -24,6 +24,11 @@ function Error({ status }) {
             title: "500",
             subTitle: "Something went wrong.",
         },
+        503: {
+            status: "error",
+            title: "503",
+            subTitle: "Service unavailable. Please try again later.",
+        },
     };
 
     const current = config[status] || config[500];
@@ -35,16 +40,18 @@ function Error({ status }) {
                 title={current.title}
                 subTitle={current.subTitle}
                 extra={
-                    <Button
-                        type="primary"
-                        style={{
-                            backgroundColor: Colors.primary,
-                            color: "white",
-                        }}
-                        onClick={() => router.get("/")}
-                    >
-                        Back Home
-                    </Button>
+                    current.title !== "503" ? (
+                        <Button
+                            type="primary"
+                            style={{
+                                backgroundColor: Colors.primary,
+                                color: "white",
+                            }}
+                            onClick={() => router.get("/")}
+                        >
+                            Back Home
+                        </Button>
+                    ) : null
                 }
             />
         </div>
