@@ -34,6 +34,7 @@ function FormInfoUser({ open, onCancel, onSubmit, user, levels }) {
             onOk={() => form.submit()}
             destroyOnHidden
             okText="Update"
+            centered
         >
             <Form form={form} layout="vertical" onFinish={handleFinish}>
                 <Form.Item name="identity_number" label="ID Number">
