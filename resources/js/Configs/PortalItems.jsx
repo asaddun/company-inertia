@@ -29,16 +29,16 @@ export const PortalItems = [
         minLevel: Level.EMPLOYEE,
         children: [
             {
-                key: "all-reports",
-                label: "All Reports",
-                path: "/portal/reports",
-                minLevel: Level.MANAGEMENT,
-            },
-            {
                 key: "my-reports",
                 label: "My Reports",
                 path: "/portal/reports/my",
                 minLevel: Level.EMPLOYEE,
+            },
+            {
+                key: "all-reports",
+                label: "All Reports",
+                path: "/portal/reports",
+                minLevel: Level.MANAGEMENT,
             },
         ],
     },

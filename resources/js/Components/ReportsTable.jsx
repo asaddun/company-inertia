@@ -104,24 +104,73 @@ function ReportsTable({
                     {!isTrash ? (
                         record.payroll.status == "draft" ? (
                             <>
-                                <Button
-                                    color="primary"
-                                    variant="solid"
-                                    shape="circle"
-                                    size="small"
-                                    icon={<EditOutlined />}
-                                    onClick={() =>
-                                        router.get(
-                                            route("reports.edit", record.id),
-                                        )
-                                    }
-                                />
+                                <Tooltip title="Edit Report">
+                                    <Button
+                                        color="primary"
+                                        variant="solid"
+                                        shape="circle"
+                                        size="small"
+                                        icon={<EditOutlined />}
+                                        onClick={() =>
+                                            router.get(
+                                                route(
+                                                    "reports.edit",
+                                                    record.id,
+                                                ),
+                                            )
+                                        }
+                                    />
+                                </Tooltip>
+                                <Tooltip title="Delete Report">
+                                    <Popconfirm
+                                        title="Move to trash?"
+                                        okText="Move"
+                                        okButtonProps={{ danger: true }}
+                                        cancelText="Cancel"
+                                        onConfirm={() =>
+                                            handleDelete(record.id)
+                                        }
+                                    >
+                                        <Button
+                                            color="danger"
+                                            variant="solid"
+                                            shape="circle"
+                                            size="small"
+                                            icon={<DeleteOutlined />}
+                                        />
+                                    </Popconfirm>
+                                </Tooltip>
+                            </>
+                        ) : (
+                            <Tag color={"blue"}>Submitted</Tag>
+                        )
+                    ) : (
+                        <>
+                            <Tooltip title="Restore Report">
                                 <Popconfirm
-                                    title="Move to trash?"
-                                    okText="Move"
+                                    title="Restore data?"
+                                    okText="Restore"
+                                    cancelText="Cancel"
+                                    onConfirm={() => handleRestore(record.id)}
+                                >
+                                    <Button
+                                        color="primary"
+                                        variant="solid"
+                                        shape="circle"
+                                        size="small"
+                                        icon={<RedoOutlined />}
+                                    />
+                                </Popconfirm>
+                            </Tooltip>
+                            <Tooltip title="Delete Report">
+                                <Popconfirm
+                                    title="Delete data?"
+                                    okText="Delete"
                                     okButtonProps={{ danger: true }}
                                     cancelText="Cancel"
-                                    onConfirm={() => handleDelete(record.id)}
+                                    onConfirm={() =>
+                                        handleForceDelete(record.id)
+                                    }
                                 >
                                     <Button
                                         color="danger"
@@ -131,41 +180,7 @@ function ReportsTable({
                                         icon={<DeleteOutlined />}
                                     />
                                 </Popconfirm>
-                            </>
-                        ) : (
-                            <Tag color={"blue"}>Submitted</Tag>
-                        )
-                    ) : (
-                        <>
-                            <Popconfirm
-                                title="Restore data?"
-                                okText="Restore"
-                                cancelText="Cancel"
-                                onConfirm={() => handleRestore(record.id)}
-                            >
-                                <Button
-                                    color="primary"
-                                    variant="solid"
-                                    shape="circle"
-                                    size="small"
-                                    icon={<RedoOutlined />}
-                                />
-                            </Popconfirm>
-                            <Popconfirm
-                                title="Delete data?"
-                                okText="Delete"
-                                okButtonProps={{ danger: true }}
-                                cancelText="Cancel"
-                                onConfirm={() => handleForceDelete(record.id)}
-                            >
-                                <Button
-                                    color="danger"
-                                    variant="solid"
-                                    shape="circle"
-                                    size="small"
-                                    icon={<DeleteOutlined />}
-                                />
-                            </Popconfirm>
+                            </Tooltip>
                         </>
                     )}
                 </Space>

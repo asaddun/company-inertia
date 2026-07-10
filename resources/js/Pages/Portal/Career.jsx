@@ -156,61 +156,71 @@ function Career({ careers, filter, defaultFilters, filterKeys }) {
                 <Space>
                     {!isTrash ? (
                         <>
-                            <Button
-                                color="primary"
-                                variant="solid"
-                                shape="circle"
-                                size="small"
-                                icon={<EditOutlined />}
-                                onClick={() => handleEditButton(record)}
-                            />
-                            <Popconfirm
-                                title="Move to trash?"
-                                okText="Move"
-                                okButtonProps={{ danger: true }}
-                                cancelText="Cancel"
-                                onConfirm={() => handleDelete(record.id)}
-                            >
-                                <Button
-                                    color="danger"
-                                    variant="solid"
-                                    shape="circle"
-                                    size="small"
-                                    icon={<DeleteOutlined />}
-                                />
-                            </Popconfirm>
-                        </>
-                    ) : (
-                        <>
-                            <Popconfirm
-                                title="Restore data?"
-                                okText="Restore"
-                                cancelText="Cancel"
-                                onConfirm={() => handleRestore(record.id)}
-                            >
+                            <Tooltip title="Edit Career">
                                 <Button
                                     color="primary"
                                     variant="solid"
                                     shape="circle"
                                     size="small"
-                                    icon={<RedoOutlined />}
+                                    icon={<EditOutlined />}
+                                    onClick={() => handleEditButton(record)}
                                 />
-                            </Popconfirm>
-                            <Popconfirm
-                                title="Delete data?"
-                                okText="Delete"
-                                okButtonProps={{ danger: true }}
-                                cancelText="Cancel"
-                                onConfirm={() => handleForceDelete(record.id)}
-                            >
-                                <Button
-                                    color="danger"
-                                    variant="solid"
-                                    shape="circle"
-                                    size="small"
-                                    icon={<DeleteOutlined />}
-                                />
-                            </Popconfirm>
+                            </Tooltip>
+                            <Tooltip title="Delete Career">
+                                <Popconfirm
+                                    title="Move to trash?"
+                                    okText="Move"
+                                    okButtonProps={{ danger: true }}
+                                    cancelText="Cancel"
+                                    onConfirm={() => handleDelete(record.id)}
+                                >
+                                    <Button
+                                        color="danger"
+                                        variant="solid"
+                                        shape="circle"
+                                        size="small"
+                                        icon={<DeleteOutlined />}
+                                    />
+                                </Popconfirm>
+                            </Tooltip>
+                        </>
+                    ) : (
+                        <>
+                            <Tooltip title="Restore Career">
+                                <Popconfirm
+                                    title="Restore data?"
+                                    okText="Restore"
+                                    cancelText="Cancel"
+                                    onConfirm={() => handleRestore(record.id)}
+                                >
+                                    <Button
+                                        color="primary"
+                                        variant="solid"
+                                        shape="circle"
+                                        size="small"
+                                        icon={<RedoOutlined />}
+                                    />
+                                </Popconfirm>
+                            </Tooltip>
+                            <Tooltip title="Delete Career">
+                                <Popconfirm
+                                    title="Delete data?"
+                                    okText="Delete"
+                                    okButtonProps={{ danger: true }}
+                                    cancelText="Cancel"
+                                    onConfirm={() =>
+                                        handleForceDelete(record.id)
+                                    }
+                                >
+                                    <Button
+                                        color="danger"
+                                        variant="solid"
+                                        shape="circle"
+                                        size="small"
+                                        icon={<DeleteOutlined />}
+                                    />
+                                </Popconfirm>
+                            </Tooltip>
                         </>
                     )}
                 </Space>

@@ -1,5 +1,13 @@
 import { useState } from "react";
-import { Button, Form, Popconfirm, Space, Table, Typography } from "antd";
+import {
+    Button,
+    Form,
+    Popconfirm,
+    Space,
+    Table,
+    Typography,
+    Tooltip,
+} from "antd";
 import {
     DeleteOutlined,
     InfoCircleOutlined,
@@ -102,77 +110,89 @@ function Users({ users, levels, filter, defaultFilters, filterKeys }) {
                 <Space>
                     {filter.status != "trash" ? (
                         <>
-                            <Button
-                                color="primary"
-                                variant="solid"
-                                shape="circle"
-                                size="small"
-                                icon={<InfoCircleOutlined />}
-                                onClick={() => handleEditButton(record)}
-                            />
-                            <Popconfirm
-                                title="Move to trash?"
-                                okText="Move"
-                                okButtonProps={{ danger: true }}
-                                cancelText="Cancel"
-                                onConfirm={() => handleDelete(record.id)}
-                            >
-                                <Button
-                                    color="danger"
-                                    variant="solid"
-                                    shape="circle"
-                                    size="small"
-                                    icon={<DeleteOutlined />}
-                                />
-                            </Popconfirm>
-                            <Popconfirm
-                                title="Reset Credential?"
-                                description="This will reset the user's username dan password to default. Are you sure?"
-                                okText="Reset"
-                                okButtonProps={{ danger: true }}
-                                cancelText="Cancel"
-                                onConfirm={() => handleReset(record.id)}
-                            >
-                                <Button
-                                    color="danger"
-                                    variant="solid"
-                                    shape="circle"
-                                    size="small"
-                                    icon={<RedoOutlined />}
-                                />
-                            </Popconfirm>
-                        </>
-                    ) : (
-                        <>
-                            <Popconfirm
-                                title="Restore data?"
-                                okText="Restore"
-                                cancelText="Cancel"
-                                onConfirm={() => handleRestore(record.id)}
-                            >
+                            <Tooltip title="Info User">
                                 <Button
                                     color="primary"
                                     variant="solid"
                                     shape="circle"
                                     size="small"
-                                    icon={<RedoOutlined />}
+                                    icon={<InfoCircleOutlined />}
+                                    onClick={() => handleEditButton(record)}
                                 />
-                            </Popconfirm>
-                            <Popconfirm
-                                title="Delete data?"
-                                okText="Delete"
-                                okButtonProps={{ danger: true }}
-                                cancelText="Cancel"
-                                onConfirm={() => handleForceDelete(record.id)}
-                            >
-                                <Button
-                                    color="danger"
-                                    variant="solid"
-                                    shape="circle"
-                                    size="small"
-                                    icon={<DeleteOutlined />}
-                                />
-                            </Popconfirm>
+                            </Tooltip>
+                            <Tooltip title="Delete User">
+                                <Popconfirm
+                                    title="Move to trash?"
+                                    okText="Move"
+                                    okButtonProps={{ danger: true }}
+                                    cancelText="Cancel"
+                                    onConfirm={() => handleDelete(record.id)}
+                                >
+                                    <Button
+                                        color="danger"
+                                        variant="solid"
+                                        shape="circle"
+                                        size="small"
+                                        icon={<DeleteOutlined />}
+                                    />
+                                </Popconfirm>
+                            </Tooltip>
+                            <Tooltip title="Reset User">
+                                <Popconfirm
+                                    title="Reset Credential?"
+                                    description="This will reset the user's username dan password to default. Are you sure?"
+                                    okText="Reset"
+                                    okButtonProps={{ danger: true }}
+                                    cancelText="Cancel"
+                                    onConfirm={() => handleReset(record.id)}
+                                >
+                                    <Button
+                                        color="danger"
+                                        variant="solid"
+                                        shape="circle"
+                                        size="small"
+                                        icon={<RedoOutlined />}
+                                    />
+                                </Popconfirm>
+                            </Tooltip>
+                        </>
+                    ) : (
+                        <>
+                            <Tooltip title="Restore User">
+                                <Popconfirm
+                                    title="Restore data?"
+                                    okText="Restore"
+                                    cancelText="Cancel"
+                                    onConfirm={() => handleRestore(record.id)}
+                                >
+                                    <Button
+                                        color="primary"
+                                        variant="solid"
+                                        shape="circle"
+                                        size="small"
+                                        icon={<RedoOutlined />}
+                                    />
+                                </Popconfirm>
+                            </Tooltip>
+                            <Tooltip title="Delete User">
+                                <Popconfirm
+                                    title="Delete data?"
+                                    okText="Delete"
+                                    okButtonProps={{ danger: true }}
+                                    cancelText="Cancel"
+                                    onConfirm={() =>
+                                        handleForceDelete(record.id)
+                                    }
+                                >
+                                    <Button
+                                        color="danger"
+                                        variant="solid"
+                                        shape="circle"
+                                        size="small"
+                                        icon={<DeleteOutlined />}
+                                    />
+                                </Popconfirm>
+                            </Tooltip>
                         </>
                     )}
                 </Space>
