@@ -46,27 +46,8 @@ export const PortalItems = [
         key: "payrolls",
         label: "Payrolls",
         icon: <DollarOutlined />,
+        path: "/portal/payrolls",
         minLevel: Level.EMPLOYEE,
-        children: [
-            {
-                key: "payrolls",
-                label: "Payrolls",
-                path: "/portal/payrolls",
-                minLevel: Level.EMPLOYEE,
-            },
-            {
-                key: "payrolls-config",
-                label: "Configuration",
-                path: "/portal/payrolls/config",
-                minLevel: Level.MANAGEMENT,
-            },
-            {
-                key: "payrolls-dashboard",
-                label: "Dashboard",
-                path: "/portal/payrolls/dashboard",
-                minLevel: Level.EMPLOYEE,
-            },
-        ],
     },
     {
         key: "career",

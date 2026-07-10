@@ -37,7 +37,7 @@ function DetailPayroll({ payroll }) {
         });
     };
 
-    const handleReject = async () => {
+    const handleReOpen = async () => {
         router.patch(route("payrolls.status", payroll.id), {
             status: "draft",
         });
@@ -137,9 +137,9 @@ function DetailPayroll({ payroll }) {
                             color: Colors.primary,
                             borderColor: Colors.primary,
                         }}
-                        onClick={handleReject}
+                        onClick={handleReOpen}
                     >
-                        Reject
+                        Re-Open
                     </Button>
                     {auth.user.level > Level.EMPLOYEE && (
                         <Button
